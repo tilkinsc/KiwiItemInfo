@@ -1,0 +1,7 @@
+## Interface: 11302
+## Title: |cFFFFFFFFKiwi Item Info|r|cFF00FF00 v1.0.0|r
+## Version: 1.0.0
+## Author: PoliteKiwi
+## Notes: Displays sell value and iLvl
+
+KiwiItemInfo.lua
