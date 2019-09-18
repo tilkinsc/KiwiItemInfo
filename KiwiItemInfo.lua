@@ -136,7 +136,7 @@ local ShowItemInfo = function(tooltip)
 			GameTooltipTextRight1:SetTextColor(0.9375, 0, 0) -- red
 		elseif(itemLevel > playerLevel - 3) then
 			GameTooltipTextRight1:SetTextColor(0.9375, 0.5, 0) -- orange
-		elseif(itemLevel > playerLevel - 5) then
+		elseif(itemLevel > playerLevel - 6) then
 			GameTooltipTextRight1:SetTextColor(0.9375, 0.9375, 0) -- yellow
 		elseif(itemLevel > playerLevel - 9) then
 			GameTooltipTextRight1:SetTextColor(0, 0.875, 0) -- green
