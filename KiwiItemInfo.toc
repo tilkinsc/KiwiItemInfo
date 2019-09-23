@@ -3,5 +3,6 @@
 ## Version: 1.0.0
 ## Author: PoliteKiwi
 ## Notes: Displays sell value and iLvl
-
+## SavedVariablesPerCharacter: KiwiItemInfo_Save
+## Dependencies:
 KiwiItemInfo.lua

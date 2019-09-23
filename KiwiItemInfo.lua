@@ -29,6 +29,88 @@
 ItemInfo = {}
 
 
+-- Searches through an item list and returns a table of items that match input string/number/link
+ItemInfo.GetItem = function(self, id)
+	
+	if(type(id) == "number") then
+		
+		for i, v in next, KiwiItemInfo_Save do
+			if(v.id == id) then
+				return {{
+					itemName = i,
+					itemSubType = v.itemSubType,
+					itemLevel = v.itemLevel,
+					id = v.id,
+					itemStackCount = v.itemStackCount,
+					itemRarity = v.itemRarity,
+					itemMinLevel = v.itemMinLevel,
+					itemSellPrice = v.itemSellPrice,
+					itemTexture = v.itemTexture,
+					itemType = v.itemType,
+					itemLink = v.itemLink,
+					itemEquipLoc = v.itemEquipLoc
+				}}
+			end
+		end
+		
+		return nil -- itemId search
+	end
+	
+	if(type(id) == "string") then
+		
+		if(KiwiItemInfo_Save[id]) then
+			return KiwiItemInfo_Save[id]
+		end
+		
+		if(string.find(id, "|c")) then
+			for i, v in next, KiwiItemInfo_Save do
+				if(v.itemLink == id) then
+					return {{
+						itemName = i,
+						itemSubType = v.itemSubType,
+						itemLevel = v.itemLevel,
+						id = v.id,
+						itemStackCount = v.itemStackCount,
+						itemRarity = v.itemRarity,
+						itemMinLevel = v.itemMinLevel,
+						itemSellPrice = v.itemSellPrice,
+						itemTexture = v.itemTexture,
+						itemType = v.itemType,
+						itemLink = v.itemLink,
+						itemEquipLoc = v.itemEquipLoc
+					}}
+				end
+			end
+			
+			return nil -- itemLink search
+		end
+		
+		local stack = {}
+		
+		for i, v in next, KiwiItemInfo_Save do
+			if(string.find(i, id)) then
+				table.insert(stack, {
+					itemName = i,
+					itemSubType = v.itemSubType,
+					itemLevel = v.itemLevel,
+					id = v.id,
+					itemStackCount = v.itemStackCount,
+					itemRarity = v.itemRarity,
+					itemMinLevel = v.itemMinLevel,
+					itemSellPrice = v.itemSellPrice,
+					itemTexture = v.itemTexture,
+					itemType = v.itemType,
+					itemLink = v.itemLink,
+					itemEquipLoc = v.itemEquipLoc
+				})
+			end
+		end
+		
+		return #stack > 0 and stack or nil -- itemName search
+	end
+	
+end
+
 -- Booleans if any bag is open
 ItemInfo.TestBagOpen = function(self)
 	for i=0, NUM_BAG_SLOTS do
@@ -201,6 +283,90 @@ end
 
 
 
+-- Prints out item info from a specific-formatted string, is a command
+local ItemInfoLookup = function(msg)
+	
+	if(msg:find("help", 1) or msg == "") then
+		print("Kiwi Item Info -- help")
+		print("    Usage: /kii ${=,>,<}num {itemid, itemname}")
+		print("     * help -- for this message")
+		print("     * itemid -- search for items")
+		print("     * itemname -- search for items")
+		print("     * ${=,>,<}num -- show only item levels num of operation")
+		return
+	end
+	
+	if(msg:find("%$", 1)) then
+		
+		local sp = {string.split(" ", msg, 2)}
+		if(#sp ~= 2) then
+			print("Kiwi says your parameters are incomplete.")
+			return
+		end
+		
+		local items = ItemInfo:GetItem(sp[2])
+		if(not items) then
+			print("Kiwi couldn't find any items!")
+			return
+		end
+		
+		local arg = tonumber(sp[1]:sub(3))
+		
+		if(sp[1]:find("$=", 1)) then
+			
+			for i, v in next, items do
+				if(v.itemLevel ~= arg) then
+					items[i] = nil
+				end
+			end
+			
+		elseif(sp[1]:find("$<", 1)) then
+			
+			for i, v in next, items do
+				if(v.itemLevel > arg - 1) then
+					items[i] = nil
+				end
+			end
+			
+		elseif(sp[1]:find("$>", 1)) then
+			
+			for i, v in next, items do
+				if(v.itemLevel < arg + 1) then
+					items[i] = nil
+				end
+			end
+			
+		end
+		
+		if(not next(items)) then
+			print("Kiwi couldn't find any items!")
+			return
+		end
+		
+		print("Kiwi says this is your item: ")
+		for i, v in next, items do
+			print(v.itemLink)
+		end
+		
+		return
+	end
+	
+	local _msg = tonumber(msg)
+	local items = ItemInfo:GetItem(_msg and _msg or msg)
+	if(not items) then
+		print("Kiwi couldn't find any items!")
+		return
+	end
+	
+	print("Kiwi says this is your item: ")
+	for i, v in next, items do
+		print(v.itemLink)
+	end
+	
+end
+
+
+
 -- Handles all key events
 local OnKeyEvent = function(self, event, key, state)
 	
@@ -211,13 +377,23 @@ local OnKeyEvent = function(self, event, key, state)
 	
 end
 
+local OnAddOnLoadedEvent = function(self, event, addon)
+	
+	SlashCmdList["KIWIITEMINFO_LOOKUP"] = ItemInfoLookup
+	SLASH_KIWIITEMINFO_LOOKUP1 = "/kii"
+	
+end
+
 
 
 -- hooks and events
 GameTooltip:HookScript("OnTooltipSetItem", ShowItemInfo)
 ItemRefTooltip:HookScript("OnTooltipSetItem", ShowRefItemInfo)
 
-local f = CreateFrame("Frame")
-f:RegisterEvent("MODIFIER_STATE_CHANGED")
-f:SetScript("OnEvent", OnKeyEvent)
+local onkey = CreateFrame("Frame")
+onkey:RegisterEvent("MODIFIER_STATE_CHANGED")
+onkey:SetScript("OnEvent", OnKeyEvent)
 
+local onaddon = CreateFrame("Frame")
+onaddon:RegisterEvent("ADDON_LOADED")
+onaddon:SetScript("OnEvent", OnAddOnLoadedEvent)
