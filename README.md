@@ -3,7 +3,8 @@ WoW Classic Addon, Shows iLvl (with colors), Vendor Prices (unit/stack), highlig
 
 Provides a command /kiwiii (kiwi item info) to search items by name or by id. It has an argument to show you items based on level. Please use `/kiwiii --help` for more information for parameters to reduce results. There are like 17,121 btw.
 
-To install:
+To install:  
+
 0. Download `https://github.com/tilkinsc/KiwiItemInfo/archive/master.zip` and skip step 1 or do step 1 instead
 1. Navigate to your WoW Classic addons folder. `S:\WoW\World of Warcraft\_classic_\Interface\AddOns`
 2. `git clone https://github.com/tilkinsc/KiwiItemInfo`
