@@ -394,8 +394,6 @@ local KiwiiiCommand = function(msg)
 				enable_type_search = true
 				type_search = arg:sub(2):gsub("%u", " %1"):trim()
 				
-				print("type_search", type_search)
-				
 			elseif(arg:find("@", 1)) then
 				
 				enable_subtype_search = true
@@ -406,8 +404,6 @@ local KiwiiiCommand = function(msg)
 				if(not subtype_search:find("One", 1) and not subtype_search:find("Two")) then
 					subtype_search = subtype_search:gsub("%u", " %1"):trim()
 				end
-				
-				print("subtype_search", subtype_search)
 				
 			else
 				tester = table.concat(args, "", i, #args)
