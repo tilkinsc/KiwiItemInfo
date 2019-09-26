@@ -25,12 +25,28 @@
  * 
 --]]
 
+
+-- helper functions
+local printi = function(type, ...)
+	print((type == 0) and (KiwiItemInfo_Vars["text_print"] .. table.concat({...}, "  ") .. "|r")
+		or (type == 1) and (KiwiItemInfo_Vars["text_warning"] .. table.concat({...}, "  ") .. "|r")
+		or (type == 2) and (KiwiItemInfo_Vars["text_error"] .. table.concat({...}, "  ") .. "|r")
+		or "")
+end
+
+
+
 -- Public table for macro usage
-ItemInfo = {}
+KiwiItemInfo = {}
 
 
--- Searches through an item list and returns a table of items that match input string/number/link
-ItemInfo.GetItem = function(self, id)
+-- Searches through the item database and returns a table of items that match args given
+-- Prefer to use this function, as `KiwiItemInfo_Save` can be corrupted by writes (readonly)
+-- Returns only 1 item (full copy) in a table if number or string is matched exact to the item name
+-- Returns a table of all partial string matches (full copies)
+-- Returns nil on item not found
+-- Usage: /run KiwiItemIfno:GetItem(itemName/itemId/itemLink)
+KiwiItemInfo.GetItem = function(self, id)
 	
 	if(type(id) == "number") then
 		
@@ -59,7 +75,21 @@ ItemInfo.GetItem = function(self, id)
 	if(type(id) == "string") then
 		
 		if(KiwiItemInfo_Save[id]) then
-			return KiwiItemInfo_Save[id]
+			local v = KiwiItemInfo_Save[id]
+			return {{
+						itemName = id,
+						itemSubType = v.itemSubType,
+						itemLevel = v.itemLevel,
+						id = v.id,
+						itemStackCount = v.itemStackCount,
+						itemRarity = v.itemRarity,
+						itemMinLevel = v.itemMinLevel,
+						itemSellPrice = v.itemSellPrice,
+						itemTexture = v.itemTexture,
+						itemType = v.itemType,
+						itemLink = v.itemLink,
+						itemEquipLoc = v.itemEquipLoc
+					}}
 		end
 		
 		if(string.find(id, "|c")) then
@@ -111,8 +141,9 @@ ItemInfo.GetItem = function(self, id)
 	
 end
 
--- Booleans if any bag is open
-ItemInfo.TestBagOpen = function(self)
+-- Booleans if any bag slot is open
+KiwiItemInfo.TestBagOpen = function(self)
+	
 	for i=0, NUM_BAG_SLOTS do
 		if(IsBagOpen(i)) then
 			return true
@@ -125,9 +156,9 @@ end
 
 
 -- Shows junk items in inventory
-ItemInfo.ShowJunk = function(self)
+KiwiItemInfo.ShowJunk = function(self)
 	
-	if(not ItemInfo:TestBagOpen()) then
+	if(not KiwiItemInfo:TestBagOpen()) then
 		return
 	end
 	
@@ -170,6 +201,7 @@ end
 
 -- Adds item data to tooltips in inventory
 local ShowItemInfo = function(tooltip)
+	
 	if(MerchantFrame:IsShown()) then
 		return
 	end
@@ -190,12 +222,7 @@ local ShowItemInfo = function(tooltip)
 	local container = GetMouseFocus()
 	local object = container:GetObjectType()
 	
-	local count
-	if(object == "Button") then
-		count = container.count
-	elseif(object == "CheckButton") then
-		count = container.count or tonumber(container.Count:GetText())
-	end
+	local count = container.count or (object == "CheckButton" and tonumber(container.Count:GetText()) or 1)
 	count = type(count) == "number" and count or 1
 	
 	if(count > 1) then
@@ -234,6 +261,7 @@ end
 
 -- Adds item data to tooltips on links
 local ShowRefItemInfo = function(tooltip)
+	
 	local _, tt_itemLink = tooltip:GetItem()
 	if(not tt_itemLink) then
 		return
@@ -281,119 +309,271 @@ local ShowRefItemInfo = function(tooltip)
 	
 end
 
+-- Handles all key events
+local OnKeyEvent = function(key, state)
+	
+	if(key == "LCTRL" and state == 1) then
+		KiwiItemInfo:ShowJunk()
+		return
+	end
+	
+end
+
 
 
 -- Prints out item info from a specific-formatted string, is a command
-local ItemInfoLookup = function(msg)
+local KiwiiiCommand = function(msg)
 	
 	if(msg:find("help", 1) or msg == "") then
-		print("Kiwi Item Info -- help")
-		print("    Usage: /kii ${=,>,<}num {itemid, itemname}")
-		print("     * help -- for this message")
-		print("     * itemid -- search for items")
-		print("     * itemname -- search for items")
-		print("     * ${=,>,<}num -- show only item levels num of operation")
+		printi(0, "Kiwi Item Info -- help")
+		printi(0, "https://github.com/tilkinsc/PoliteKiwi - for issue/bug reports")
+		print("    Usage: /kiwiii [on, off, reload] [search ${=,>,<}num, #Type, {itemid, itemname}]")
+		print("     > help -- for this message")
+		print("     > reload -- reloads plugin")
+		print("     > search -- searches through item database for items")
+		print("       * ${=,>,<}num -- show only item levels num of operation")
+		print("       * #Type -- shows by type (Mail, Cloth, Book, Consumable, Quest, etc)")
+		print("       * itemid -- search for items")
+		print("       * itemname -- search for items")
 		return
 	end
 	
-	if(msg:find("%$", 1)) then
-		
-		local sp = {string.split(" ", msg, 2)}
-		if(#sp ~= 2) then
-			print("Kiwi says your parameters are incomplete.")
-			return
-		end
-		
-		local items = ItemInfo:GetItem(sp[2])
-		if(not items) then
-			print("Kiwi couldn't find any items!")
-			return
-		end
-		
-		local arg = tonumber(sp[1]:sub(3))
-		
-		if(sp[1]:find("$=", 1)) then
-			
-			for i, v in next, items do
-				if(v.itemLevel ~= arg) then
-					items[i] = nil
-				end
-			end
-			
-		elseif(sp[1]:find("$<", 1)) then
-			
-			for i, v in next, items do
-				if(v.itemLevel > arg - 1) then
-					items[i] = nil
-				end
-			end
-			
-		elseif(sp[1]:find("$>", 1)) then
-			
-			for i, v in next, items do
-				if(v.itemLevel < arg + 1) then
-					items[i] = nil
-				end
-			end
-			
-		end
-		
-		if(not next(items)) then
-			print("Kiwi couldn't find any items!")
-			return
-		end
-		
-		print("Kiwi says this is your item: ")
-		for i, v in next, items do
-			print(v.itemLink)
-		end
-		
+	if(msg:find("reload", 1)) then
+		printi(2, "Reloading KiwiItemInfo...")
+		KiwiItemInfo:Disable()
+		KiwiItemInfo:Enable()
+		printi(0, "All done! :D Kiwi is functioning!")
 		return
 	end
 	
-	local _msg = tonumber(msg)
-	local items = ItemInfo:GetItem(_msg and _msg or msg)
-	if(not items) then
-		print("Kiwi couldn't find any items!")
+	
+	-- split message into arguments
+	local args = {string.split(" ", msg)}
+	if(#args < 1) then
+		printi(2, "Kiwi Item Info: Invalid argument length.")
 		return
 	end
 	
-	print("Kiwi says this is your item: ")
-	for i, v in next, items do
-		print(v.itemLink)
+	
+	if(args[1] == "search") then
+		
+		if(KiwiItemInfo_Vars["kiwiii_search_cmd_state"] == false) then
+			printi(2, "Kiwi declines usage of `/kiwiii search` due to lack of loading the database.")
+			return
+		end
+		
+		-- collect arguments
+		local enable_ilvl_search = false
+		local ilvl_operation = nil
+		local ilvl_search = nil
+		
+		local enable_type_search = false
+		local type_search = nil
+		
+		local enable_subtype_search = false
+		local subtype_search = nil
+		
+		local tester = nil
+		
+		for i=2, #args do
+			local arg = args[i]
+			
+			if(arg:find("%$", 1)) then
+				
+				if(#arg < 3) then
+					printi(2, "Kiwi Item Info: Invalid argument length to argument", arg, "!")
+					return
+				end
+				
+				enable_ilvl_search = true
+				ilvl_operation = arg:sub(2, 2)
+				ilvl_search = tonumber(arg:sub(3))
+				
+			elseif(arg:find("#", 1)) then
+				
+				enable_type_search = true
+				type_search = arg:sub(2):gsub("%u", " %1"):trim()
+				
+				print("type_search", type_search)
+				
+			elseif(arg:find("@", 1)) then
+				
+				enable_subtype_search = true
+				
+				subtype_search = arg:sub(2)
+				subtype_search = subtype_search:gsub("1H", "One-Handed ")
+				subtype_search = subtype_search:gsub("2H", "Two-Handed ")
+				if(not subtype_search:find("One", 1) and not subtype_search:find("Two")) then
+					subtype_search = subtype_search:gsub("%u", " %1"):trim()
+				end
+				
+				print("subtype_search", subtype_search)
+				
+			else
+				tester = table.concat(args, "", i, #args)
+				
+				local num_test = tonumber(tester)
+				tester = num_test and num_test or tester
+				
+				break
+			end
+			
+		end
+		
+		
+		-- easy way out, nil if failed, item if success
+		local direct_try = (function()
+			
+			if(not type(tester) == "string") then
+				return
+			end
+			
+			local dt = KiwiItemInfo_Save[tester]
+			
+			if(dt) then
+				if(enable_type_search and not (dt.itemType == type_search)) then
+					return
+				end
+				
+				if(enable_subtype_search and not (dt.itemSubType == subtype_search)) then
+					return
+				end
+				
+				if(enable_ilvl_search and (
+								ilvl_operation == "=" and (dt.itemLevel ~= ilvl_search)
+							or	ilvl_operation == ">" and (dt.itemLevel <= ilvl_search)
+							or	ilvl_operation == "<" and (dt.itemLevel >= ilvl_search)
+							or	false)) then
+					return
+				end
+				
+				return dt
+			end
+			
+		end)()
+		
+		if(direct_try) then
+			printi(0, "Kiwi says `this is your item`:")
+			print(direct_try.itemLink)
+			return
+		end
+		
+		
+		-- the hard way
+		local count = 0
+		local success
+		for i, v in next, KiwiItemInfo_Save do
+			success = true
+			
+			if(enable_type_search and not (v.itemType == type_search)) then
+				success = false
+			end
+			
+			if(enable_subtype_search and not (v.itemSubType == subtype_search)) then
+				success = false
+			end
+			
+			if(enable_ilvl_search and (
+							ilvl_operation == "=" and (v.itemLevel ~= ilvl_search)
+						or	ilvl_operation == ">" and (v.itemLevel <= ilvl_search)
+						or	ilvl_operation == "<" and (v.itemLevel >= ilvl_search)
+						or	false)) then
+				success = false
+			end
+			
+			if(tester and not i:find(tester)) then
+				success = false
+			end
+			
+			if(success) then
+				count = count + 1
+				print(v.itemLink)
+			end
+		end
+		
+		if(count > 0) then
+			printi(0, "Kiwi so cool. Kiwi so fly. kiwi found", count, "items.")
+		else
+			printi(2, "Kiwi couldn't find any items! :(")
+		end
+		
+		return
 	end
 	
 end
 
 
 
--- Handles all key events
-local OnKeyEvent = function(self, event, key, state)
+
+KiwiItemInfo.Disable = function(self)
 	
-	if(key == "LCTRL" and state == 1) then
-		ItemInfo:ShowJunk()
-		return
+	GameTooltip:SetScript("OnTooltipSetItem", nil)
+	ItemRefTooltip:SetScript("OnTooltipSetItem", nil)
+	
+	if(KiwiItemInfo_Save) then
+		KiwiItemInfo.EventFrame:UnregisterEvent("MODIFIER_STATE_CHANGED")
+		KiwiItemInfo.Events["MODIFIER_STATE_CHANGED"] = nil
 	end
 	
 end
 
-local OnAddOnLoadedEvent = function(self, event, addon)
+KiwiItemInfo.Enable = function(self)
 	
-	SlashCmdList["KIWIITEMINFO_LOOKUP"] = ItemInfoLookup
-	SLASH_KIWIITEMINFO_LOOKUP1 = "/kii"
+	if(not KiwiItemInfo_Vars) then
+		
+		KiwiItemInfo_Vars = {
+			["text_error"] = "|cFFFF0000",
+			["text_print"] = "|cFF0FFF0F",
+			["text_warning"] = "|cFF00CC22",
+			["kiwiii_search_cmd_state"] = true
+		}
+		
+		printi(0, "Kiwi thanks you for installing KiwiItemInfo! <3")
+	end
+	
+	-- ensure database is present, if user wants it
+	KiwiItemInfo_Vars["kiwiii_search_cmd_state"] = true
+	if(not KiwiItemInfo_Save) then
+		printi(1, "Kiwi's Item Info database wasn't loaded! Not using /kiwiii command.")
+		KiwiItemInfo_Vars["kiwiii_search_cmd_state"] = false
+	end
+	
+	
+	-- commands
+	SlashCmdList["KIWIITEMINFO_LOOKUP"] = KiwiiiCommand
+	SLASH_KIWIITEMINFO_LOOKUP1 = "/kiwiii"
+	
+	
+	-- tooltip events
+	GameTooltip:SetScript("OnTooltipSetItem", ShowItemInfo)
+	ItemRefTooltip:SetScript("OnTooltipSetItem", ShowRefItemInfo)
+	
+	
+	-- bag events
+	KiwiItemInfo.Events["MODIFIER_STATE_CHANGED"] = OnKeyEvent
+	KiwiItemInfo.EventFrame:RegisterEvent("MODIFIER_STATE_CHANGED")
 	
 end
 
 
+
+local ADDON_LOADED = function(addon)
+	if(addon ~= "KiwiItemInfo") then
+		return
+	end
+	
+	KiwiItemInfo:Enable()
+end
 
 -- hooks and events
-GameTooltip:HookScript("OnTooltipSetItem", ShowItemInfo)
-ItemRefTooltip:HookScript("OnTooltipSetItem", ShowRefItemInfo)
+KiwiItemInfo.Events = {
+	["ADDON_LOADED"] = ADDON_LOADED
+}
 
-local onkey = CreateFrame("Frame")
-onkey:RegisterEvent("MODIFIER_STATE_CHANGED")
-onkey:SetScript("OnEvent", OnKeyEvent)
 
-local onaddon = CreateFrame("Frame")
-onaddon:RegisterEvent("ADDON_LOADED")
-onaddon:SetScript("OnEvent", OnAddOnLoadedEvent)
+local KiwiItemInfo_Frame = CreateFrame("Frame")
+KiwiItemInfo.EventFrame = KiwiItemInfo_Frame
+KiwiItemInfo_Frame:RegisterEvent("ADDON_LOADED")
+KiwiItemInfo_Frame:SetScript("OnEvent", function(self, event, ...)
+	KiwiItemInfo.Events[event](...)
+end)
