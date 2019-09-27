@@ -1,6 +1,6 @@
 ## Interface: 11302
-## Title: |cFFFFFFFFKiwi Item Info|r|cFF00FF00 v1.1.0|r
-## Version: 1.1.0
+## Title: |cFFFFFFFFKiwi Item Info|r|cFF00FF00 v1.1.1|r
+## Version: 1.1.1
 ## Author: PoliteKiwi
 ## Notes: Displays sell value and iLvl
 ## SavedVariablesPerCharacter: KiwiItemInfo_Vars
