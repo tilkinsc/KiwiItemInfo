@@ -324,21 +324,22 @@ end
 -- Prints out item info from a specific-formatted string, is a command
 local KiwiiiCommand = function(msg)
 	
-	if(msg:find("help", 1) or msg == "") then
+	if(msg:find("help", 1) == 1 or msg == "") then
 		printi(0, "Kiwi Item Info -- help")
-		printi(0, "https://github.com/tilkinsc/PoliteKiwi - for issue/bug reports")
-		print("    Usage: /kiwiii [on, off, reload] [search ${=,>,<}num, #Type, {itemid, itemname}]")
+		printi(0, "https://github.com/tilkinsc/KiwiItemInfo - for issue/bug reports")
+		print("    Usage: /kiwiii [reload] [search ${=,>,<}num, #Type, @subtype, {itemid, itemname}]")
 		print("     > help -- for this message")
 		print("     > reload -- reloads plugin")
 		print("     > search -- searches through item database for items")
 		print("       * ${=,>,<}num -- show only item levels num of operation")
-		print("       * #Type -- shows by type (Mail, Cloth, Book, Consumable, Quest, etc)")
+		print("       * #Type -- shows by type (Armor, Weapon, etc)")
+		print("       * @SubType -- shows by subtype (Mail, Shields, 1HSwords, 2HSwords)")
 		print("       * itemid -- search for items")
 		print("       * itemname -- search for items")
 		return
 	end
 	
-	if(msg:find("reload", 1)) then
+	if(msg:find("reload", 1) == 1) then
 		printi(2, "Reloading KiwiItemInfo...")
 		KiwiItemInfo:Disable()
 		KiwiItemInfo:Enable()
@@ -406,7 +407,7 @@ local KiwiiiCommand = function(msg)
 				end
 				
 			else
-				tester = table.concat(args, "", i, #args)
+				tester = table.concat(args, " ", i, #args):trim()
 				
 				local num_test = tonumber(tester)
 				tester = num_test and num_test or tester
@@ -455,7 +456,13 @@ local KiwiiiCommand = function(msg)
 		end
 		
 		
+		
 		-- the hard way
+		local tester_operands
+		if(type(tester) == "string") then
+			tester_operands = {string.split(" ", tester)}
+		end
+		
 		local count = 0
 		local success
 		for i, v in next, KiwiItemInfo_Save do
@@ -477,8 +484,24 @@ local KiwiiiCommand = function(msg)
 				success = false
 			end
 			
-			if(tester and not i:find(tester)) then
-				success = false
+			if(tester) then
+				if(type(tester) == "number") then
+					if(v.itemId ~= tester) then
+						success = false
+					end
+				else
+					local required_operands = #tester_operands
+					
+					for _, name in next, tester_operands do
+						if(i:find(name)) then
+							required_operands = required_operands - 1
+						end
+					end
+					
+					if(required_operands > 0) then
+						success = false
+					end
+				end
 			end
 			
 			if(success) then
@@ -506,10 +529,11 @@ KiwiItemInfo.Disable = function(self)
 	GameTooltip:SetScript("OnTooltipSetItem", nil)
 	ItemRefTooltip:SetScript("OnTooltipSetItem", nil)
 	
-	if(KiwiItemInfo_Save) then
-		KiwiItemInfo.EventFrame:UnregisterEvent("MODIFIER_STATE_CHANGED")
-		KiwiItemInfo.Events["MODIFIER_STATE_CHANGED"] = nil
-	end
+	SlashCmdList["KIWIITEMINFO_LOOKUP"] = nil
+	SLASH_KIWIITEMINFO_LOOKUP1 = nil
+	
+	KiwiItemInfo.EventFrame:UnregisterEvent("MODIFIER_STATE_CHANGED")
+	KiwiItemInfo.Events["MODIFIER_STATE_CHANGED"] = nil
 	
 end
 
@@ -530,14 +554,14 @@ KiwiItemInfo.Enable = function(self)
 	-- ensure database is present, if user wants it
 	KiwiItemInfo_Vars["kiwiii_search_cmd_state"] = true
 	if(not KiwiItemInfo_Save) then
-		printi(1, "Kiwi's Item Info database wasn't loaded! Not using /kiwiii command.")
+		printi(1, "Kiwi's Item Info database wasn't loaded! Not using `/kiwiii` command.")
 		KiwiItemInfo_Vars["kiwiii_search_cmd_state"] = false
 	end
 	
 	
 	-- commands
-	SlashCmdList["KIWIITEMINFO_LOOKUP"] = KiwiiiCommand
-	SLASH_KIWIITEMINFO_LOOKUP1 = "/kiwiii"
+	SlashCmdList["KIWIITEMINFO_CMD"] = KiwiiiCommand
+	SLASH_KIWIITEMINFO_CMD1 = "/kiwiii"
 	
 	
 	-- tooltip events
