@@ -1,5 +1,5 @@
 # KiwiItemInfo
-WoW Classic Addon, Shows iLvl (with colors), Vendor Prices (unit/stack), highlights all grey named items for vendor selling with LCTRL, and provides a item database to search items in-client
+WoW Classic Addon, Shows iLvl (with colors), Weapon/Armor Differences(shift hover), Vendor Prices (unit/stack), highlights all grey named items with LCTRL, and provides a item database to search items in-client
 
 Provides a command /kiwiii (kiwi item info) to search items by name or by id. It has an argument to show you items based on level. Please use `/kiwiii --help` for more information for parameters to reduce results. There are like 17,121 btw.
 
@@ -30,4 +30,10 @@ iLvl coloration works like this:
 
 ![image](https://user-images.githubusercontent.com/7494772/65168271-282fd280-da12-11e9-8fff-30dbffeded71.png)
 
+![image](https://user-images.githubusercontent.com/7494772/65868110-add24d00-e345-11e9-9644-be1d3a7e36c1.png)
 
+![image](https://user-images.githubusercontent.com/7494772/65868151-c2aee080-e345-11e9-83f1-d1b93f93440a.png)
+
+![image](https://user-images.githubusercontent.com/7494772/65868206-d9edce00-e345-11e9-8ad3-e93513f09406.png)
+
+![image](https://user-images.githubusercontent.com/7494772/65868255-effb8e80-e345-11e9-8025-d432ff6af224.png)
