@@ -54,17 +54,17 @@ KiwiItemInfo.GetItem = function(self, id)
 			if(v.id == id) then
 				return {{
 					itemName = i,
-					itemSubType = v.itemSubType,
-					itemLevel = v.itemLevel,
+					itemSubType = v.SubType,
+					itemLevel = v.Level,
 					id = v.id,
-					itemStackCount = v.itemStackCount,
-					itemRarity = v.itemRarity,
-					itemMinLevel = v.itemMinLevel,
-					itemSellPrice = v.itemSellPrice,
-					itemTexture = v.itemTexture,
-					itemType = v.itemType,
-					itemLink = v.itemLink,
-					itemEquipLoc = v.itemEquipLoc
+					itemStackCount = v.StackCount,
+					itemRarity = v.Rarity,
+					itemMinLevel = v.MinLevel,
+					itemSellPrice = v.ellPrice,
+					itemTexture = v.Texture,
+					itemType = v.Type,
+					itemLink = v.Link,
+					itemEquipLoc = v.EquipLoc
 				}}
 			end
 		end
@@ -78,17 +78,17 @@ KiwiItemInfo.GetItem = function(self, id)
 			local v = KiwiItemInfo_Save[id]
 			return {{
 						itemName = id,
-						itemSubType = v.itemSubType,
-						itemLevel = v.itemLevel,
+						itemSubType = v.SubType,
+						itemLevel = v.Level,
 						id = v.id,
-						itemStackCount = v.itemStackCount,
-						itemRarity = v.itemRarity,
-						itemMinLevel = v.itemMinLevel,
-						itemSellPrice = v.itemSellPrice,
-						itemTexture = v.itemTexture,
-						itemType = v.itemType,
-						itemLink = v.itemLink,
-						itemEquipLoc = v.itemEquipLoc
+						itemStackCount = v.StackCount,
+						itemRarity = v.Rarity,
+						itemMinLevel = v.MinLevel,
+						itemSellPrice = v.SellPrice,
+						itemTexture = v.Texture,
+						itemType = v.Type,
+						itemLink = v.Link,
+						itemEquipLoc = v.EquipLoc
 					}}
 		end
 		
@@ -97,17 +97,17 @@ KiwiItemInfo.GetItem = function(self, id)
 				if(v.itemLink == id) then
 					return {{
 						itemName = i,
-						itemSubType = v.itemSubType,
-						itemLevel = v.itemLevel,
+						itemSubType = v.SubType,
+						itemLevel = v.Level,
 						id = v.id,
-						itemStackCount = v.itemStackCount,
-						itemRarity = v.itemRarity,
-						itemMinLevel = v.itemMinLevel,
-						itemSellPrice = v.itemSellPrice,
-						itemTexture = v.itemTexture,
-						itemType = v.itemType,
-						itemLink = v.itemLink,
-						itemEquipLoc = v.itemEquipLoc
+						itemStackCount = v.StackCount,
+						itemRarity = v.Rarity,
+						itemMinLevel = v.MinLevel,
+						itemSellPrice = v.SellPrice,
+						itemTexture = v.Texture,
+						itemType = v.Type,
+						itemLink = v.Link,
+						itemEquipLoc = v.EquipLoc
 					}}
 				end
 			end
@@ -121,17 +121,17 @@ KiwiItemInfo.GetItem = function(self, id)
 			if(string.find(i, id)) then
 				table.insert(stack, {
 					itemName = i,
-					itemSubType = v.itemSubType,
-					itemLevel = v.itemLevel,
+					itemSubType = v.SubType,
+					itemLevel = v.Level,
 					id = v.id,
-					itemStackCount = v.itemStackCount,
-					itemRarity = v.itemRarity,
-					itemMinLevel = v.itemMinLevel,
-					itemSellPrice = v.itemSellPrice,
-					itemTexture = v.itemTexture,
-					itemType = v.itemType,
-					itemLink = v.itemLink,
-					itemEquipLoc = v.itemEquipLoc
+					itemStackCount = v.StackCount,
+					itemRarity = v.Rarity,
+					itemMinLevel = v.MinLevel,
+					itemSellPrice = v.SellPrice,
+					itemTexture = v.Texture,
+					itemType = v.Type,
+					itemLink = v.Link,
+					itemEquipLoc = v.EquipLoc
 				})
 			end
 		end
@@ -142,7 +142,7 @@ KiwiItemInfo.GetItem = function(self, id)
 end
 
 -- Booleans if any bag slot is open
-KiwiItemInfo.TestBagOpen = function(self)
+local TestBagOpen = function(self)
 	
 	for i=0, NUM_BAG_SLOTS do
 		if(IsBagOpen(i)) then
@@ -156,9 +156,9 @@ end
 
 
 -- Shows junk items in inventory
-KiwiItemInfo.ShowJunk = function(self)
+local ShowJunk = function(self)
 	
-	if(not KiwiItemInfo:TestBagOpen()) then
+	if(not TestBagOpen()) then
 		return
 	end
 	
@@ -199,68 +199,12 @@ end
 
 
 
--- Adds item data to tooltips in inventory
+-- Adds item data to tooltips
 local ShowItemInfo = function(tooltip)
 	
 	if(MerchantFrame:IsShown()) then
 		return
 	end
-	
-	local _, tt_itemLink = tooltip:GetItem()
-	if(not tt_itemLink) then
-		return
-	end
-	
-	local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType,
-				itemStackCount, itemEquipLoc, itemIcon, vendorPrice, itemClassID, itemSubClassID,
-				bindType, expacID, itemSetID, isCraftingReagent = GetItemInfo(tt_itemLink)
-	
-	if(not vendorPrice or vendorPrice <= 0) then
-		return
-	end
-	
-	local container = GetMouseFocus()
-	local object = container:GetObjectType()
-	
-	local count = container.count or (object == "CheckButton" and tonumber(container.Count:GetText()) or 1)
-	count = type(count) == "number" and count or 1
-	
-	if(count > 1) then
-		SetTooltipMoney(tooltip, vendorPrice, nil, "Unit: ")
-		SetTooltipMoney(tooltip, vendorPrice * count, nil, "Stack:")
-	else
-		SetTooltipMoney(tooltip, vendorPrice, nil, "")
-	end
-	
-	if(itemType == "Weapon" or itemType == "Armor") then
-		-- f00000	rgb 240   0   0		red
-		-- f08000	rgb 240 128   0		orange
-		-- f0f000	rgb 240 240   0		yellow
-		-- 00e000	rgb   0 224   0		green
-		-- 808080	rgb 128 128 128		grey
-		
-		local playerLevel = UnitLevel("player")
-		
-		if(playerLevel <= itemLevel) then
-			GameTooltipTextRight1:SetTextColor(0.9375, 0, 0) -- red
-		elseif(itemLevel > playerLevel - 3) then
-			GameTooltipTextRight1:SetTextColor(0.9375, 0.5, 0) -- orange
-		elseif(itemLevel > playerLevel - 6) then
-			GameTooltipTextRight1:SetTextColor(0.9375, 0.9375, 0) -- yellow
-		elseif(itemLevel > playerLevel - 9) then
-			GameTooltipTextRight1:SetTextColor(0, 0.875, 0) -- green
-		else
-			GameTooltipTextRight1:SetTextColor(0.5, 0.5, 0.5) -- grey
-		end
-		
-		GameTooltipTextRight1:SetText("iLvl " .. itemLevel)
-		GameTooltipTextRight1:Show()
-	end
-	
-end
-
--- Adds item data to tooltips on links
-local ShowRefItemInfo = function(tooltip)
 	
 	local _, tt_itemLink = tooltip:GetItem()
 	if(not tt_itemLink) then
@@ -276,44 +220,275 @@ local ShowRefItemInfo = function(tooltip)
 	end
 	
 	if(itemStackCount > 1) then
+		if(tooltip:GetName() == "GameTooltip") then
+			local container = GetMouseFocus()
+			local object = container:GetObjectType()
+			
+			local count = container.count or (object == "CheckButton" and tonumber(container.Count:GetText()) or 1)
+			itemStackCount = type(count) == "number" and count or 1
+		end
 		SetTooltipMoney(tooltip, vendorPrice, nil, "Unit: ")
 		SetTooltipMoney(tooltip, vendorPrice * itemStackCount, nil, "Stack:")
 	else
 		SetTooltipMoney(tooltip, vendorPrice, nil, "")
 	end
 	
+	local tooltipName = tooltip:GetName()
 	if(itemType == "Weapon" or itemType == "Armor") then
-		-- f00000	rgb 240   0   0		red
-		-- f08000	rgb 240 128   0		orange
-		-- f0f000	rgb 240 240   0		yellow
-		-- 00e000	rgb   0 224   0		green
-		-- 808080	rgb 128 128 128		grey
+		
+		local tooltipiLvl
+		if(tooltipName == "GameTooltip") then
+			tooltipiLvl = _G[tooltipName .. "TextRight1"]
+		else
+			tooltipiLvl = _G[tooltipName .. "TextRight2"]
+		end
 		
 		local playerLevel = UnitLevel("player")
 		
 		if(playerLevel <= itemLevel) then
-			ItemRefTooltipTextRight1:SetTextColor(0.9375, 0, 0) -- red
+			tooltipiLvl:SetTextColor(0.9375, 0, 0) -- red
 		elseif(itemLevel > playerLevel - 3) then
-			ItemRefTooltipTextRight1:SetTextColor(0.9375, 0.5, 0) -- orange
+			tooltipiLvl:SetTextColor(0.9375, 0.5, 0) -- orange
 		elseif(itemLevel > playerLevel - 5) then
-			ItemRefTooltipTextRight1:SetTextColor(0.9375, 0.9375, 0) -- yellow
+			tooltipiLvl:SetTextColor(0.9375, 0.9375, 0) -- yellow
 		elseif(itemLevel > playerLevel - 9) then
-			ItemRefTooltipTextRight1:SetTextColor(0, 0.875, 0) -- green
+			tooltipiLvl:SetTextColor(0, 0.875, 0) -- green
 		else
-			ItemRefTooltipTextRight1:SetTextColor(0.5, 0.5, 0.5) -- grey
+			tooltipiLvl:SetTextColor(0.5, 0.5, 0.5) -- grey
 		end
 		
-		ItemRefTooltipTextRight1:SetText("iLvl " .. itemLevel)
-		ItemRefTooltipTextRight1:Show()
+		tooltipiLvl:SetText("iLvl " .. itemLevel)
+		tooltipiLvl:Show()
 	end
 	
 end
+
+local pry_item_stats = function(tooltip, index)
+	
+	local lines = tooltip:NumLines()
+	
+	-- basic stats
+	local agility = 0
+	local stamina = 0
+	local strength = 0
+	local intellect = 0
+	local spirit = 0
+	
+	-- attack/defense
+	local armor = 0
+	local block = 0
+	local dps = 0
+	local min_dmg = 0
+	local max_dmg = 0
+	local durability = 0
+	
+	-- special
+	local dodge = 0
+	local parry = 0
+	
+	-- resistance
+	local arcane_resist = 0
+	local fire_resist = 0
+	local frost_resist = 0
+	local holy_resist = 0
+	local nature_resist = 0
+	local shadow_resist = 0
+	
+	-- equips
+	local equips = {}
+	
+	for i=1, lines do
+		local v = _G[index .. "Left" .. i]
+		if(not v) then
+			print("Kiwi Item Info: Error! Not more lines!")
+			break
+		end
+		
+		local text = v:GetText()
+		if(text) then
+			local sp = {string.split(" ", text)}
+			
+			for i=1, #sp do
+				if(sp[i]:find("|c")) then
+					sp[i] = sp[i]:sub(11)
+				end
+				if(sp[i]:find("|r")) then
+					sp[i] = sp[i]:sub(1, -3)
+				end
+			end
+			
+			if(text:find("Equip: ")) then
+				table.insert(equips, table.concat(sp, " "))
+			end
+			
+			-- basic stats
+			if(sp[2] == "Agility") then
+				agility = tonumber(sp[1])
+			elseif(sp[2] == "Stamina") then
+				stamina = tonumber(sp[1])
+			elseif(sp[2] == "Strength") then
+				strength = tonumber(sp[1])
+			elseif(sp[2] == "Intellect") then
+				intellect = tonumber(sp[1])
+			elseif(sp[2] == "Spirit") then
+				spirit = tonumber(sp[1])
+			
+			-- defense
+			elseif(sp[2] == "Armor") then
+				armor = tonumber(sp[1])
+			elseif(sp[2] == "Block") then
+				block = tonumber(sp[1])
+			elseif(sp[2] == "Durability") then
+				durability = tonumber(sp[4])
+			
+			-- attack
+			elseif(text:find("damage per second")) then
+				dps = tonumber((sp[1]):sub(2))
+			elseif(sp[4] == "Damage") then
+				min_dmg = tonumber(sp[1])
+				max_dmg = tonumber(sp[3])
+			
+			-- special
+			elseif(sp[2] == "Dodge") then
+				dodge = tonumber(string.gsub(sp[1], "%%", ""))
+			elseif(sp[2] == "Parry") then
+				dodge = tonumber(string.gsub(sp[1], "%%", ""))
+			
+			-- resistance
+			elseif(sp[2] == "Arcane" and sp[3] == "Resistance") then
+				arcane_resist = tonumber(sp[1])
+			elseif(sp[2] == "Fire" and sp[3] == "Resistance") then
+				fire_resist = tonumber(sp[1])
+			elseif(sp[2] == "Frost" and sp[3] == "Resistance") then
+				frost_resist = tonumber(sp[1])
+			elseif(sp[2] == "Holy" and sp[3] == "Resistance") then
+				holy_resist = tonumber(sp[1])
+			elseif(sp[2] == "Holy" and sp[3] == "Resistance") then
+				nature_resist = tonumber(sp[1])
+			elseif(sp[2] == "Arcane" and sp[3] == "Resistance") then
+				shadow_resist = tonumber(sp[1])
+			end
+		end
+	end
+	
+	-- basic stats, attack/defense, special, resistence
+	return {Agility = agility, Stamina = stamina, Strength = strength, Intellect = intellect, Spirit = spirit},
+		   {Armor = armor, Block = block, Durability = durability},
+		   {dps = dps, min_dmg = min_dmg, max_dmg = max_dmg},
+		   {Dodge = dodge, Parry = parry},
+		   {["Arcane Resistance"] = arcane_resist, ["Fire Resistance"] = fire_resist, ["Frost Resistance"] = frost_resist, ["Holy Resistance"] = holy_resist, ["Nature Resistance"] = nature_resist, ["Shadow Resistance"] = shadow_resist},
+		   equips
+	
+end
+
+local set_item_upgrades = function(base, base_root, test, test_root)
+	
+	local basic1, def1, att1, special1, resist1, equips1, enchants1 = pry_item_stats(base, base_root)
+	local basic2, def2, att2, special2, resist2, equips2, enchants2 = pry_item_stats(test, test_root)
+	
+	test:AddLine(" ")
+	
+	test:AddLine("Kiwi says equipping will do this:", 0.06666, 0.6, 0.06666, true)
+	
+	local line_added = false
+	
+	
+	-- min/max attack
+	do
+		local min = att1.min_dmg - att2.min_dmg
+		local max = att1.max_dmg - att2.max_dmg
+		
+		if(min ~= 0 or max ~= 0) then
+			test:AddLine((min > 0 and ("|cFF00FF00+" .. min) or ("|cFFFF0000" .. min)) .. "|r" .. " / " .. (max > 0 and ("|cFF00FF00+" .. max) or ("|cFFFF0000" .. max)) .. "|r" .. " |cFFFFFFFFDamage|r")
+			line_added = true
+		end
+	end
+	
+	-- dps
+	do
+		local calc = att1.dps - att2.dps
+		if(calc ~= 0) then
+			test:AddLine((calc > 0 and "+" or "") .. calc .. " dps", calc > 0 and 0 or 1, calc > 0 and 1 or 0, 0, true)
+			line_added = true
+		end
+	end
+	
+	for i, _ in next, def1 do
+		local calc = def1[i] - def2[i]
+		if(calc ~= 0) then
+			line_added = true
+			test:AddLine((calc > 0 and "+" or "") .. calc .. " " .. i, calc > 0 and 0 or 1, calc > 0 and 1 or 0, 0, true)
+		end
+	end
+	
+	if(line_added) then
+		test:AddLine(" ")
+		line_added = false
+	end
+	
+	-- basic stats
+	for i, _ in next, basic1 do
+		local calc = basic1[i] - basic2[i]
+		if(calc ~= 0) then
+			test:AddLine((calc > 0 and "+" or "") .. calc .. " " .. i, calc > 0 and 0 or 1, calc > 0 and 1 or 0, 0, true)
+			line_added = true
+		end
+	end
+	
+	if(line_added) then
+		test:AddLine(" ")
+		line_added = false
+	end
+	
+	-- special
+	for i, _ in next, special1 do
+		local calc = special1[i] - special1[i]
+		if(calc ~= 0) then
+			test:AddLine((calc > 0 and "+" or "") .. calc .. " " .. i, calc > 0 and 0 or 1, calc > 0 and 1 or 0, 0, true)
+			line_added = true
+		end
+	end
+	
+	if(line_added) then
+		test:AddLine(" ")
+		line_added = false
+	end
+	
+	-- equips
+	for i, v in next, equips1 do
+		local found = false
+		for j, k in next, equips2 do
+			if(v == k) then
+				found = true
+			end
+		end
+		if(not found) then
+			test:AddLine(v, 0, 1, 0, true)
+		end
+	end
+	
+	for i, v in next, equips2 do
+		local found = false
+		for j, k in next, equips1 do
+			if(v == k) then
+				found = true
+			end
+		end
+		if(not found) then
+			test:AddLine(v, 1, 0, 0, true)
+		end
+	end
+	
+end 
+
+
+
 
 -- Handles all key events
 local OnKeyEvent = function(key, state)
 	
 	if(key == "LCTRL" and state == 1) then
-		KiwiItemInfo:ShowJunk()
+		ShowJunk()
 		return
 	end
 	
@@ -428,18 +603,18 @@ local KiwiiiCommand = function(msg)
 			local dt = KiwiItemInfo_Save[tester]
 			
 			if(dt) then
-				if(enable_type_search and not (dt.itemType == type_search)) then
+				if(enable_type_search and not (dt.Type == type_search)) then
 					return
 				end
 				
-				if(enable_subtype_search and not (dt.itemSubType == subtype_search)) then
+				if(enable_subtype_search and not (dt.SubType == subtype_search)) then
 					return
 				end
 				
 				if(enable_ilvl_search and (
-								ilvl_operation == "=" and (dt.itemLevel ~= ilvl_search)
-							or	ilvl_operation == ">" and (dt.itemLevel <= ilvl_search)
-							or	ilvl_operation == "<" and (dt.itemLevel >= ilvl_search)
+								ilvl_operation == "=" and (dt.Level ~= ilvl_search)
+							or	ilvl_operation == ">" and (dt.Level <= ilvl_search)
+							or	ilvl_operation == "<" and (dt.Level >= ilvl_search)
 							or	false)) then
 					return
 				end
@@ -451,7 +626,7 @@ local KiwiiiCommand = function(msg)
 		
 		if(direct_try) then
 			printi(0, "Kiwi says `this is your item`:")
-			print(direct_try.itemLink)
+			print(direct_try.Link)
 			return
 		end
 		
@@ -468,25 +643,25 @@ local KiwiiiCommand = function(msg)
 		for i, v in next, KiwiItemInfo_Save do
 			success = true
 			
-			if(enable_type_search and not (v.itemType == type_search)) then
+			if(enable_type_search and not (v.Type == type_search)) then
 				success = false
 			end
 			
-			if(enable_subtype_search and not (v.itemSubType == subtype_search)) then
+			if(enable_subtype_search and not (v.SubType == subtype_search)) then
 				success = false
 			end
 			
 			if(enable_ilvl_search and (
-							ilvl_operation == "=" and (v.itemLevel ~= ilvl_search)
-						or	ilvl_operation == ">" and (v.itemLevel <= ilvl_search)
-						or	ilvl_operation == "<" and (v.itemLevel >= ilvl_search)
+							ilvl_operation == "=" and (v.Level ~= ilvl_search)
+						or	ilvl_operation == ">" and (v.Level <= ilvl_search)
+						or	ilvl_operation == "<" and (v.Level >= ilvl_search)
 						or	false)) then
 				success = false
 			end
 			
 			if(tester) then
 				if(type(tester) == "number") then
-					if(v.itemId ~= tester) then
+					if(v.Id ~= tester) then
 						success = false
 					end
 				else
@@ -506,7 +681,7 @@ local KiwiiiCommand = function(msg)
 			
 			if(success) then
 				count = count + 1
-				print(v.itemLink)
+				print(v.Link)
 			end
 		end
 		
@@ -528,6 +703,8 @@ KiwiItemInfo.Disable = function(self)
 	
 	GameTooltip:SetScript("OnTooltipSetItem", nil)
 	ItemRefTooltip:SetScript("OnTooltipSetItem", nil)
+	ShoppingTooltip1:SetScript("OnTooltipSetItem", nil)
+	ShoppingTooltip2:SetScript("OnTooltipSetItem", nil)
 	
 	SlashCmdList["KIWIITEMINFO_LOOKUP"] = nil
 	SLASH_KIWIITEMINFO_LOOKUP1 = nil
@@ -566,7 +743,17 @@ KiwiItemInfo.Enable = function(self)
 	
 	-- tooltip events
 	GameTooltip:SetScript("OnTooltipSetItem", ShowItemInfo)
-	ItemRefTooltip:SetScript("OnTooltipSetItem", ShowRefItemInfo)
+	ItemRefTooltip:SetScript("OnTooltipSetItem", ShowItemInfo)
+	
+	ShoppingTooltip1:SetScript("OnTooltipSetItem", function(tooltip)
+		ShowItemInfo(tooltip)
+		set_item_upgrades(GameTooltip, "GameTooltipText", tooltip, tooltip:GetName() .. "Text")
+	end)
+	
+	ShoppingTooltip2:SetScript("OnTooltipSetItem", function(tooltip)
+		ShowItemInfo(tooltip)
+		set_item_upgrades(GameTooltip, "GameTooltipText", tooltip, tooltip:GetName() .. "Text")
+	end)
 	
 	
 	-- bag events
