@@ -38,6 +38,7 @@ end
 
 -- Public table for macro usage
 KiwiItemInfo = {}
+KiwiItemInfo._VERSION = "2.0.0"
 
 
 -- Searches through the item database and returns a table of items that match args given
