@@ -1,9 +1,20 @@
 # KiwiItemInfo
-WoW Classic Addon, Shows iLvl (with colors), Weapon/Armor Differences(shift hover), Vendor Prices (unit/stack), highlights all grey named items with LCTRL, and provides a item database to search items in-client
+WoW Classic Addon | Shows iLvl (with colors) | Weapon/Armor Differences(shift hover) | Vendor Prices (unit/stack) | Highlights All Grey Named Items with LCTRL | Provides an Item Database for Searching in-client
 
-Version: 2.0.0
+Version: 2.1.0
 
-Provides a command /kiwiii (kiwi item info) to search items by name or by id. It has an argument to show you items based on level. Please use `/kiwiii --help` for more information for parameters to reduce results. There are like 17,121 btw.
+Provides the command `/kiwiii search` items by name/id and reduce results.
+
+See `/kiwiii help` for a list of full commands.
+
+This plugin fully contains:
+
+* iLvl
+* Vendor Price
+* Differences between equips
+* Command for searching items by name in game (for linking perhaps)
+* Highlight grey items with Left Control Key
+* Contains settings for features
 
 To install:  
 
@@ -16,10 +27,11 @@ You should be all set up.
 Edit KiwiItemInfo.lua if you need to change the `LCTRL` keybinding for revealing grey-named items or adjust level range for iLvl colors. Or you could also edit the range, but tbh it works pretty well. Perhaps you want to add another level above red as purple. It's easy and legible.
 
 iLvl coloration works like this:
-- iLvl is your level or higher? Red
-- iLvl is 1-3 levels under you? Yellow
-- iLvl is 4-6 levels under you? Green
-- iLvl is 7-9+ levels under you? Grey
+
+* iLvl is your level or higher? Red
+* iLvl is 1-3 levels under you? Yellow
+* iLvl is 4-6 levels under you? Green
+* iLvl is 7-9+ levels under you? Grey
 
 ![image](https://user-images.githubusercontent.com/7494772/65168133-e4d56400-da11-11e9-9a56-57daaaf7eb51.png)
 (Kiwi was level 39 for this picture)
