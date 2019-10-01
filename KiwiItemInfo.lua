@@ -804,8 +804,8 @@ KiwiItemInfo.Disable = function(self)
 	ShoppingTooltip1:SetScript("OnTooltipSetItem", nil)
 	ShoppingTooltip2:SetScript("OnTooltipSetItem", nil)
 	
-	SlashCmdList["KIWIITEMINFO_LOOKUP"] = nil
-	SLASH_KIWIITEMINFO_LOOKUP1 = nil
+	SlashCmdList["KIWIITEMINFO_CMD"] = nil
+	SLASH_KIWIITEMINFO_CMD1 = nil
 	
 	KiwiItemInfo.EventFrame:UnregisterEvent("MODIFIER_STATE_CHANGED")
 	KiwiItemInfo.Events["MODIFIER_STATE_CHANGED"] = nil
