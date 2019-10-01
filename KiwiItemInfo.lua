@@ -38,7 +38,22 @@ end
 
 -- Public table for macro usage
 KiwiItemInfo = {}
-KiwiItemInfo._VERSION = "2.0.0"
+KiwiItemInfo._VERSION = "2.1.0"
+
+local DEFAULT_VARS = {
+	["VERSION"] = "2.1.0",
+	["text_error"] = "|cFFFF0000",
+	["text_print"] = "|cFF0FFF0F",
+	["text_warning"] = "|cFF00CC22",
+	["search_cmd_state"] = true,
+	["vars"] = {
+		["flash_grey_items"] = true,
+		["ilvl_only_equips"] = true,
+		["item_compare_on"] = true,
+		["tooltip_price_on"] = true,
+		["tooltip_ilvl_on"] = true
+	}
+}
 
 
 -- Searches through the item database and returns a table of items that match args given
@@ -203,67 +218,61 @@ end
 -- Adds item data to tooltips
 local ShowItemInfo = function(tooltip)
 	
-	if(MerchantFrame:IsShown()) then
-		return
-	end
-	
-	local _, tt_itemLink = tooltip:GetItem()
-	if(not tt_itemLink) then
-		return
-	end
-	
 	local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType,
 			itemStackCount, itemEquipLoc, itemIcon, vendorPrice, itemClassID, itemSubClassID,
-			bindType, expacID, itemSetID, isCraftingReagent = GetItemInfo(tt_itemLink)
+			bindType, expacID, itemSetID, isCraftingReagent = GetItemInfo(select(2, tooltip:GetItem()))
 	
-	if(not vendorPrice or vendorPrice <= 0) then
-		return
+	if(KiwiItemInfo_Vars.vars["tooltip_price_on"] == true) then
+		if(not MerchantFrame:IsShown() and (vendorPrice and vendorPrice > 0)) then
+			if(itemStackCount > 1) then
+				if(tooltip:GetName() == "GameTooltip") then
+					local container = GetMouseFocus()
+					local object = container:GetObjectType()
+					
+					local count = container.count or (object == "CheckButton" and tonumber(container.Count:GetText()) or 1)
+					itemStackCount = type(count) == "number" and count or 1
+				end
+				SetTooltipMoney(tooltip, vendorPrice, nil, "Unit: ")
+				SetTooltipMoney(tooltip, vendorPrice * itemStackCount, nil, "Stack:")
+			else
+				SetTooltipMoney(tooltip, vendorPrice, nil, "")
+			end
+		end
 	end
 	
-	if(itemStackCount > 1) then
-		if(tooltip:GetName() == "GameTooltip") then
-			local container = GetMouseFocus()
-			local object = container:GetObjectType()
+	if(KiwiItemInfo_Vars.vars["tooltip_ilvl_on"] == true) then
+		local tooltipName = tooltip:GetName()
+		if(itemType == "Weapon" or itemType == "Armor" or KiwiItemInfo_Vars.vars["ilvl_only_equips"] == false) then
 			
-			local count = container.count or (object == "CheckButton" and tonumber(container.Count:GetText()) or 1)
-			itemStackCount = type(count) == "number" and count or 1
+			local tooltipiLvl
+			if(tooltipName == "GameTooltip") then
+				tooltipiLvl = _G[tooltipName .. "TextRight1"]
+			else
+				tooltipiLvl = _G[tooltipName .. "TextRight2"]
+			end
+			
+			local playerLevel = UnitLevel("player")
+			
+			if(playerLevel <= itemLevel) then
+				tooltipiLvl:SetTextColor(0.9375, 0, 0) -- red
+			elseif(itemLevel > playerLevel - 3) then
+				tooltipiLvl:SetTextColor(0.9375, 0.5, 0) -- orange
+			elseif(itemLevel > playerLevel - 5) then
+				tooltipiLvl:SetTextColor(0.9375, 0.9375, 0) -- yellow
+			elseif(itemLevel > playerLevel - 9) then
+				tooltipiLvl:SetTextColor(0, 0.875, 0) -- green
+			else
+				tooltipiLvl:SetTextColor(0.5, 0.5, 0.5) -- grey
+			end
+			
+			tooltipiLvl:SetText("iLvl " .. itemLevel)
+			tooltipiLvl:Show()
 		end
-		SetTooltipMoney(tooltip, vendorPrice, nil, "Unit: ")
-		SetTooltipMoney(tooltip, vendorPrice * itemStackCount, nil, "Stack:")
-	else
-		SetTooltipMoney(tooltip, vendorPrice, nil, "")
-	end
-	
-	local tooltipName = tooltip:GetName()
-	if(itemType == "Weapon" or itemType == "Armor") then
-		
-		local tooltipiLvl
-		if(tooltipName == "GameTooltip") then
-			tooltipiLvl = _G[tooltipName .. "TextRight1"]
-		else
-			tooltipiLvl = _G[tooltipName .. "TextRight2"]
-		end
-		
-		local playerLevel = UnitLevel("player")
-		
-		if(playerLevel <= itemLevel) then
-			tooltipiLvl:SetTextColor(0.9375, 0, 0) -- red
-		elseif(itemLevel > playerLevel - 3) then
-			tooltipiLvl:SetTextColor(0.9375, 0.5, 0) -- orange
-		elseif(itemLevel > playerLevel - 5) then
-			tooltipiLvl:SetTextColor(0.9375, 0.9375, 0) -- yellow
-		elseif(itemLevel > playerLevel - 9) then
-			tooltipiLvl:SetTextColor(0, 0.875, 0) -- green
-		else
-			tooltipiLvl:SetTextColor(0.5, 0.5, 0.5) -- grey
-		end
-		
-		tooltipiLvl:SetText("iLvl " .. itemLevel)
-		tooltipiLvl:Show()
 	end
 	
 end
 
+-- Parses tooltip text for item stats
 local pry_item_stats = function(tooltip, index)
 	
 	local lines = tooltip:NumLines()
@@ -382,7 +391,12 @@ local pry_item_stats = function(tooltip, index)
 	
 end
 
+-- Tacks on to the end of tooltips the differences between two items stats
 local set_item_upgrades = function(base, base_root, test, test_root)
+	
+	if(KiwiItemInfo_Vars.vars["item_compare_on"] == false) then
+		return
+	end
 	
 	local basic1, def1, att1, special1, resist1, equips1, enchants1 = pry_item_stats(base, base_root)
 	local basic2, def2, att2, special2, resist2, equips2, enchants2 = pry_item_stats(test, test_root)
@@ -500,30 +514,6 @@ end
 -- Prints out item info from a specific-formatted string, is a command
 local KiwiiiCommand = function(msg)
 	
-	if(msg:find("help", 1) == 1 or msg == "") then
-		printi(0, "Kiwi Item Info -- help")
-		printi(0, "https://github.com/tilkinsc/KiwiItemInfo - for issue/bug reports")
-		print("    Usage: /kiwiii [reload] [search ${=,>,<}num, #Type, @subtype, {itemid, itemname}]")
-		print("     > help -- for this message")
-		print("     > reload -- reloads plugin")
-		print("     > search -- searches through item database for items")
-		print("       * ${=,>,<}num -- show only item levels num of operation")
-		print("       * #Type -- shows by type (Armor, Weapon, etc)")
-		print("       * @SubType -- shows by subtype (Mail, Shields, 1HSwords, 2HSwords)")
-		print("       * itemid -- search for items")
-		print("       * itemname -- search for items")
-		return
-	end
-	
-	if(msg:find("reload", 1) == 1) then
-		printi(2, "Reloading KiwiItemInfo...")
-		KiwiItemInfo:Disable()
-		KiwiItemInfo:Enable()
-		printi(0, "All done! :D Kiwi is functioning!")
-		return
-	end
-	
-	
 	-- split message into arguments
 	local args = {string.split(" ", msg)}
 	if(#args < 1) then
@@ -531,11 +521,118 @@ local KiwiiiCommand = function(msg)
 		return
 	end
 	
+	-- help message
+	if(args[1] == "help" or msg == "") then
+		printi(0, "Kiwi Item Info " .. KiwiItemInfo._VERSION .. " -- help")
+		printi(0, "https://github.com/tilkinsc/KiwiItemInfo - for issue/bug reports")
+		print("Usage: /kiwiii [reload] [reset] [vars]")
+		print("               [set variable_name value]")
+		print("               [search ${=,>,<}num, #Type, @subtype, {itemid, itemname}]")
+		print("    > |cFF888888help|r -- for this message")
+		print("    > |cFF888888reload|r -- reloads plugin")
+		print("    > |cFF888888reset|r -- resets all saved variables, also reloads")
+		print("    > |cFF888888vars|r -- shows all setting variables")
+		print("    > |cFF888888set|r -- toggles a setting")
+		print("        * |cFFBBBBBBvariable_name|r -- variable shown in /kiwiii vars")
+		print("        * |cFFBBBBBBvalue|r -- either true, false, string, or number")
+		print("    > |cFF888888search|r -- searches through item database for items")
+		print("        * |cFFBBBBBB${=,>,<}num|r -- show only item levels num of operation")
+		print("        * |cFFBBBBBB#Type|r -- shows by type (Armor, Weapon, etc)")
+		print("        * |cFFBBBBBB@SubType|r -- shows by subtype (Mail, 1HSwords, 2HSwords, etc)")
+		print("        * |cFFBBBBBBitemid|r -- search for items")
+		print("        * |cFFBBBBBBitemname|r -- search for items")
+		return
+	end
 	
+	-- reload plugin
+	if(args[1] == "reload") then
+		printi(2, "Reloading KiwiItemInfo...")
+		KiwiItemInfo:Disable()
+		KiwiItemInfo:Enable()
+		printi(0, "All done! :D Kiwi is functioning!")
+		return
+	end
+	
+	-- hard reset of plugin
+	if(args[1] == "reset") then
+		printi(2, "Resetting KiwiItemInfo...")
+		KiwiItemInfo:Disable()
+		KiwiItemInfo_Vars = DEFAULT_VARS
+		KiwiItemInfo:Enable()
+		printi(0, "All done! :D Kiwi is functioning!")
+		return
+	end
+	
+	-- displays variables user can change
+	if(args[1] == "vars") then
+		printi(2, "Dumping user settings...")
+		for i, v in next, KiwiItemInfo_Vars.vars do
+			print("   >", i, "=", v)
+		end
+		printi(0, "All done!")
+		return
+	end
+	
+	-- sets variables the user can change
+	if(args[1] == "set") then
+		if(args[2]) then
+			if(args[3]) then
+				local var = KiwiItemInfo_Vars.vars[args[2]]
+				if(var ~= nil) then
+					
+					local val
+					if(tonumber(args[3])) then
+						val = tonumber(args[3])
+					elseif(args[3] == "true") then
+						val = true
+					elseif(args[3] == "false") then
+						val = false
+					else -- string
+						val = table.concat(args, " ", 3, #args)
+					end
+					
+					if(type(var) == "boolean") then
+						if(type(val) == "boolean") then
+							KiwiItemInfo_Vars.vars[args[2]] = val
+						else
+							printi(2, "Kiwi expects a boolean value (true/false). Sorry.")
+							return
+						end
+					elseif(type(var) == "number") then
+						if(type(val) == "number") then
+							KiwiItemInfo_Vars.vars[args[2]] = val
+						else
+							printi(2, "Kiwi expects a number value. Sorry.")
+							return
+						end
+					elseif(type(var) == "string") then
+						if(type(val) == "string") then
+							KiwiItemInfo_Vars.vars[args[2]] = val
+						else
+							printi(2, "Kiwi expects a string value (words). Sorry.")
+							return
+						end
+					end
+				else
+					printi(2, "Kiwi doesn't have such a variable. Sorry.")
+					return
+				end
+			else
+				printi(2, "Kiwi needs a value to set to the variable...")
+				return
+			end
+		else
+			printi(2, "Kiwi needs a variable to set...")
+			return
+		end
+		return
+	end
+	
+	-- Searches for items in db
 	if(args[1] == "search") then
 		
-		if(KiwiItemInfo_Vars["kiwiii_search_cmd_state"] == false) then
-			printi(2, "Kiwi declines usage of `/kiwiii search` due to lack of loading the database.")
+		if(KiwiItemInfo_Vars["search_cmd_state"] == false) then
+			printi(2, "Kiwi declines usage of `/kiwiii search` (due to lack of loading the database?)")
 			return
 		end
 		
@@ -699,7 +796,7 @@ end
 
 
 
-
+-- Disables the plugin
 KiwiItemInfo.Disable = function(self)
 	
 	GameTooltip:SetScript("OnTooltipSetItem", nil)
@@ -715,25 +812,47 @@ KiwiItemInfo.Disable = function(self)
 	
 end
 
+-- Enables the plugin
 KiwiItemInfo.Enable = function(self)
 	
 	if(not KiwiItemInfo_Vars) then
 		
-		KiwiItemInfo_Vars = {
-			["text_error"] = "|cFFFF0000",
-			["text_print"] = "|cFF0FFF0F",
-			["text_warning"] = "|cFF00CC22",
-			["kiwiii_search_cmd_state"] = true
-		}
+		KiwiItemInfo_Vars = DEFAULT_VARS
 		
 		printi(0, "Kiwi thanks you for installing KiwiItemInfo! <3")
+	else
+		if(KiwiItemInfo_Vars.VERSION ~= KiwiItemInfo._VERSION) then
+			-- check if anything is new
+			for i, v in next, DEFAULT_VARS do
+				if(i ~= "vars" and not KiwiItemInfo_Vars[i]) then
+					KiwiItemInfo_Vars[i] = v
+				end
+			end
+			for i, v in next, DEFAULT_VARS.vars do
+				if(not KiwiItemInfo_Vars.vars[i]) then
+					KiwiItemInfo_Vars.vars[i] = v
+				end
+			end
+			-- check if anything removed
+			for i, v in next, KiwiItemInfo_Vars do
+				if(i ~= "vars" and not DEFAULT_VARS[i]) then
+					KiwiItemInfo_Vars[i] = nil
+				end
+			end
+			for i, v in next, KiwiItemInfo_Vars.vars do
+				if(not DEFAULT_VARS.vars[i]) then
+					KiwiItemInfo_Vars.vars[i] = nil
+				end
+			end
+			KiwiItemInfo_Vars.VERSION = KiwiItemInfo._VERSION
+		end
 	end
 	
 	-- ensure database is present, if user wants it
-	KiwiItemInfo_Vars["kiwiii_search_cmd_state"] = true
+	KiwiItemInfo_Vars["search_cmd_state"] = true
 	if(not KiwiItemInfo_Save) then
 		printi(1, "Kiwi's Item Info database wasn't loaded! Not using `/kiwiii` command.")
-		KiwiItemInfo_Vars["kiwiii_search_cmd_state"] = false
+		KiwiItemInfo_Vars["search_cmd_state"] = false
 	end
 	
 	
@@ -765,6 +884,7 @@ end
 
 
 
+-- Default event dispatcher
 local ADDON_LOADED = function(addon)
 	if(addon ~= "KiwiItemInfo") then
 		return
