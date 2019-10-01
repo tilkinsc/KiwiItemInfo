@@ -1,5 +1,5 @@
 # KiwiItemInfo
-WoW Classic Addon, Shows iLvl (with colors), Weapon/Armor Differences(shift hover), Vendor Prices (unit/stack), highlights all grey named items with LCTRL, and provides a item database to search items in-client
+WoW Classic Addon | Shows iLvl (with colors) | Weapon/Armor Differences(shift hover) | Vendor Prices (unit/stack) | Highlights All Grey Named Items with LCTRL | Provides an Item Database for Searching in-client
 
 Version: 2.1.0
 
@@ -13,6 +13,7 @@ This plugin fully contains:
 * Vendor Price
 * Differences between equips
 * Command for searching items by name in game (for linking perhaps)
+* Highlight grey items with Left Control Key
 * Contains settings for features
 
 To install:  
