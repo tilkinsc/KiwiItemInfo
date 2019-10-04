@@ -37,10 +37,10 @@ end
 
 -- Public table for macro usage
 KiwiItemInfo = {}
-KiwiItemInfo._VERSION = "2.1.1"
+KiwiItemInfo._VERSION = "2.1.3"
 
 local DEFAULT_VARS = {
-	["VERSION"] = "2.1.1",
+	["VERSION"] = "2.1.3",
 	["text_error"] = "|cFFFF0000%s|r",
 	["text_print"] = "|cFF0FFF0F%s|r",
 	["text_warning"] = "|cFF00CC22%s|r",
@@ -238,8 +238,12 @@ local ShowItemInfo = function(tooltip)
 					local count = container.count or (object == "CheckButton" and tonumber(container.Count:GetText()) or 1)
 					itemStackCount = type(count) == "number" and count or 1
 				end
-				SetTooltipMoney(tooltip, vendorPrice, nil, "Unit: ")
-				SetTooltipMoney(tooltip, vendorPrice * itemStackCount, nil, "Stack:")
+				if(itemStackCount > 1) then
+					SetTooltipMoney(tooltip, vendorPrice, nil, "Unit: ")
+					SetTooltipMoney(tooltip, vendorPrice * itemStackCount, nil, "Stack:")
+				else
+					SetTooltipMoney(tooltip, vendorPrice, nil, "")
+				end
 			else
 				SetTooltipMoney(tooltip, vendorPrice, nil, "")
 			end
@@ -806,6 +810,8 @@ KiwiItemInfo.Disable = function(self)
 	ItemRefTooltip:SetScript("OnTooltipSetItem", nil)
 	ShoppingTooltip1:SetScript("OnTooltipSetItem", nil)
 	ShoppingTooltip2:SetScript("OnTooltipSetItem", nil)
+	ItemRefShoppingTooltip1:SetScript("OnTooltipSetItem", nil)
+	ItemRefShoppingTooltip2:SetScript("OnTooltipSetItem", nil)
 	
 	SlashCmdList["KIWIITEMINFO_CMD"] = nil
 	SLASH_KIWIITEMINFO_CMD1 = nil
@@ -879,6 +885,15 @@ KiwiItemInfo.Enable = function(self)
 		set_item_upgrades(GameTooltip, "GameTooltipText", tooltip, tooltip:GetName() .. "Text")
 	end)
 	
+	ItemRefShoppingTooltip1:SetScript("OnTooltipSetItem", function(tooltip)
+		ShowItemInfo(tooltip)
+		set_item_upgrades(GameTooltip, "GameTooltipText", tooltip, tooltip:GetName() .. "Text")
+	end)
+	
+	ItemRefShoppingTooltip2:SetScript("OnTooltipSetItem", function(tooltip)
+		ShowItemInfo(tooltip)
+		set_item_upgrades(GameTooltip, "GameTooltipText", tooltip, tooltip:GetName() .. "Text")
+	end)
 	
 	-- bag events
 	KiwiItemInfo.Events["MODIFIER_STATE_CHANGED"] = OnKeyEvent
