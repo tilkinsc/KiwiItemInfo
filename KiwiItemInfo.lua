@@ -28,23 +28,22 @@
 
 -- helper functions
 local printi = function(type, ...)
-	print((type == 0) and (KiwiItemInfo_Vars["text_print"] .. table.concat({...}, "  ") .. "|r")
-		or (type == 1) and (KiwiItemInfo_Vars["text_warning"] .. table.concat({...}, "  ") .. "|r")
-		or (type == 2) and (KiwiItemInfo_Vars["text_error"] .. table.concat({...}, "  ") .. "|r")
-		or "")
+	print(string.format(
+			(type == 0) and KiwiItemInfo_Vars["text_print"] or (type == 1) and KiwiItemInfo_Vars["text_warning"] or (type == 2) and KiwiItemInfo_Vars["text_error"],
+			table.concat({...}, "  ")))
 end
 
 
 
 -- Public table for macro usage
 KiwiItemInfo = {}
-KiwiItemInfo._VERSION = "2.1.0"
+KiwiItemInfo._VERSION = "2.1.1"
 
 local DEFAULT_VARS = {
-	["VERSION"] = "2.1.0",
-	["text_error"] = "|cFFFF0000",
-	["text_print"] = "|cFF0FFF0F",
-	["text_warning"] = "|cFF00CC22",
+	["VERSION"] = "2.1.1",
+	["text_error"] = "|cFFFF0000%s|r",
+	["text_print"] = "|cFF0FFF0F%s|r",
+	["text_warning"] = "|cFF00CC22%s|r",
 	["search_cmd_state"] = true,
 	["vars"] = {
 		["flash_grey_items"] = true,
@@ -218,14 +217,21 @@ end
 -- Adds item data to tooltips
 local ShowItemInfo = function(tooltip)
 	
+	local tooltipName = tooltip:GetName()
+	local _, i_link = tooltip:GetItem()
+	
+	if((not i_name or i_name == "") or (not i_link and i_link == "[]")) then
+		i_link = KiwiItemInfo:GetItem(_G[tooltipName .. "TextLeft1"]:GetText())[1].itemLink
+	end
+	
 	local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType,
 			itemStackCount, itemEquipLoc, itemIcon, vendorPrice, itemClassID, itemSubClassID,
-			bindType, expacID, itemSetID, isCraftingReagent = GetItemInfo(select(2, tooltip:GetItem()))
+			bindType, expacID, itemSetID, isCraftingReagent = GetItemInfo(i_link)
 	
 	if(KiwiItemInfo_Vars.vars["tooltip_price_on"] == true) then
 		if(not MerchantFrame:IsShown() and (vendorPrice and vendorPrice > 0)) then
 			if(itemStackCount > 1) then
-				if(tooltip:GetName() == "GameTooltip") then
+				if(tooltipName == "GameTooltip") then
 					local container = GetMouseFocus()
 					local object = container:GetObjectType()
 					
@@ -241,15 +247,9 @@ local ShowItemInfo = function(tooltip)
 	end
 	
 	if(KiwiItemInfo_Vars.vars["tooltip_ilvl_on"] == true) then
-		local tooltipName = tooltip:GetName()
 		if(itemType == "Weapon" or itemType == "Armor" or KiwiItemInfo_Vars.vars["ilvl_only_equips"] == false) then
 			
-			local tooltipiLvl
-			if(tooltipName == "GameTooltip") then
-				tooltipiLvl = _G[tooltipName .. "TextRight1"]
-			else
-				tooltipiLvl = _G[tooltipName .. "TextRight2"]
-			end
+			local tooltipiLvl = _G[tooltipName .. "TextRight1"]
 			
 			local playerLevel = UnitLevel("player")
 			
@@ -414,7 +414,10 @@ local set_item_upgrades = function(base, base_root, test, test_root)
 		local max = att1.max_dmg - att2.max_dmg
 		
 		if(min ~= 0 or max ~= 0) then
-			test:AddLine((min > 0 and ("|cFF00FF00+" .. min) or ("|cFFFF0000" .. min)) .. "|r" .. " / " .. (max > 0 and ("|cFF00FF00+" .. max) or ("|cFFFF0000" .. max)) .. "|r" .. " |cFFFFFFFFDamage|r")
+			test:AddLine(((min > 0) and string.format("|cFF00FF00+%s|r", min) or string.format("|cFFFF0000%s|r", min))
+						.. " / "
+						.. ((max > 0) and string.format("|cFF00FF00+%s|r", max) or string.format("|cFFFF0000%s|r", max))
+						.. " Damage (delta: " .. math.abs(max - min) .. ")")
 			line_added = true
 		end
 	end
@@ -557,7 +560,7 @@ local KiwiiiCommand = function(msg)
 	if(args[1] == "reset") then
 		printi(2, "Resetting KiwiItemInfo...")
 		KiwiItemInfo:Disable()
-		KiwiItemInfo_Vars = DEFAULT_VARS
+		KiwiItemInfo_Vars = nil
 		KiwiItemInfo:Enable()
 		printi(0, "All done! :D Kiwi is functioning!")
 		return
@@ -567,7 +570,7 @@ local KiwiiiCommand = function(msg)
 	if(args[1] == "vars") then
 		printi(2, "Dumping user settings...")
 		for i, v in next, KiwiItemInfo_Vars.vars do
-			print("   >", i, "=", v)
+			print("   >", "|cFF888888" .. i .. "|r", "=", (v == true) and ("|cFF00FF00" .. tostring(v) .. "|r") or (v == false) and ("|cFFFF0000" .. tostring(v) .. "|r") or v)
 		end
 		printi(0, "All done!")
 		return
@@ -819,7 +822,8 @@ KiwiItemInfo.Enable = function(self)
 		
 		KiwiItemInfo_Vars = DEFAULT_VARS
 		
-		printi(0, "Kiwi thanks you for installing KiwiItemInfo! <3")
+		printi(0, "Kiwi thanks you for installing KiwiItemInfo " .. KiwiItemInfo._VERSION .. "! <3")
+		printi(0, "Please run `/kiwiii help` for a command listing!")
 	else
 		if(KiwiItemInfo_Vars.VERSION ~= KiwiItemInfo._VERSION) then
 			-- check if anything is new
@@ -899,9 +903,10 @@ KiwiItemInfo.Events = {
 }
 
 
-local KiwiItemInfo_Frame = CreateFrame("Frame")
-KiwiItemInfo.EventFrame = KiwiItemInfo_Frame
-KiwiItemInfo_Frame:RegisterEvent("ADDON_LOADED")
-KiwiItemInfo_Frame:SetScript("OnEvent", function(self, event, ...)
+local KiwiItemInfo_EventFrame = CreateFrame("Frame")
+KiwiItemInfo.EventFrame = KiwiItemInfo_EventFrame
+KiwiItemInfo_EventFrame:RegisterEvent("ADDON_LOADED")
+KiwiItemInfo_EventFrame:SetScript("OnEvent", function(self, event, ...)
 	KiwiItemInfo.Events[event](...)
 end)
+
