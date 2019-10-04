@@ -218,7 +218,7 @@ end
 local ShowItemInfo = function(tooltip)
 	
 	local tooltipName = tooltip:GetName()
-	local _, i_link = tooltip:GetItem()
+	local i_name, i_link = tooltip:GetItem()
 	
 	if((not i_name or i_name == "") or (not i_link and i_link == "[]")) then
 		i_link = KiwiItemInfo:GetItem(_G[tooltipName .. "TextLeft1"]:GetText())[1].itemLink

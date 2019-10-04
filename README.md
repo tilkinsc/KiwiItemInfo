@@ -1,7 +1,7 @@
 # KiwiItemInfo
 WoW Classic Addon | Shows iLvl (with colors) | Weapon/Armor Differences(shift hover) | Vendor Prices (unit/stack) | Highlights All Grey Named Items with LCTRL | Provides an Item Database for Searching in-client
 
-Version: 2.1.0
+Version: 2.1.1
 
 Provides the command `/kiwiii search` items by name/id and reduce results.
 
