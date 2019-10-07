@@ -26,11 +26,12 @@
 --]]
 
 
+local version = GetAddOnMetadata("KiwiItemInfo", "Version")
 
 KiwiItemInfo = {}
-KiwiItemInfo._VERSION = "@project-version@"
+KiwiItemInfo._VERSION = version
 KiwiItemInfo._DEFAULT_VARS = {
-	["VERSION"] = "@project-version@",
+	["VERSION"] = version,
 	["first_run"] = true,
 	["text_error"] = "|cFFFF0000%s|r",
 	["text_print"] = "|cFF0FFF0F%s|r",
