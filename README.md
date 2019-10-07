@@ -18,13 +18,10 @@ This plugin fully contains:
 
 To install:  
 
-0. Download `https://github.com/tilkinsc/KiwiItemInfo/archive/master.zip` and skip step 1 or do step 1 instead
-1. Navigate to your WoW Classic addons folder. `S:\WoW\World of Warcraft\_classic_\Interface\AddOns`
-2. `git clone https://github.com/tilkinsc/KiwiItemInfo`
+Download: https://www.curseforge.com/wow/addons/kiwi-item-info
+Install: Extract the folder to WoW/_classic_/Inteface/AddOns/
 
-You should be all set up.
-
-Edit KiwiItemInfo.lua if you need to change the `LCTRL` keybinding for revealing grey-named items or adjust level range for iLvl colors. Or you could also edit the range, but tbh it works pretty well. Perhaps you want to add another level above red as purple. It's easy and legible.
+All done!
 
 iLvl coloration works like this:
 

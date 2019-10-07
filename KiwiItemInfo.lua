@@ -28,6 +28,7 @@
 
 
 local printi = KiwiItemInfo.printi
+local L = KiwiItemInfo.L
 
 KiwiItemInfo.LoadVars = function()
 	if(KiwiItemInfo_Vars == nil) then
@@ -85,14 +86,14 @@ KiwiItemInfo.Enable = function()
 	if(KiwiItemInfo_Vars["first_run"]) then
 		KiwiItemInfo_Vars["first_run"] = false
 		
-		printi(0, "Kiwi thanks you for installing KiwiItemInfo " .. KiwiItemInfo._VERSION .. "! <3")
-		printi(0, "Please run `/kiwiii help` for a command listing!")
+		printi(0, L"KII_THANKS")
+		printi(0, L"KII_HELP")
 	end
 	
 	-- ensure database is present, if user wants it
 	KiwiItemInfo_Vars["search_cmd_state"] = true
 	if(KiwiItemInfo.Database == nil) then
-		printi(1, "Kiwi's Item Info database wasn't loaded! Not using `/kiwiii` command.")
+		printi(1, L"KII_BAD_DB")
 		KiwiItemInfo_Vars["search_cmd_state"] = false
 	end
 	

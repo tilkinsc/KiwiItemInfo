@@ -27,6 +27,8 @@
 
 
 
+local L = KiwiItemInfo.L
+
 -- Adds item data to tooltips
 KiwiItemInfo.ShowItemInfo = function(tooltip)
 	
@@ -68,8 +70,8 @@ KiwiItemInfo.ShowItemInfo = function(tooltip)
 				local count = focus.count or (focus.Count and tonumber(focus.Count:GetText()) or 1)
 				itemStackCount = (type(count) == "number") and count or 1
 				if(itemStackCount > 1) then
-					SetTooltipMoney(tooltip, vendorPrice, nil, "Unit: ")
-					SetTooltipMoney(tooltip, vendorPrice * itemStackCount, nil, "Stack:")
+					SetTooltipMoney(tooltip, vendorPrice, nil, L"TOOLTIP_UNIT")
+					SetTooltipMoney(tooltip, vendorPrice * itemStackCount, nil, L"TOOLTIP_STACK")
 				else
 					SetTooltipMoney(tooltip, vendorPrice, nil, "")
 				end
@@ -99,7 +101,7 @@ KiwiItemInfo.ShowItemInfo = function(tooltip)
 					tooltipiLvl:SetTextColor(0.5, 0.5, 0.5) -- grey
 				end
 				
-				tooltipiLvl:SetText("iLvl " .. itemLevel)
+				tooltipiLvl:SetText(L"TOOLTIP_ILVL" .. itemLevel)
 				tooltipiLvl:Show()
 			end
 		end
@@ -161,55 +163,55 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 				end
 			end
 			
-			if(text:find("Equip: ")) then
+			if(text:find(L"TOOLTIP_PRY_EQUIP")) then
 				table.insert(equips, table.concat(sp, " "))
 			end
 			
 			-- basic stats
-			if(sp[2] == "Agility") then
+			if(sp[2] == L"TOOLTIP_PRY_AGILITY") then
 				agility = tonumber(sp[1])
-			elseif(sp[2] == "Stamina") then
+			elseif(sp[2] == L"TOOLTIP_PRY_STAMINA") then
 				stamina = tonumber(sp[1])
-			elseif(sp[2] == "Strength") then
+			elseif(sp[2] == L"TOOLTIP_PRY_STRENGTH") then
 				strength = tonumber(sp[1])
-			elseif(sp[2] == "Intellect") then
+			elseif(sp[2] == L"TOOLTIP_PRY_INTELLECT") then
 				intellect = tonumber(sp[1])
-			elseif(sp[2] == "Spirit") then
+			elseif(sp[2] == L"TOOLTIP_PRY_SPIRIT") then
 				spirit = tonumber(sp[1])
 			
 			-- defense
-			elseif(sp[2] == "Armor") then
+			elseif(sp[2] == L"TOOLTIP_PRY_ARMOR") then
 				armor = tonumber(sp[1])
-			elseif(sp[2] == "Block") then
+			elseif(sp[2] == L"TOOLTIP_PRY_BLOCK") then
 				block = tonumber(sp[1])
-			elseif(sp[2] == "Durability") then
+			elseif(sp[2] == L"TOOLTIP_PRY_DURABILITY") then
 				durability = tonumber(sp[4])
 			
 			-- attack
-			elseif(text:find("damage per second")) then
+			elseif(text:find(L"TOOLTIP_PRY_DPS")) then
 				dps = tonumber((sp[1]):sub(2))
-			elseif(sp[4] == "Damage") then
+			elseif(sp[4] == L"TOOLTIP_PRY_DAMAGE") then
 				min_dmg = tonumber(sp[1])
 				max_dmg = tonumber(sp[3])
 			
 			-- special
-			elseif(sp[2] == "Dodge") then
+			elseif(sp[2] == L"TOOLTIP_PRY_DODGE") then
 				dodge = tonumber(string.gsub(sp[1], "%%", ""))
-			elseif(sp[2] == "Parry") then
+			elseif(sp[2] == L"TOOLTIP_PRY_PARRY") then
 				dodge = tonumber(string.gsub(sp[1], "%%", ""))
 			
 			-- resistance
-			elseif(sp[2] == "Arcane" and sp[3] == "Resistance") then
+			elseif(sp[2] == L"TOOLTIP_PRY_ARCANE" and sp[3] == L"TOOLTIP_PRY_RESIST") then
 				arcane_resist = tonumber(sp[1])
-			elseif(sp[2] == "Fire" and sp[3] == "Resistance") then
+			elseif(sp[2] == L"TOOLTIP_PRY_FIRE" and sp[3] == L"TOOLTIP_PRY_RESIST") then
 				fire_resist = tonumber(sp[1])
-			elseif(sp[2] == "Frost" and sp[3] == "Resistance") then
+			elseif(sp[2] == L"TOOLTIP_PRY_FROST" and sp[3] == L"TOOLTIP_PRY_RESIST") then
 				frost_resist = tonumber(sp[1])
-			elseif(sp[2] == "Holy" and sp[3] == "Resistance") then
+			elseif(sp[2] == L"TOOLTIP_PRY_HOLY" and sp[3] == L"TOOLTIP_PRY_RESIST") then
 				holy_resist = tonumber(sp[1])
-			elseif(sp[2] == "Holy" and sp[3] == "Resistance") then
+			elseif(sp[2] == L"TOOLTIP_PRY_NATURE" and sp[3] == L"TOOLTIP_PRY_RESIST") then
 				nature_resist = tonumber(sp[1])
-			elseif(sp[2] == "Arcane" and sp[3] == "Resistance") then
+			elseif(sp[2] == L"TOOLTIP_PRY_SHADOW" and sp[3] == L"TOOLTIP_PRY_RESIST") then
 				shadow_resist = tonumber(sp[1])
 			end
 		end
@@ -228,6 +230,10 @@ end
 -- Tacks on to the end of tooltips the differences between two items stats
 KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 	
+	if(GetLocale() ~= "enUS") then
+		return
+	end
+	
 	if(KiwiItemInfo_Vars.vars["item_compare_on"] == false) then
 		return
 	end
@@ -237,7 +243,7 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 	
 	test:AddLine(" ")
 	
-	test:AddLine("Kiwi says equipping will do this:", 0.06666, 0.6, 0.06666, true)
+	test:AddLine(L"TOOLTIP_ITEM_COMPARE", 0.06666, 0.6, 0.06666, true)
 	
 	local line_added = false
 	
@@ -251,7 +257,7 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 			test:AddLine(((min > 0) and string.format("|cFF00FF00+%s|r", min) or string.format("|cFFFF0000%s|r", min))
 						.. " / "
 						.. ((max > 0) and string.format("|cFF00FF00+%s|r", max) or string.format("|cFFFF0000%s|r", max))
-						.. " Damage (delta: " .. math.abs(max - min) .. ")")
+						.. L"TOOLTIP_ITEM_COMP_DMG_DELTA" .. math.abs(max - min) .. ")")
 			line_added = true
 		end
 	end
@@ -260,7 +266,7 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 	do
 		local calc = att1.dps - att2.dps
 		if(calc ~= 0) then
-			test:AddLine((calc > 0 and "+" or "") .. calc .. " dps", calc > 0 and 0 or 1, calc > 0 and 1 or 0, 0, true)
+			test:AddLine((calc > 0 and "+" or "") .. calc .. L"TOOLTIP_ITEM_COMP_DPS", calc > 0 and 0 or 1, calc > 0 and 1 or 0, 0, true)
 			line_added = true
 		end
 	end

@@ -25,5 +25,29 @@
  * 
 --]]
 
+KiwiItemInfo.Locale = {}
 
+
+local locale = GetLocale()
+
+if(locale == "enGB") then
+	locale = "enUS"
+end
+
+if(locale == "esMX") then
+	locale = "esES"
+end
+
+
+KiwiItemInfo.L = function(str)
+	
+	local toret = KiwiItemInfo.Locale[locale]
+	local out = toret[str]
+	
+	if(out == nil) then
+		out = KiwiItemInfo.Locale["enUS"][str]
+	end
+	
+	return out
+end
 
