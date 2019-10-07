@@ -1,9 +1,15 @@
 ## Interface: 11302
-## Title: |cFFFFFFFFKiwi Item Info|r|cFF00FF00 v2.1.3|r|cFF000088 Release|r
-## Version: 2.1.3
+## Title: |cFFFFFFFFKiwi Item Info|r|cFF00FF00 @project-version@|r|cFF000088 Release|r
+## Version: @project-version@
 ## Author: PoliteKiwi
 ## Notes: Displays sell value, iLvls, provides itemdb
 ## SavedVariablesPerCharacter: KiwiItemInfo_Vars
 ## Dependencies:
-KiwiItemInfo_db.lua
+Init.lua
+ItemDB.lua
+Locale.lua
+Database.lua
+Tooltip.lua
+Bags.lua
+Command.lua
 KiwiItemInfo.lua
