@@ -22,8 +22,8 @@ This addon fully contains:
 
 To install:  
 
-Download: https://www.curseforge.com/wow/addons/kiwi-item-info
-Install: Extract the folder to WoW/_classic_/Inteface/AddOns/
+Download: https://www.curseforge.com/wow/addons/kiwi-item-info  
+Install: Extract the folder to WoW/_classic_/Inteface/AddOns/  
 
 All done!
 
