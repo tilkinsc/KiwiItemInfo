@@ -5,37 +5,35 @@ English: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README.md
 Español: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_esES.md
 Deutsch: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_deDE.md
 
-Version: 2.2.1
+Versión: 2.2.1
 
-Provides the command `/kiwiii search` items by name/id and reduce results.
+Proporciona el comando `/kiwiii search` para buscar los objectos.
 
-See `/kiwiii help` for a list of full commands.
+Ver `/kiwiii help` para ayuda con los comandos.
 
-This addon fully contains:
+Este Addon contiene:
 
-* iLvl
-* Vendor Price
-* Differences between equips
-* Command for searching items by name in game (for linking perhaps)
-* Highlight grey items with Left Control Key
-* Contains settings for features
+* iLvl (nivel de objecto/NDO)
+* Precio del Vendedor
+* Diferencias entre equipos
+* Comandos para buscar los objectos en el juego (para vínculos)
+* Resalte los objectos con nombres grises con LCTRL
+* Contiene configuraciones para funciones
 
-To install:  
+Descargar: https://www.curseforge.com/wow/addons/kiwi-item-info
+Instalar: Extraer la carpeta a WoW/_classic_/Interface/AddOns/
 
-Download: https://www.curseforge.com/wow/addons/kiwi-item-info
-Install: Extract the folder to WoW/_classic_/Inteface/AddOns/
+Todo listo!
 
-All done!
+La coloración de NDO funciona así:
 
-iLvl coloration works like this:
-
-* iLvl is your level or higher? Red
-* iLvl is 1-3 levels under you? Yellow
-* iLvl is 4-6 levels under you? Green
-* iLvl is 7-9+ levels under you? Grey
+* NDO = tu nivel o mayor? Rojo
+* NDO = 1-3 niveles debajo de ti? Armarillo
+* NDO = 4-6 niveles debajo de ti? Verde
+* NDO = 7-9+ niveles debajo de ti? Gris
 
 ![image](https://user-images.githubusercontent.com/7494772/65168133-e4d56400-da11-11e9-9a56-57daaaf7eb51.png)
-(Kiwi was level 39 for this picture)
+(Kiwi estaba en el nivel 39 para esto imagen)
 
 ![image](https://user-images.githubusercontent.com/7494772/65673394-be6a8680-e018-11e9-8852-fd889d9bcf4b.png)
 

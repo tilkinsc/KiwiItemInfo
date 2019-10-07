@@ -7,35 +7,35 @@ Deutsch: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_deDE.md
 
 Version: 2.2.1
 
-Provides the command `/kiwiii search` items by name/id and reduce results.
+Bereitstellung des Befehls `/kiwiii search` Sortierung der Items nach Name/ID 
 
-See `/kiwiii help` for a list of full commands.
+Für eine Liste aller Befehle `/kiwiii help` eingeben
 
-This addon fully contains:
+Dieses Addon enthält: 
 
 * iLvl
-* Vendor Price
-* Differences between equips
-* Command for searching items by name in game (for linking perhaps)
-* Highlight grey items with Left Control Key
-* Contains settings for features
+* Händlerpreis
+* Unterschiede zwischen den Ausrüstungen
+* Befehl zum Suchen der Gegenstände mit Namen
+* Makieren grauer Elemente mit der L-STRG
+* Einstellungen für Funktionen
 
-To install:  
+Installierung:  
 
 Download: https://www.curseforge.com/wow/addons/kiwi-item-info
-Install: Extract the folder to WoW/_classic_/Inteface/AddOns/
+Installation: In folgenden Ordner entpacken: WoW/_classic_/Inteface/AddOns/
 
-All done!
+Fertig!
 
-iLvl coloration works like this:
+Erklärung der Einfärbung mit "iLvl":
 
-* iLvl is your level or higher? Red
-* iLvl is 1-3 levels under you? Yellow
-* iLvl is 4-6 levels under you? Green
-* iLvl is 7-9+ levels under you? Grey
+* Dein Level oder Höher? Rot
+* 1-3 Level unter dir? Gelb
+* 4-6 Level unter dir? Grün
+* 7-9 Level+ unter dir? Grau
 
 ![image](https://user-images.githubusercontent.com/7494772/65168133-e4d56400-da11-11e9-9a56-57daaaf7eb51.png)
-(Kiwi was level 39 for this picture)
+(Lvl 39 auf diesem Foto)
 
 ![image](https://user-images.githubusercontent.com/7494772/65673394-be6a8680-e018-11e9-8852-fd889d9bcf4b.png)
 
