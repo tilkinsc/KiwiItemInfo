@@ -1,6 +1,8 @@
 # KiwiItemInfo
 WoW Classic Addon | Shows iLvl (with colors) | Weapon/Armor Differences(shift hover) | Vendor Prices (unit/stack) | Highlights All Grey Named Items with LCTRL | Provides an Item Database for Searching in-client
 
+_La comparación de objectos no funciona en este momento. Necesito escribar `:lower()` en el code._
+
 English: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README.md
 Español: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_esES.md
 Deutsch: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_deDE.md
