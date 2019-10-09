@@ -150,79 +150,85 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 			break
 		end
 		
-		local text = v:GetText()
-		if(text) then
-			local sp = {string.split(" ", text)}
+		local raw_text = v:GetText()
+		local text = raw_text:upper()
+		if(text and #text > 1) then
 			
-			for i=1, #sp do
-				if(sp[i]:find("|c")) then
-					sp[i] = sp[i]:sub(11)
-				end
-				if(sp[i]:find("|r")) then
-					sp[i] = sp[i]:sub(1, -3)
-				end
+			-- remove line color, if any
+			if(text:find("|c", 1, 2) == 1) then
+				text = text:sub(11)
 			end
 			
-			if(text:find(L"TOOLTIP_PRY_EQUIP")) then
-				table.insert(equips, table.concat(sp, " "))
+			-- remove line color return, if any
+			if(text:find("|r")) then
+				text = text:sub(1, -3)
 			end
 			
-			-- basic stats
-			if(sp[2] == L"TOOLTIP_PRY_AGILITY") then
-				agility = tonumber(sp[1])
-			elseif(sp[2] == L"TOOLTIP_PRY_STAMINA") then
-				stamina = tonumber(sp[1])
-			elseif(sp[2] == L"TOOLTIP_PRY_STRENGTH") then
-				strength = tonumber(sp[1])
-			elseif(sp[2] == L"TOOLTIP_PRY_INTELLECT") then
-				intellect = tonumber(sp[1])
-			elseif(sp[2] == L"TOOLTIP_PRY_SPIRIT") then
-				spirit = tonumber(sp[1])
+			local tt_agility   = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_AGILITY")   .. "]+", 1)
+			local tt_stamina   = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_STAMINA")   .. "]+", 1)
+			local tt_strength  = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_STRENGTH")  .. "]+", 1)
+			local tt_intellect = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_INTELLECT") .. "]+", 1)
+			local tt_spirit    = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_SPIRIT")    .. "]+", 1)
 			
-			-- defense
-			elseif(sp[2] == L"TOOLTIP_PRY_ARMOR") then
-				armor = tonumber(sp[1])
-			elseif(sp[2] == L"TOOLTIP_PRY_BLOCK") then
-				block = tonumber(sp[1])
-			elseif(sp[2] == L"TOOLTIP_PRY_DURABILITY") then
-				durability = tonumber(sp[4])
+			local tt_armor  = text:match("%d+%s["          .. L("TOOLTIP_PRY_ARMOR")  .. "]+",   1)
+			local tt_block  = text:match("%d+%s["          .. L("TOOLTIP_PRY_BLOCK")  .. "]+",   1)
+			local tt_dps    = text:match("%(%d+%.%d+%s["   .. L("TOOLTIP_PRY_DPS")    .. "]+%)", 1)
+			local tt_damage = text:match("%d+%s%-%s%d+%s[" .. L("TOOLTIP_PRY_DAMAGE") .. "]+",   1)
 			
-			-- attack
-			elseif(text:find(L"TOOLTIP_PRY_DPS")) then
-				dps = tonumber((sp[1]):sub(2))
-			elseif(sp[4] == L"TOOLTIP_PRY_DAMAGE") then
-				min_dmg = tonumber(sp[1])
-				max_dmg = tonumber(sp[3])
+			local tt_durability = text:match("[" .. L("TOOLTIP_PRY_DURABILITY") .. "]+%s%d+%s/%s%d+", 1)
 			
-			-- special
-			elseif(sp[2] == L"TOOLTIP_PRY_DODGE") then
-				dodge = tonumber(string.gsub(sp[1], "%%", ""))
-			elseif(sp[2] == L"TOOLTIP_PRY_PARRY") then
-				dodge = tonumber(string.gsub(sp[1], "%%", ""))
+			local tt_dodge = text:match("[+-]%d+%%%s[" .. L("TOOLTIP_PRY_DODGE") .. "]+", 1)
+			local tt_parry = text:match("[+-]%d+%%%s[" .. L("TOOLTIP_PRY_PARRY") .. "]+", 1)
 			
-			-- resistance
-			elseif(sp[2] == L"TOOLTIP_PRY_ARCANE" and sp[3] == L"TOOLTIP_PRY_RESIST") then
-				arcane_resist = tonumber(sp[1])
-			elseif(sp[2] == L"TOOLTIP_PRY_FIRE" and sp[3] == L"TOOLTIP_PRY_RESIST") then
-				fire_resist = tonumber(sp[1])
-			elseif(sp[2] == L"TOOLTIP_PRY_FROST" and sp[3] == L"TOOLTIP_PRY_RESIST") then
-				frost_resist = tonumber(sp[1])
-			elseif(sp[2] == L"TOOLTIP_PRY_HOLY" and sp[3] == L"TOOLTIP_PRY_RESIST") then
-				holy_resist = tonumber(sp[1])
-			elseif(sp[2] == L"TOOLTIP_PRY_NATURE" and sp[3] == L"TOOLTIP_PRY_RESIST") then
-				nature_resist = tonumber(sp[1])
-			elseif(sp[2] == L"TOOLTIP_PRY_SHADOW" and sp[3] == L"TOOLTIP_PRY_RESIST") then
-				shadow_resist = tonumber(sp[1])
+			local bs_digit = text:gsub("[^(%+%-)%d+]",   "")
+			local ss_digit = text:gsub("[^(%+%-)%d+%%]", "")
+			local ad_digit = text:gsub("[^%d+]",         "")
+			
+			local dr_digit = text:gsub("[^%d/%d]", "")
+			
+			agility   = tt_agility   and tt_agility:find(L"TOOLTIP_PRY_AGILITY")     and (agility + tonumber(bs_digit))   or agility
+			stamina   = tt_stamina   and tt_stamina:find(L"TOOLTIP_PRY_STAMINA")     and (stamina + tonumber(bs_digit))   or stamina
+			strength  = tt_strength  and tt_strength:find(L"TOOLTIP_PRY_STRENGTH")   and (strength + tonumber(bs_digit))  or strength
+			intellect = tt_intellect and tt_intellect:find(L"TOOLTIP_PRY_INTELLECT") and (intellect + tonumber(bs_digit)) or intellect
+			spirit    = tt_spirit    and tt_spirit:find(L"TOOLTIP_PRY_SPIRIT")       and (spirit + tonumber(bs_digit))    or spirit
+			
+			armor = tt_armor and tt_armor:find(L"TOOLTIP_PRY_ARMOR") and (armor + tonumber(ad_digit)) or armor
+			block = tt_block and tt_block:find(L"TOOLTIP_PRY_BLOCK") and (block + tonumber(ad_digit)) or block
+			
+			if(tt_dps and tt_dps:find(L"TOOLTIP_PRY_DPS")) then
+				local l = string.split(" ", text)
+				l = l:sub(2)
+				dps = tt_dps and tt_dps:find(L"TOOLTIP_PRY_DPS") and (dps + tonumber(l)) or dps
 			end
+			
+			if(tt_damage and tt_damage:find(L"TOOLTIP_PRY_DAMAGE")) then
+				local l, _, _, r = string.split("- ", text)
+				min_dmg = tonumber(l)
+				max_dmg = tonumber(r)
+			end
+			
+			if(tt_durability and tt_durability:find(L"TOOLTIP_PRY_DURABILITY")) then
+				local l, r = string.split("/", dr_digit)
+				durability = (durability + tonumber(r)) or durability
+			end
+			
+			dodge = tt_dodge and tt_dodge:find(L"TOOLTIP_PRY_DODGE") and (dodge + tonumber(ss_digit)) or dodge
+			parry = tt_parry and tt_parry:find(L"TOOLTIP_PRY_PARRY") and (parry + tonumber(ss_digit)) or parry
+			
+			if(text:find(L"TOOLTIP_PRY_EQUIP", 1) == 1) then
+				table.insert(equips, raw_text)
+			end
+			
 		end
+		
 	end
 	
 	-- basic stats, attack/defense, special, resistence
-	return {Agility = agility, Stamina = stamina, Strength = strength, Intellect = intellect, Spirit = spirit},
+	return {dps = dps, min_dmg = min_dmg, max_dmg = max_dmg},
 		   {Armor = armor, Block = block, Durability = durability},
-		   {dps = dps, min_dmg = min_dmg, max_dmg = max_dmg},
+	       {Agility = agility, Stamina = stamina, Strength = strength, Intellect = intellect, Spirit = spirit},
 		   {Dodge = dodge, Parry = parry},
-		   {["Arcane Resistance"] = arcane_resist, ["Fire Resistance"] = fire_resist, ["Frost Resistance"] = frost_resist, ["Holy Resistance"] = holy_resist, ["Nature Resistance"] = nature_resist, ["Shadow Resistance"] = shadow_resist},
+		   {Arcane_Resist = arcane_resist, Fire_Resist = fire_resist, Frost_Resist = frost_resist, Holy_Resist = holy_resist, Nature_Resist = nature_resist, Shadow_Resist = shadow_resist},
 		   equips
 	
 end
@@ -230,16 +236,12 @@ end
 -- Tacks on to the end of tooltips the differences between two items stats
 KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 	
-	if(GetLocale() ~= "enUS") then
-		return
-	end
-	
 	if(KiwiItemInfo_Vars.vars["item_compare_on"] == false) then
 		return
 	end
 	
-	local basic1, def1, att1, special1, resist1, equips1, enchants1 = KiwiItemInfo.PryItemStats(base, base_root)
-	local basic2, def2, att2, special2, resist2, equips2, enchants2 = KiwiItemInfo.PryItemStats(test, test_root)
+	local att1, def1, basic1, special1, resist1, equips1, enchants1 = KiwiItemInfo.PryItemStats(base, base_root)
+	local att2, def2, basic2, special2, resist2, equips2, enchants2 = KiwiItemInfo.PryItemStats(test, test_root)
 	
 	test:AddLine(" ")
 	
@@ -257,7 +259,7 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 			test:AddLine(((min > 0) and string.format("|cFF00FF00+%s|r", min) or string.format("|cFFFF0000%s|r", min))
 						.. " / "
 						.. ((max > 0) and string.format("|cFF00FF00+%s|r", max) or string.format("|cFFFF0000%s|r", max))
-						.. L"TOOLTIP_ITEM_COMP_DMG_DELTA" .. math.abs(max - min) .. ")")
+						.. L("TOOLTIP_IC_DAMAGE_DELTA") .. math.abs(max - min) .. ")")
 			line_added = true
 		end
 	end
@@ -266,16 +268,28 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 	do
 		local calc = att1.dps - att2.dps
 		if(calc ~= 0) then
-			test:AddLine((calc > 0 and "+" or "") .. calc .. L"TOOLTIP_ITEM_COMP_DPS", calc > 0 and 0 or 1, calc > 0 and 1 or 0, 0, true)
+			test:AddLine((calc > 0 and "+" or "") .. calc .. " " .. L("TOOLTIP_IC_DPS"), calc > 0 and 0 or 1, calc > 0 and 1 or 0, 0, true)
 			line_added = true
 		end
 	end
 	
-	for i, _ in next, def1 do
-		local calc = def1[i] - def2[i]
-		if(calc ~= 0) then
+	-- armor/block/durability
+	do
+		local armor = def1.Armor - def2.Armor
+		local block = def1.Block - def2.Block
+		local durability = def1.Durability - def2.Durability
+		
+		if(armor ~= 0) then
+			test:AddLine((armor > 0 and "+" or "") .. armor .. " " .. L("TOOLTIP_IC_ARMOR"), armor > 0 and 0 or 1, armor > 0 and 1 or 0, 0, true)
 			line_added = true
-			test:AddLine((calc > 0 and "+" or "") .. calc .. " " .. i, calc > 0 and 0 or 1, calc > 0 and 1 or 0, 0, true)
+		end
+		if(block ~= 0) then
+			test:AddLine((block > 0 and "+" or "") .. block .. " " .. L("TOOLTIP_IC_BLOCK"), block > 0 and 0 or 1, block > 0 and 1 or 0, 0, true)
+			line_added = true
+		end
+		if(durability ~= 0) then
+			test:AddLine((durability > 0 and "+" or "") .. durability .. " " .. L("TOOLTIP_IC_DURABILITY"), durability > 0 and 0 or 1, durability > 0 and 1 or 0, 0, true)
+			line_added = true
 		end
 	end
 	
@@ -285,10 +299,31 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 	end
 	
 	-- basic stats
-	for i, _ in next, basic1 do
-		local calc = basic1[i] - basic2[i]
-		if(calc ~= 0) then
-			test:AddLine((calc > 0 and "+" or "") .. calc .. " " .. i, calc > 0 and 0 or 1, calc > 0 and 1 or 0, 0, true)
+	do
+		local agility = basic1.Agility - basic2.Agility
+		local stamina = basic1.Stamina - basic2.Stamina
+		local strength = basic1.Strength - basic2.Strength
+		local intellect = basic1.Intellect - basic2.Intellect
+		local spirit = basic1.Spirit - basic2.Spirit
+		
+		if(agility ~= 0) then
+			test:AddLine((agility > 0 and "+" or "") .. agility .. " " .. L("TOOLTIP_IC_AGILITY"), agility > 0 and 0 or 1, agility > 0 and 1 or 0, 0, true)
+			line_added = true
+		end
+		if(stamina ~= 0) then
+			test:AddLine((stamina > 0 and "+" or "") .. stamina .. " " .. L("TOOLTIP_IC_STAMINA"), stamina > 0 and 0 or 1, stamina > 0 and 1 or 0, 0, true)
+			line_added = true
+		end
+		if(strength ~= 0) then
+			test:AddLine((strength > 0 and "+" or "") .. strength .. " " .. L("TOOLTIP_IC_STRENGTH"), strength > 0 and 0 or 1, strength > 0 and 1 or 0, 0, true)
+			line_added = true
+		end
+		if(intellect ~= 0) then
+			test:AddLine((intellect > 0 and "+" or "") .. intellect .. " " .. L("TOOLTIP_IC_INTELLECT"), intellect > 0 and 0 or 1, intellect > 0 and 1 or 0, 0, true)
+			line_added = true
+		end
+		if(spirit ~= 0) then
+			test:AddLine((spirit > 0 and "+" or "") .. spirit .. " " .. L("TOOLTIP_IC_SPIRIT"), spirit > 0 and 0 or 1, spirit > 0 and 1 or 0, 0, true)
 			line_added = true
 		end
 	end
@@ -299,10 +334,17 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 	end
 	
 	-- special
-	for i, _ in next, special1 do
-		local calc = special1[i] - special1[i]
-		if(calc ~= 0) then
-			test:AddLine((calc > 0 and "+" or "") .. calc .. " " .. i, calc > 0 and 0 or 1, calc > 0 and 1 or 0, 0, true)
+	do
+		local dodge = special1.Dodge - special2.Dodge
+		local parry = special1.Parry - special2.Parry
+		
+		if(dodge ~= 0) then
+			test:AddLine((dodge > 0 and "+" or "") .. dodge .. "% " .. L("TOOLTIP_IC_DODGE"), dodge > 0 and 0 or 1, dodge > 0 and 1 or 0, 0, true)
+			line_added = true
+		end
+		
+		if(parry ~= 0) then
+			test:AddLine((parry > 0 and "+" or "") .. parry .. "% " .. L("TOOLTIP_IC_PARRY"), parry > 0 and 0 or 1, parry > 0 and 1 or 0, 0, true)
 			line_added = true
 		end
 	end
@@ -311,6 +353,8 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 		test:AddLine(" ")
 		line_added = false
 	end
+	
+	-- TODO: resistance, attack power, enchants, recognize 2h unequipping shield/dual wield, probably not set effects, Use:, 
 	
 	-- equips
 	for i, v in next, equips1 do
