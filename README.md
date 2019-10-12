@@ -34,6 +34,17 @@ iLvl coloration works like this:
 * iLvl is 4-6 levels under you? Green
 * iLvl is 7-9+ levels under you? Grey
 
+Don't want the itemdb?
+
+* Delete itemDB.lua
+* Remove itemDB.lua from KiwiItemInfo.toc
+
+Don't want other translations?
+
+* Delete the translations
+* Remove the translations from KiwiItemInfo.toc
+* Note: There is no benefit to this
+
 ![image](https://user-images.githubusercontent.com/7494772/65168133-e4d56400-da11-11e9-9a56-57daaaf7eb51.png)
 (Kiwi was level 39 for this picture)
 

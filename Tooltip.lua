@@ -131,7 +131,6 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 	
 	-- special
 	local dodge = 0
-	local parry = 0
 	
 	-- resistance
 	local arcane_resist = 0
@@ -143,6 +142,7 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 	
 	-- equips
 	local equips = {}
+	local uses = {}
 	
 	for i=1, lines do
 		local v = _G[index .. "Left" .. i]
@@ -178,7 +178,6 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 			local tt_durability = text:match("[" .. L("TOOLTIP_PRY_DURABILITY") .. "]+%s%d+%s/%s%d+", 1)
 			
 			local tt_dodge = text:match("[+-]%d+%%%s[" .. L("TOOLTIP_PRY_DODGE") .. "]+", 1)
-			local tt_parry = text:match("[+-]%d+%%%s[" .. L("TOOLTIP_PRY_PARRY") .. "]+", 1)
 			
 			local bs_digit = text:gsub("[^(%+%-)%d+]",   "")
 			local ss_digit = text:gsub("[^(%+%-)%d+%%]", "")
@@ -213,10 +212,13 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 			end
 			
 			dodge = tt_dodge and tt_dodge:find(L"TOOLTIP_PRY_DODGE") and (dodge + tonumber(ss_digit)) or dodge
-			parry = tt_parry and tt_parry:find(L"TOOLTIP_PRY_PARRY") and (parry + tonumber(ss_digit)) or parry
 			
 			if(text:find(L"TOOLTIP_PRY_EQUIP", 1) == 1) then
 				table.insert(equips, raw_text)
+			end
+			
+			if(text:find(L"TOOLTIP_PRY_USE", 1) == 1) then
+				table.insert(uses, raw_text)
 			end
 			
 		end
@@ -227,9 +229,9 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 	return {dps = dps, min_dmg = min_dmg, max_dmg = max_dmg},
 		   {Armor = armor, Block = block, Durability = durability},
 	       {Agility = agility, Stamina = stamina, Strength = strength, Intellect = intellect, Spirit = spirit},
-		   {Dodge = dodge, Parry = parry},
+		   {Dodge = dodge},
 		   {Arcane_Resist = arcane_resist, Fire_Resist = fire_resist, Frost_Resist = frost_resist, Holy_Resist = holy_resist, Nature_Resist = nature_resist, Shadow_Resist = shadow_resist},
-		   equips
+		   equips, uses
 	
 end
 
@@ -240,8 +242,8 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 		return
 	end
 	
-	local att1, def1, basic1, special1, resist1, equips1, enchants1 = KiwiItemInfo.PryItemStats(base, base_root)
-	local att2, def2, basic2, special2, resist2, equips2, enchants2 = KiwiItemInfo.PryItemStats(test, test_root)
+	local att1, def1, basic1, special1, resist1, equips1, uses1 = KiwiItemInfo.PryItemStats(base, base_root)
+	local att2, def2, basic2, special2, resist2, equips2, uses2 = KiwiItemInfo.PryItemStats(test, test_root)
 	
 	test:AddLine(" ")
 	
@@ -336,15 +338,9 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 	-- special
 	do
 		local dodge = special1.Dodge - special2.Dodge
-		local parry = special1.Parry - special2.Parry
 		
 		if(dodge ~= 0) then
 			test:AddLine((dodge > 0 and "+" or "") .. dodge .. "% " .. L("TOOLTIP_IC_DODGE"), dodge > 0 and 0 or 1, dodge > 0 and 1 or 0, 0, true)
-			line_added = true
-		end
-		
-		if(parry ~= 0) then
-			test:AddLine((parry > 0 and "+" or "") .. parry .. "% " .. L("TOOLTIP_IC_PARRY"), parry > 0 and 0 or 1, parry > 0 and 1 or 0, 0, true)
 			line_added = true
 		end
 	end
@@ -354,7 +350,41 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 		line_added = false
 	end
 	
-	-- TODO: resistance, attack power, enchants, recognize 2h unequipping shield/dual wield, probably not set effects, Use:, 
+	-- TODO: attack power, enchants, recognize 2h unequipping shield/dual wield, probably not set effects
+	-- enchants are going to be difficult
+	do
+		local arcane_resist = resist1.Arcane_Resist - resist2.Arcane_Resist
+		local fire_resist = resist1.Fire_Resist - resist2.Fire_Resist
+		local frost_resist = resist1.Frost_Resist - resist2.Frost_Resist
+		local nature_resist = resist1.Nature_Resist - resist2.Nature_Resist
+		local shadow_resist = resist1.Shadow_Resist - resist2.Shadow_Resist
+		
+		if(arcane_resist ~= 0) then
+			test:AddLine((arcane_resist > 0 and "+" or "") .. arcane_resist .. " " .. L("TOOLTIP_IC_ARCANE"), arcane_resist > 0 and 0 or 1, arcane_resist > 0 and 1 or 0, 0, true)
+			line_added = true
+		end
+		if(fire_resist ~= 0) then
+			test:AddLine((fire_resist > 0 and "+" or "") .. fire_resist .. " " .. L("TOOLTIP_IC_FIRE"), fire_resist > 0 and 0 or 1, fire_resist > 0 and 1 or 0, 0, true)
+			line_added = true
+		end
+		if(frost_resist ~= 0) then
+			test:AddLine((frost_resist > 0 and "+" or "") .. frost_resist .. " " .. L("TOOLTIP_IC_FROST"), frost_resist > 0 and 0 or 1, frost_resist > 0 and 1 or 0, 0, true)
+			line_added = true
+		end
+		if(nature_resist ~= 0) then
+			test:AddLine((nature_resist > 0 and "+" or "") .. nature_resist .. " " .. L("TOOLTIP_IC_NATURE"), nature_resist > 0 and 0 or 1, nature_resist > 0 and 1 or 0, 0, true)
+			line_added = true
+		end
+		if(shadow_resist ~= 0) then
+			test:AddLine((shadow_resist > 0 and "+" or "") .. shadow_resist .. " " .. L("TOOLTIP_IC_SHADOW"), shadow_resist > 0 and 0 or 1, shadow_resist > 0 and 1 or 0, 0, true)
+			line_added = true
+		end
+	end
+	
+	if(line_added) then
+		test:AddLine(" ")
+		line_added = false
+	end
 	
 	-- equips
 	for i, v in next, equips1 do
@@ -372,6 +402,31 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 	for i, v in next, equips2 do
 		local found = false
 		for j, k in next, equips1 do
+			if(v == k) then
+				found = true
+			end
+		end
+		if(not found) then
+			test:AddLine(v, 1, 0, 0, true)
+		end
+	end
+	
+	-- uses
+	for i, v in next, uses1 do
+		local found = false
+		for j, k in next, uses2 do
+			if(v == k) then
+				found = true
+			end
+		end
+		if(not found) then
+			test:AddLine(v, 0, 1, 0, true)
+		end
+	end
+	
+	for i, v in next, uses2 do
+		local found = false
+		for j, k in next, uses1 do
 			if(v == k) then
 				found = true
 			end
