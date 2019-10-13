@@ -152,7 +152,7 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 		
 		local raw_text = v:GetText()
 		local text = raw_text:upper()
-		if(text and #text > 1) then
+		if(text and #text > 1 and text:find("SET: ") == nil) then
 			
 			-- remove line color, if any
 			if(text:find("|c", 1, 2) == 1) then
@@ -172,12 +172,19 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 			
 			local tt_armor  = text:match("%d+%s["          .. L("TOOLTIP_PRY_ARMOR")  .. "]+",   1)
 			local tt_block  = text:match("%d+%s["          .. L("TOOLTIP_PRY_BLOCK")  .. "]+",   1)
+			
 			local tt_dps    = text:match("%(%d+%.%d+%s["   .. L("TOOLTIP_PRY_DPS")    .. "]+%)", 1)
 			local tt_damage = text:match("%d+%s%-%s%d+%s[" .. L("TOOLTIP_PRY_DAMAGE") .. "]+",   1)
 			
 			local tt_durability = text:match("[" .. L("TOOLTIP_PRY_DURABILITY") .. "]+%s%d+%s/%s%d+", 1)
 			
 			local tt_dodge = text:match("[+-]%d+%%%s[" .. L("TOOLTIP_PRY_DODGE") .. "]+", 1)
+			
+			local tt_arcane = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_ARCANE") .. "]+", 1)
+			local tt_fire   = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_FIRE")   .. "]+", 1)
+			local tt_frost  = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_FROST")  .. "]+", 1)
+			local tt_nature = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_NATURE") .. "]+", 1)
+			local tt_shadow = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_SHADOW") .. "]+", 1)
 			
 			local bs_digit = text:gsub("[^(%+%-)%d+]",   "")
 			local ss_digit = text:gsub("[^(%+%-)%d+%%]", "")
@@ -213,6 +220,16 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 			
 			dodge = tt_dodge and tt_dodge:find(L"TOOLTIP_PRY_DODGE") and (dodge + tonumber(ss_digit)) or dodge
 			
+			arcane_resist = tt_arcane and tt_arcane:find(L"TOOLTIP_PRY_ARCANE") and (arcane_resist + tonumber(bs_digit)) or arcane_resist
+			fire_resist   = tt_fire and tt_fire:find(L"TOOLTIP_PRY_FIRE") and (fire_resist + tonumber(bs_digit)) or fire_resist
+			frost_resist  = tt_frost and tt_frost:find(L"TOOLTIP_PRY_FROST") and (frost_resist + tonumber(bs_digit)) or frost_resist
+			nature_resist = tt_nature and tt_nature:find(L"TOOLTIP_PRY_NATURE") and (nature_resist + tonumber(bs_digit)) or nature_resist
+			shadow_resist = tt_shadow and tt_shadow:find(L"TOOLTIP_PRY_SHADOW") and (shadow_resist + tonumber(bs_digit)) or shadow_resist
+			
+			print("Debug " .. text)
+			print("bs_digit " .. tostring(bs_digit))
+			print("tt_naure " .. tostring(tt_nature))
+			
 			if(text:find(L"TOOLTIP_PRY_EQUIP", 1) == 1) then
 				table.insert(equips, raw_text)
 			end
@@ -225,12 +242,18 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 		
 	end
 	
+	print("arcane_resist",arcane_resist)
+	print("fire_resist",fire_resist)
+	print("frost_resist",frost_resist)
+	print("nature_resist",nature_resist)
+	print("shadow_resist",shadow_resist)
+	
 	-- basic stats, attack/defense, special, resistence
 	return {dps = dps, min_dmg = min_dmg, max_dmg = max_dmg},
 		   {Armor = armor, Block = block, Durability = durability},
 	       {Agility = agility, Stamina = stamina, Strength = strength, Intellect = intellect, Spirit = spirit},
 		   {Dodge = dodge},
-		   {Arcane_Resist = arcane_resist, Fire_Resist = fire_resist, Frost_Resist = frost_resist, Holy_Resist = holy_resist, Nature_Resist = nature_resist, Shadow_Resist = shadow_resist},
+		   {Arcane_Resist = arcane_resist, Fire_Resist = fire_resist, Frost_Resist = frost_resist, Nature_Resist = nature_resist, Shadow_Resist = shadow_resist},
 		   equips, uses
 	
 end
