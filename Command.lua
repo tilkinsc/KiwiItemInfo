@@ -134,6 +134,12 @@ KiwiItemInfo.Command = function(msg)
 		return
 	end
 	
+	-- Toggles CVar alwaysCompareItems
+	if(args[1] == "aci") then
+		local cvar = GetCVar("alwaysCompareItems")
+		SetCVar("alwaysCompareItems", cvar == "1" and 0 or 1)
+	end
+	
 	-- Searches for items in db
 	if(args[1] == "search") then
 		
