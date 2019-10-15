@@ -143,6 +143,7 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 	-- equips
 	local equips = {}
 	local uses = {}
+	local chances = {}
 	
 	for i=1, lines do
 		local v = _G[index .. "Left" .. i]
@@ -187,7 +188,6 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 			local tt_shadow = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_SHADOW") .. "]+", 1)
 			
 			local bs_digit = text:gsub("[^(%+%-)%d+]",   "")
-			local ss_digit = text:gsub("[^(%+%-)%d+%%]", "")
 			local ad_digit = text:gsub("[^%d+]",         "")
 			
 			local dr_digit = text:gsub("[^%d/%d]", "")
@@ -218,17 +218,13 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 				durability = (durability + tonumber(r)) or durability
 			end
 			
-			dodge = tt_dodge and tt_dodge:find(L"TOOLTIP_PRY_DODGE") and (dodge + tonumber(ss_digit)) or dodge
+			dodge = tt_dodge and tt_dodge:find(L"TOOLTIP_PRY_DODGE") and (dodge + tonumber(bs_digit)) or dodge
 			
 			arcane_resist = tt_arcane and tt_arcane:find(L"TOOLTIP_PRY_ARCANE") and (arcane_resist + tonumber(bs_digit)) or arcane_resist
 			fire_resist   = tt_fire and tt_fire:find(L"TOOLTIP_PRY_FIRE") and (fire_resist + tonumber(bs_digit)) or fire_resist
 			frost_resist  = tt_frost and tt_frost:find(L"TOOLTIP_PRY_FROST") and (frost_resist + tonumber(bs_digit)) or frost_resist
 			nature_resist = tt_nature and tt_nature:find(L"TOOLTIP_PRY_NATURE") and (nature_resist + tonumber(bs_digit)) or nature_resist
 			shadow_resist = tt_shadow and tt_shadow:find(L"TOOLTIP_PRY_SHADOW") and (shadow_resist + tonumber(bs_digit)) or shadow_resist
-			
-			print("Debug " .. text)
-			print("bs_digit " .. tostring(bs_digit))
-			print("tt_naure " .. tostring(tt_nature))
 			
 			if(text:find(L"TOOLTIP_PRY_EQUIP", 1) == 1) then
 				table.insert(equips, raw_text)
@@ -238,15 +234,13 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 				table.insert(uses, raw_text)
 			end
 			
+			if(text:find(L"TOOLTIP_PRY_CHANCE", 1) == 1) then
+				table.insert(chances, raw_text)
+			end
+			
 		end
 		
 	end
-	
-	print("arcane_resist",arcane_resist)
-	print("fire_resist",fire_resist)
-	print("frost_resist",frost_resist)
-	print("nature_resist",nature_resist)
-	print("shadow_resist",shadow_resist)
 	
 	-- basic stats, attack/defense, special, resistence
 	return {dps = dps, min_dmg = min_dmg, max_dmg = max_dmg},
@@ -254,7 +248,7 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 	       {Agility = agility, Stamina = stamina, Strength = strength, Intellect = intellect, Spirit = spirit},
 		   {Dodge = dodge},
 		   {Arcane_Resist = arcane_resist, Fire_Resist = fire_resist, Frost_Resist = frost_resist, Nature_Resist = nature_resist, Shadow_Resist = shadow_resist},
-		   equips, uses
+		   equips, uses, chances
 	
 end
 
@@ -265,149 +259,121 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 		return
 	end
 	
-	local att1, def1, basic1, special1, resist1, equips1, uses1 = KiwiItemInfo.PryItemStats(base, base_root)
-	local att2, def2, basic2, special2, resist2, equips2, uses2 = KiwiItemInfo.PryItemStats(test, test_root)
+	local att1, def1, basic1, special1, resist1, equips1, uses1, chances1 = KiwiItemInfo.PryItemStats(base, base_root)
+	local att2, def2, basic2, special2, resist2, equips2, uses2, chances2 = KiwiItemInfo.PryItemStats(test, test_root)
+	
+	local min_dmg = att1.min_dmg - att2.min_dmg
+	local max_dmg = att1.max_dmg - att2.max_dmg
+	local dps = att1.dps - att2.dps
+	
+	local armor = def1.Armor - def2.Armor
+	local block = def1.Block - def2.Block
+	local durability = def1.Durability - def2.Durability
+	
+	local agility = basic1.Agility - basic2.Agility
+	local stamina = basic1.Stamina - basic2.Stamina
+	local strength = basic1.Strength - basic2.Strength
+	local intellect = basic1.Intellect - basic2.Intellect
+	local spirit = basic1.Spirit - basic2.Spirit
+	
+	local dodge = special1.Dodge - special2.Dodge
+	
+	local arcane_resist = resist1.Arcane_Resist - resist2.Arcane_Resist
+	local fire_resist = resist1.Fire_Resist - resist2.Fire_Resist
+	local frost_resist = resist1.Frost_Resist - resist2.Frost_Resist
+	local nature_resist = resist1.Nature_Resist - resist2.Nature_Resist
+	local shadow_resist = resist1.Shadow_Resist - resist2.Shadow_Resist
+	
+	
+	local queue = {}
+	local dirty = true
+	local send_line = function(...)
+		table.insert(queue, {...})
+		dirty = true
+	end
+	local blank_if_dirty = function()
+		if(dirty) then
+			table.insert(queue, {" "})
+			dirty = false
+		end
+	end
 	
 	test:AddLine(" ")
-	
 	test:AddLine(L"TOOLTIP_ITEM_COMPARE", 0.06666, 0.6, 0.06666, true)
 	
-	local line_added = false
-	
-	
 	-- min/max attack
-	do
-		local min = att1.min_dmg - att2.min_dmg
-		local max = att1.max_dmg - att2.max_dmg
-		
-		if(min ~= 0 or max ~= 0) then
-			test:AddLine(((min > 0) and string.format("|cFF00FF00+%s|r", min) or string.format("|cFFFF0000%s|r", min))
-						.. " / "
-						.. ((max > 0) and string.format("|cFF00FF00+%s|r", max) or string.format("|cFFFF0000%s|r", max))
-						.. L("TOOLTIP_IC_DAMAGE_DELTA") .. math.abs(max - min) .. ")")
-			line_added = true
-		end
+	if(min_dmg ~= 0 or max_dmg ~= 0) then
+		send_line(((min_dmg > 0) and string.format("|cFF00FF00+%s|r", min_dmg) or string.format("|cFFFF0000%s|r", min_dmg))
+					.. " / "
+					.. ((max_dmg > 0) and string.format("|cFF00FF00+%s|r", max_dmg) or string.format("|cFFFF0000%s|r", max_dmg))
+					.. L("TOOLTIP_IC_DAMAGE_DELTA") .. math.abs(max_dmg - min_dmg) .. ")")
 	end
 	
 	-- dps
-	do
-		local calc = att1.dps - att2.dps
-		if(calc ~= 0) then
-			test:AddLine((calc > 0 and "+" or "") .. calc .. " " .. L("TOOLTIP_IC_DPS"), calc > 0 and 0 or 1, calc > 0 and 1 or 0, 0, true)
-			line_added = true
-		end
+	if(dps ~= 0) then
+		send_line((dps > 0 and "+" or "") .. dps .. " " .. L("TOOLTIP_IC_DPS"), dps > 0 and 0 or 1, dps > 0 and 1 or 0, 0, true)
 	end
+	
+	blank_if_dirty()
 	
 	-- armor/block/durability
-	do
-		local armor = def1.Armor - def2.Armor
-		local block = def1.Block - def2.Block
-		local durability = def1.Durability - def2.Durability
-		
-		if(armor ~= 0) then
-			test:AddLine((armor > 0 and "+" or "") .. armor .. " " .. L("TOOLTIP_IC_ARMOR"), armor > 0 and 0 or 1, armor > 0 and 1 or 0, 0, true)
-			line_added = true
-		end
-		if(block ~= 0) then
-			test:AddLine((block > 0 and "+" or "") .. block .. " " .. L("TOOLTIP_IC_BLOCK"), block > 0 and 0 or 1, block > 0 and 1 or 0, 0, true)
-			line_added = true
-		end
-		if(durability ~= 0) then
-			test:AddLine((durability > 0 and "+" or "") .. durability .. " " .. L("TOOLTIP_IC_DURABILITY"), durability > 0 and 0 or 1, durability > 0 and 1 or 0, 0, true)
-			line_added = true
-		end
+	if(armor ~= 0) then
+		send_line((armor > 0 and "+" or "") .. armor .. " " .. L("TOOLTIP_IC_ARMOR"), armor > 0 and 0 or 1, armor > 0 and 1 or 0, 0, true)
+	end
+	if(block ~= 0) then
+		send_line((block > 0 and "+" or "") .. block .. " " .. L("TOOLTIP_IC_BLOCK"), block > 0 and 0 or 1, block > 0 and 1 or 0, 0, true)
+	end
+	if(durability ~= 0) then
+		send_line((durability > 0 and "+" or "") .. durability .. " " .. L("TOOLTIP_IC_DURABILITY"), durability > 0 and 0 or 1, durability > 0 and 1 or 0, 0, true)
 	end
 	
-	if(line_added) then
-		test:AddLine(" ")
-		line_added = false
-	end
+	blank_if_dirty()
 	
 	-- basic stats
-	do
-		local agility = basic1.Agility - basic2.Agility
-		local stamina = basic1.Stamina - basic2.Stamina
-		local strength = basic1.Strength - basic2.Strength
-		local intellect = basic1.Intellect - basic2.Intellect
-		local spirit = basic1.Spirit - basic2.Spirit
-		
-		if(agility ~= 0) then
-			test:AddLine((agility > 0 and "+" or "") .. agility .. " " .. L("TOOLTIP_IC_AGILITY"), agility > 0 and 0 or 1, agility > 0 and 1 or 0, 0, true)
-			line_added = true
-		end
-		if(stamina ~= 0) then
-			test:AddLine((stamina > 0 and "+" or "") .. stamina .. " " .. L("TOOLTIP_IC_STAMINA"), stamina > 0 and 0 or 1, stamina > 0 and 1 or 0, 0, true)
-			line_added = true
-		end
-		if(strength ~= 0) then
-			test:AddLine((strength > 0 and "+" or "") .. strength .. " " .. L("TOOLTIP_IC_STRENGTH"), strength > 0 and 0 or 1, strength > 0 and 1 or 0, 0, true)
-			line_added = true
-		end
-		if(intellect ~= 0) then
-			test:AddLine((intellect > 0 and "+" or "") .. intellect .. " " .. L("TOOLTIP_IC_INTELLECT"), intellect > 0 and 0 or 1, intellect > 0 and 1 or 0, 0, true)
-			line_added = true
-		end
-		if(spirit ~= 0) then
-			test:AddLine((spirit > 0 and "+" or "") .. spirit .. " " .. L("TOOLTIP_IC_SPIRIT"), spirit > 0 and 0 or 1, spirit > 0 and 1 or 0, 0, true)
-			line_added = true
-		end
+	if(agility ~= 0) then
+		send_line((agility > 0 and "+" or "") .. agility .. " " .. L("TOOLTIP_IC_AGILITY"), agility > 0 and 0 or 1, agility > 0 and 1 or 0, 0, true)
+	end
+	if(stamina ~= 0) then
+		send_line((stamina > 0 and "+" or "") .. stamina .. " " .. L("TOOLTIP_IC_STAMINA"), stamina > 0 and 0 or 1, stamina > 0 and 1 or 0, 0, true)
+	end
+	if(strength ~= 0) then
+		send_line((strength > 0 and "+" or "") .. strength .. " " .. L("TOOLTIP_IC_STRENGTH"), strength > 0 and 0 or 1, strength > 0 and 1 or 0, 0, true)
+	end
+	if(intellect ~= 0) then
+		send_line((intellect > 0 and "+" or "") .. intellect .. " " .. L("TOOLTIP_IC_INTELLECT"), intellect > 0 and 0 or 1, intellect > 0 and 1 or 0, 0, true)
+	end
+	if(spirit ~= 0) then
+		send_line((spirit > 0 and "+" or "") .. spirit .. " " .. L("TOOLTIP_IC_SPIRIT"), spirit > 0 and 0 or 1, spirit > 0 and 1 or 0, 0, true)
 	end
 	
-	if(line_added) then
-		test:AddLine(" ")
-		line_added = false
-	end
+	blank_if_dirty()
 	
 	-- special
-	do
-		local dodge = special1.Dodge - special2.Dodge
-		
-		if(dodge ~= 0) then
-			test:AddLine((dodge > 0 and "+" or "") .. dodge .. "% " .. L("TOOLTIP_IC_DODGE"), dodge > 0 and 0 or 1, dodge > 0 and 1 or 0, 0, true)
-			line_added = true
-		end
+	if(dodge ~= 0) then
+		send_line((dodge > 0 and "+" or "") .. dodge .. "% " .. L("TOOLTIP_IC_DODGE"), dodge > 0 and 0 or 1, dodge > 0 and 1 or 0, 0, true)
 	end
 	
-	if(line_added) then
-		test:AddLine(" ")
-		line_added = false
-	end
+	blank_if_dirty()
 	
 	-- TODO: attack power, enchants, recognize 2h unequipping shield/dual wield, probably not set effects
 	-- enchants are going to be difficult
-	do
-		local arcane_resist = resist1.Arcane_Resist - resist2.Arcane_Resist
-		local fire_resist = resist1.Fire_Resist - resist2.Fire_Resist
-		local frost_resist = resist1.Frost_Resist - resist2.Frost_Resist
-		local nature_resist = resist1.Nature_Resist - resist2.Nature_Resist
-		local shadow_resist = resist1.Shadow_Resist - resist2.Shadow_Resist
-		
-		if(arcane_resist ~= 0) then
-			test:AddLine((arcane_resist > 0 and "+" or "") .. arcane_resist .. " " .. L("TOOLTIP_IC_ARCANE"), arcane_resist > 0 and 0 or 1, arcane_resist > 0 and 1 or 0, 0, true)
-			line_added = true
-		end
-		if(fire_resist ~= 0) then
-			test:AddLine((fire_resist > 0 and "+" or "") .. fire_resist .. " " .. L("TOOLTIP_IC_FIRE"), fire_resist > 0 and 0 or 1, fire_resist > 0 and 1 or 0, 0, true)
-			line_added = true
-		end
-		if(frost_resist ~= 0) then
-			test:AddLine((frost_resist > 0 and "+" or "") .. frost_resist .. " " .. L("TOOLTIP_IC_FROST"), frost_resist > 0 and 0 or 1, frost_resist > 0 and 1 or 0, 0, true)
-			line_added = true
-		end
-		if(nature_resist ~= 0) then
-			test:AddLine((nature_resist > 0 and "+" or "") .. nature_resist .. " " .. L("TOOLTIP_IC_NATURE"), nature_resist > 0 and 0 or 1, nature_resist > 0 and 1 or 0, 0, true)
-			line_added = true
-		end
-		if(shadow_resist ~= 0) then
-			test:AddLine((shadow_resist > 0 and "+" or "") .. shadow_resist .. " " .. L("TOOLTIP_IC_SHADOW"), shadow_resist > 0 and 0 or 1, shadow_resist > 0 and 1 or 0, 0, true)
-			line_added = true
-		end
+	if(arcane_resist ~= 0) then
+		send_line((arcane_resist > 0 and "+" or "") .. arcane_resist .. " " .. L("TOOLTIP_IC_ARCANE"), arcane_resist > 0 and 0 or 1, arcane_resist > 0 and 1 or 0, 0, true)
+	end
+	if(fire_resist ~= 0) then
+		send_line((fire_resist > 0 and "+" or "") .. fire_resist .. " " .. L("TOOLTIP_IC_FIRE"), fire_resist > 0 and 0 or 1, fire_resist > 0 and 1 or 0, 0, true)
+	end
+	if(frost_resist ~= 0) then
+		send_line((frost_resist > 0 and "+" or "") .. frost_resist .. " " .. L("TOOLTIP_IC_FROST"), frost_resist > 0 and 0 or 1, frost_resist > 0 and 1 or 0, 0, true)
+	end
+	if(nature_resist ~= 0) then
+		send_line((nature_resist > 0 and "+" or "") .. nature_resist .. " " .. L("TOOLTIP_IC_NATURE"), nature_resist > 0 and 0 or 1, nature_resist > 0 and 1 or 0, 0, true)
+	end
+	if(shadow_resist ~= 0) then
+		send_line((shadow_resist > 0 and "+" or "") .. shadow_resist .. " " .. L("TOOLTIP_IC_SHADOW"), shadow_resist > 0 and 0 or 1, shadow_resist > 0 and 1 or 0, 0, true)
 	end
 	
-	if(line_added) then
-		test:AddLine(" ")
-		line_added = false
-	end
+	blank_if_dirty()
 	
 	-- equips
 	for i, v in next, equips1 do
@@ -418,10 +384,9 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 			end
 		end
 		if(not found) then
-			test:AddLine(v, 0, 1, 0, true)
+			send_line(v, 0, 1, 0, true)
 		end
 	end
-	
 	for i, v in next, equips2 do
 		local found = false
 		for j, k in next, equips1 do
@@ -430,9 +395,11 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 			end
 		end
 		if(not found) then
-			test:AddLine(v, 1, 0, 0, true)
+			send_line(v, 1, 0, 0, true)
 		end
 	end
+	
+	blank_if_dirty()
 	
 	-- uses
 	for i, v in next, uses1 do
@@ -443,7 +410,7 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 			end
 		end
 		if(not found) then
-			test:AddLine(v, 0, 1, 0, true)
+			send_line(v, 0, 1, 0, true)
 		end
 	end
 	
@@ -455,8 +422,43 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 			end
 		end
 		if(not found) then
-			test:AddLine(v, 1, 0, 0, true)
+			send_line(v, 1, 0, 0, true)
 		end
+	end
+	
+	blank_if_dirty()
+	
+	-- chances
+	for i, v in next, chances1 do
+		local found = false
+		for j, k in next, chances2 do
+			if(v == k) then
+				found = true
+			end
+		end
+		if(not found) then
+			send_line(v, 0, 1, 0, true)
+		end
+	end
+	
+	for i, v in next, chances2 do
+		local found = false
+		for j, k in next, chances1 do
+			if(v == k) then
+				found = true
+			end
+		end
+		if(not found) then
+			send_line(v, 1, 0, 0, true)
+		end
+	end
+	
+	if(queue[#queue][1] == " ") then
+		table.remove(queue, #queue)
+	end
+	
+	for i, v in pairs(queue) do
+		test:AddLine(unpack(v))
 	end
 	
 end

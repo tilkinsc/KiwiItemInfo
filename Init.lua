@@ -26,6 +26,7 @@
 --]]
 
 
+
 local version = GetAddOnMetadata("KiwiItemInfo", "Version")
 
 KiwiItemInfo = {}

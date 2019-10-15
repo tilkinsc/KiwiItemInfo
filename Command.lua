@@ -44,7 +44,7 @@ KiwiItemInfo.Command = function(msg)
 	if(args[1] == "help" or msg == "") then
 		printi(0, L"COMMAND_HELP1")
 		printi(0, L"COMMAND_HELP2")
-		for i=3, 18 do
+		for i=3, 19 do
 			print(L("COMMAND_HELP" .. i))
 		end
 		return

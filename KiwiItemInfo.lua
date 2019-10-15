@@ -63,15 +63,15 @@ end
 -- Disables the plugin
 KiwiItemInfo.Disable = function()
 	
+	SlashCmdList["KIWIITEMINFO_CMD"] = nil
+	SLASH_KIWIITEMINFO_CMD1 = nil
+	
 	GameTooltip:SetScript("OnTooltipSetItem", nil)
 	ItemRefTooltip:SetScript("OnTooltipSetItem", nil)
 	ShoppingTooltip1:SetScript("OnTooltipSetItem", nil)
 	ShoppingTooltip2:SetScript("OnTooltipSetItem", nil)
 	ItemRefShoppingTooltip1:SetScript("OnTooltipSetItem", nil)
 	ItemRefShoppingTooltip2:SetScript("OnTooltipSetItem", nil)
-	
-	SlashCmdList["KIWIITEMINFO_CMD"] = nil
-	SLASH_KIWIITEMINFO_CMD1 = nil
 	
 	KiwiItemInfo.EventFrame:UnregisterEvent("MODIFIER_STATE_CHANGED")
 	KiwiItemInfo.Events["MODIFIER_STATE_CHANGED"] = nil
@@ -107,25 +107,15 @@ KiwiItemInfo.Enable = function()
 	GameTooltip:SetScript("OnTooltipSetItem", KiwiItemInfo.ShowItemInfo)
 	ItemRefTooltip:SetScript("OnTooltipSetItem", KiwiItemInfo.ShowItemInfo)
 	
-	ShoppingTooltip1:SetScript("OnTooltipSetItem", function(tooltip)
+	local item_info_compare = function(tooltip)
 		KiwiItemInfo.ShowItemInfo(tooltip)
 		KiwiItemInfo.SetItemCompare(GameTooltip, "GameTooltipText", tooltip, tooltip:GetName() .. "Text")
-	end)
+	end
 	
-	ShoppingTooltip2:SetScript("OnTooltipSetItem", function(tooltip)
-		KiwiItemInfo.ShowItemInfo(tooltip)
-		KiwiItemInfo.SetItemCompare(GameTooltip, "GameTooltipText", tooltip, tooltip:GetName() .. "Text")
-	end)
-	
-	ItemRefShoppingTooltip1:SetScript("OnTooltipSetItem", function(tooltip)
-		KiwiItemInfo.ShowItemInfo(tooltip)
-		KiwiItemInfo.SetItemCompare(GameTooltip, "GameTooltipText", tooltip, tooltip:GetName() .. "Text")
-	end)
-	
-	ItemRefShoppingTooltip2:SetScript("OnTooltipSetItem", function(tooltip)
-		KiwiItemInfo.ShowItemInfo(tooltip)
-		KiwiItemInfo.SetItemCompare(GameTooltip, "GameTooltipText", tooltip, tooltip:GetName() .. "Text")
-	end)
+	ShoppingTooltip1:SetScript("OnTooltipSetItem", item_info_compare)
+	ShoppingTooltip2:SetScript("OnTooltipSetItem", item_info_compare)
+	ItemRefShoppingTooltip1:SetScript("OnTooltipSetItem", item_info_compare)
+	ItemRefShoppingTooltip2:SetScript("OnTooltipSetItem", item_info_compare)
 	
 	-- bag events
 	KiwiItemInfo.Events["MODIFIER_STATE_CHANGED"] = function(key, state)
@@ -157,12 +147,13 @@ KiwiItemInfo.Events = {
 
 
 local KiwiItemInfo_EventFrame = CreateFrame("Frame")
+KiwiItemInfo.EventFrame = KiwiItemInfo_EventFrame
+
 KiwiItemInfo_EventFrame:RegisterEvent("ADDON_LOADED")
 KiwiItemInfo_EventFrame:SetScript("OnEvent", function(self, event, ...)
 	KiwiItemInfo.Events[event](...)
 end)
 
-KiwiItemInfo.EventFrame = KiwiItemInfo_EventFrame
 
 
 
