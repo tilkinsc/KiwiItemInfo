@@ -35,7 +35,8 @@ KiwiItemInfo.ShowItemInfo = function(tooltip)
 	local i_name, i_link = tooltip:GetItem()
 	local tooltipName = tooltip:GetName()
 	local focus = GetMouseFocus()
-	local name = focus:GetName()
+	local name = focus and focus:GetName()
+	
 	if(i_name == nil or i_name == "" or i_link == nil or i_link == "[]") then
 		if(TradeSkillFrame and TradeSkillFrame:IsShown()) then
 			if(name and name:find("TradeSkill", 1, 10) == 1) then
@@ -57,7 +58,13 @@ KiwiItemInfo.ShowItemInfo = function(tooltip)
 					i_link = GetCraftItemLink(selection)
 				end
 			end
+		else
+			return
 		end
+	end
+	
+	if(i_link == nil or i_link == "[]") then
+		return
 	end
 	
 	local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType,
