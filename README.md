@@ -5,7 +5,7 @@ English: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README.md
 Español: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_esES.md  
 Deutsch: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_deDE.md  
 
-Version: 2.2.1
+Version: 2.2.3
 
 Provides the command `/kiwiii search` items by name/id and reduce results.
 
