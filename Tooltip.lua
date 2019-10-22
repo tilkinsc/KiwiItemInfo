@@ -74,7 +74,12 @@ KiwiItemInfo.ShowItemInfo = function(tooltip)
 	if(KiwiItemInfo_Vars.vars["tooltip_price_on"] == true) then
 		if(not MerchantFrame:IsShown() and (vendorPrice and vendorPrice > 0)) then
 			if(itemStackCount > 1) then
-				local count = focus.count or (focus.Count and tonumber(focus.Count:GetText()) or 1)
+				local count
+				if(focus) then
+					count = focus.count or (focus.Count and tonumber(focus.Count:GetText())) or 1
+				else
+					count = 1
+				end
 				itemStackCount = (type(count) == "number") and count or 1
 				if(itemStackCount > 1) then
 					SetTooltipMoney(tooltip, vendorPrice, nil, L"TOOLTIP_UNIT")
