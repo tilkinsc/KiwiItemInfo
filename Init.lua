@@ -44,7 +44,9 @@ KiwiItemInfo._DEFAULT_VARS = {
 		["ilvl_only_equips"] = true,
 		["item_compare_on"] = true,
 		["tooltip_price_on"] = true,
-		["tooltip_ilvl_on"] = true
+		["tooltip_ilvl_on"] = true,
+		["tooltip_ilvl_colors"] = true,
+		["tooltip_ilvl_nocolors_rgb"] = "1 1 1",
 	}
 }
 

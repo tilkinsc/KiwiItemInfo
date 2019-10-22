@@ -99,18 +99,30 @@ KiwiItemInfo.ShowItemInfo = function(tooltip)
 				
 				local tooltipiLvl = _G[tooltipName .. "TextRight1"]
 				
-				local playerLevel = UnitLevel("player")
-				
-				if(playerLevel <= itemLevel) then
-					tooltipiLvl:SetTextColor(0.9375, 0, 0) -- red
-				elseif(itemLevel > playerLevel - 3) then
-					tooltipiLvl:SetTextColor(0.9375, 0.5, 0) -- orange
-				elseif(itemLevel > playerLevel - 5) then
-					tooltipiLvl:SetTextColor(0.9375, 0.9375, 0) -- yellow
-				elseif(itemLevel > playerLevel - 9) then
-					tooltipiLvl:SetTextColor(0, 0.875, 0) -- green
+				if(KiwiItemInfo_Vars.vars["tooltip_ilvl_colors"]) then
+					local playerLevel = UnitLevel("player")
+					
+					if(playerLevel <= itemLevel) then
+						tooltipiLvl:SetTextColor(0.9375, 0, 0) -- red
+					elseif(itemLevel > playerLevel - 3) then
+						tooltipiLvl:SetTextColor(0.9375, 0.5, 0) -- orange
+					elseif(itemLevel > playerLevel - 5) then
+						tooltipiLvl:SetTextColor(0.9375, 0.9375, 0) -- yellow
+					elseif(itemLevel > playerLevel - 9) then
+						tooltipiLvl:SetTextColor(0, 0.875, 0) -- green
+					else
+						tooltipiLvl:SetTextColor(0.5, 0.5, 0.5) -- grey
+					end
 				else
-					tooltipiLvl:SetTextColor(0.5, 0.5, 0.5) -- grey
+					local color = KiwiItemInfo_Vars.vars["tooltip_ilvl_nocolors_rgb"]
+					local r, g, b = string.split(" ", color)
+					r = tonumber(r) -- probably should pcall this to handle possible UI error
+					g = tonumber(g)
+					b = tonumber(b)
+					r = (r > 1) and (r / 255) or r
+					g = (g > 1) and (g / 255) or g
+					b = (b > 1) and (b / 255) or b
+					tooltipiLvl:SetTextColor(r, g, b)
 				end
 				
 				tooltipiLvl:SetText(L"TOOLTIP_ILVL" .. itemLevel)
