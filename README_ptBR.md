@@ -7,48 +7,48 @@ Deutsch: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_deDE.md
 Português: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_ptBR.md  
 简体中文 : https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_zhCN.md  
 
-Version: 2.2.3
+Versão: 2.2.1
 
 Provides the command `/kiwiii search` items by name/id and reduce results.
 
-See `/kiwiii help` for a list of full commands.
+Fornece o comando `/kiwiii search` itens por nome/id e reduz os resultados.
 
-This addon fully contains:
+Este complemento contém completamente:
 
 * iLvl
-* Vendor Price
-* Differences between equips
-* Command for searching items by name in game (for linking perhaps)
-* Highlight grey items with Left Control Key
-* Contains settings for features
+* Preço do Fornecedor
+* Diferenças entre equips
+* Comando para pesquisar itens por nome no jogo (talvez para vincular)
+* Destaque itens em cinza com a tecla de controle esquerda
+* Contém configurações para recursos
 
-To install:  
+Para instalar:  
 
-Download: https://www.curseforge.com/wow/addons/kiwi-item-info  
-Install: Extract the folder to WoW/_classic_/Interface/AddOns/  
+Baixar: https://www.curseforge.com/wow/addons/kiwi-item-info  
+Instalar: Extraia a pasta para WoW/_classic_/Interface/AddOns/  
 
-All done!
+Tudo feito!
 
-iLvl coloration works like this:
+A coloração do iLvl funciona assim:
 
-* iLvl is your level or higher? Red
-* iLvl is 1-3 levels under you? Yellow
-* iLvl is 4-6 levels under you? Green
-* iLvl is 7-9+ levels under you? Grey
+* iLvl é o seu nível ou superior? Vermelho
+* iLvl está 1-3 níveis abaixo de você? Amarelo
+* iLvl está em 4-6 níveis abaixo de você? Verde
+* iLvl está em 7-9+ níveis abaixo de você? Cinzento
 
-Don't want the itemdb?
+Não quer o itemdb?
 
-* Delete itemDB.lua
-* Remove itemDB.lua from KiwiItemInfo.toc
+* Excluir itemDB.lua
+* Exclua o itemDB.lua do Kiwi ItemInfo.toc
 
-Don't want other translations?
+Não quer outras traduções?
 
-* Delete the translations
-* Remove the translations from KiwiItemInfo.toc
-* Note: There is no benefit to this
+* Excluir as traduções
+* Remova as traduções do KiwiItemInfo.toc
+* Nota: Não há benefício para isso
 
 ![image](https://user-images.githubusercontent.com/7494772/65168133-e4d56400-da11-11e9-9a56-57daaaf7eb51.png)
-(Kiwi was level 39 for this picture)
+(Kiwi estava no nível 39 para esta foto)
 
 ![image](https://user-images.githubusercontent.com/7494772/65673394-be6a8680-e018-11e9-8852-fd889d9bcf4b.png)
 

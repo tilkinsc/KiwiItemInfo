@@ -87,14 +87,14 @@ KiwiItemInfo.Command = function(msg)
 				if(var ~= nil) then
 					
 					local val
-					if(tonumber(args[3])) then
-						val = tonumber(args[3])
-					elseif(args[3] == "true") then
+					if(type(var) == "boolean" and args[3] == "true") then
 						val = true
-					elseif(args[3] == "false") then
+					elseif(type(var) == "boolean" and args[3] == "false") then
 						val = false
+					elseif(type(var) == "number" and tonumber(args[3])) then
+						val = tonumber(args[3])
 					else -- string
-						val = table.concat(args, " ", 3, #args)
+						val = table.concat(args, " ", 3, #args):trim()
 					end
 					
 					if(type(var) == "boolean") then

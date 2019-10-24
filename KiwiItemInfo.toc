@@ -11,6 +11,7 @@ Locale.lua
 Locale\enUS\enUS.lua
 Locale\esES\esES.lua
 Locale\deDE\deDE.lua
+Locale\zhCN\zhCN.lua
 Database.lua
 Tooltip.lua
 Bags.lua
