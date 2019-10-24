@@ -4,6 +4,8 @@ WoW Classic Addon | Shows iLvl (with colors) | Weapon/Armor Differences(shift ho
 English: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README.md  
 Español: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_esES.md  
 Deutsch: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_deDE.md  
+Português: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_ptBR.md  
+简体中文 : https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_zhCN.md  
 
 Version: 2.2.1
 

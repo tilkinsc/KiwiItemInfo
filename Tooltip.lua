@@ -189,66 +189,66 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 				text = text:sub(1, -3)
 			end
 			
-			local tt_agility   = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_AGILITY")   .. "]+", 1)
-			local tt_stamina   = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_STAMINA")   .. "]+", 1)
-			local tt_strength  = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_STRENGTH")  .. "]+", 1)
-			local tt_intellect = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_INTELLECT") .. "]+", 1)
-			local tt_spirit    = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_SPIRIT")    .. "]+", 1)
+			local tt_agility   = text:match( L"TOOLTIP_CMP_AGILITY",   1)
+			local tt_stamina   = text:match( L"TOOLTIP_CMP_STAMINA" ,  1)
+			local tt_strength  = text:match( L"TOOLTIP_CMP_STRENGTH",  1)
+			local tt_intellect = text:match( L"TOOLTIP_CMP_INTELLECT", 1)
+			local tt_spirit    = text:match( L"TOOLTIP_CMP_SPIRIT",    1)
 			
-			local tt_armor  = text:match("%d+%s["          .. L("TOOLTIP_PRY_ARMOR")  .. "]+",   1)
-			local tt_block  = text:match("%d+%s["          .. L("TOOLTIP_PRY_BLOCK")  .. "]+",   1)
+			local tt_armor  = text:match( L"TOOLTIP_CMP_ARMOR", 1)
+			local tt_block  = text:match( L"TOOLTIP_CMP_BLOCK", 1)
 			
-			local tt_dps    = text:match("%(%d+%.%d+%s["   .. L("TOOLTIP_PRY_DPS")    .. "]+%)", 1)
-			local tt_damage = text:match("%d+%s%-%s%d+%s[" .. L("TOOLTIP_PRY_DAMAGE") .. "]+",   1)
+			local tt_durability = text:match( L"TOOLTIP_CMP_DURABILITY", 1)
 			
-			local tt_durability = text:match("[" .. L("TOOLTIP_PRY_DURABILITY") .. "]+%s%d+%s/%s%d+", 1)
+			local tt_dps    = text:match( L"TOOLTIP_CMP_DPS",    1)
+			local tt_damage = text:match( L"TOOLTIP_CMP_DAMAGE", 1)
 			
-			local tt_dodge = text:match("[+-]%d+%%%s[" .. L("TOOLTIP_PRY_DODGE") .. "]+", 1)
+			local tt_dodge = text:match( L"TOOLTIP_CMP_DODGE", 1)
 			
-			local tt_arcane = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_ARCANE") .. "]+", 1)
-			local tt_fire   = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_FIRE")   .. "]+", 1)
-			local tt_frost  = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_FROST")  .. "]+", 1)
-			local tt_nature = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_NATURE") .. "]+", 1)
-			local tt_shadow = text:match("[+-]%d+%s[" .. L("TOOLTIP_PRY_SHADOW") .. "]+", 1)
+			local tt_arcane = text:match( L"TOOLTIP_CMP_ARCANE", 1)
+			local tt_fire   = text:match( L"TOOLTIP_CMP_FIRE",   1)
+			local tt_frost  = text:match( L"TOOLTIP_CMP_FROST",  1)
+			local tt_nature = text:match( L"TOOLTIP_CMP_NATURE", 1)
+			local tt_shadow = text:match( L"TOOLTIP_CMP_SHADOW", 1)
 			
 			local bs_digit = text:gsub("[^(%+%-)%d+]",   "")
 			local ad_digit = text:gsub("[^%d+]",         "")
 			
-			local dr_digit = text:gsub("[^%d/%d]", "")
+			agility   = tt_agility   and tt_agility:find(   L"TOOLTIP_PRY_AGILITY" )   and tonumber(bs_digit) or agility
+			stamina   = tt_stamina   and tt_stamina:find(   L"TOOLTIP_PRY_STAMINA" )   and tonumber(bs_digit) or stamina
+			strength  = tt_strength  and tt_strength:find(  L"TOOLTIP_PRY_STRENGTH" )  and tonumber(bs_digit) or strength
+			intellect = tt_intellect and tt_intellect:find( L"TOOLTIP_PRY_INTELLECT" ) and tonumber(bs_digit) or intellect
+			spirit    = tt_spirit    and tt_spirit:find(    L"TOOLTIP_PRY_SPIRIT" )    and tonumber(bs_digit) or spirit
 			
-			agility   = tt_agility   and tt_agility:find(L"TOOLTIP_PRY_AGILITY")     and (agility + tonumber(bs_digit))   or agility
-			stamina   = tt_stamina   and tt_stamina:find(L"TOOLTIP_PRY_STAMINA")     and (stamina + tonumber(bs_digit))   or stamina
-			strength  = tt_strength  and tt_strength:find(L"TOOLTIP_PRY_STRENGTH")   and (strength + tonumber(bs_digit))  or strength
-			intellect = tt_intellect and tt_intellect:find(L"TOOLTIP_PRY_INTELLECT") and (intellect + tonumber(bs_digit)) or intellect
-			spirit    = tt_spirit    and tt_spirit:find(L"TOOLTIP_PRY_SPIRIT")       and (spirit + tonumber(bs_digit))    or spirit
-			
-			armor = tt_armor and tt_armor:find(L"TOOLTIP_PRY_ARMOR") and (armor + tonumber(ad_digit)) or armor
-			block = tt_block and tt_block:find(L"TOOLTIP_PRY_BLOCK") and (block + tonumber(ad_digit)) or block
+			armor = tt_armor and tt_armor:find( L"TOOLTIP_PRY_ARMOR" ) and tonumber(ad_digit) or armor
+			block = tt_block and tt_block:find( L"TOOLTIP_PRY_BLOCK" ) and tonumber(ad_digit) or block
 			
 			if(tt_dps and tt_dps:find(L"TOOLTIP_PRY_DPS")) then
-				local l = string.split(" ", text)
-				l = l:sub(2)
-				dps = tt_dps and tt_dps:find(L"TOOLTIP_PRY_DPS") and (dps + tonumber(l)) or dps
+				local str = tt_dps:gsub(L"TOOLTIP_PRY_DPS", "")
+				local num = str:match("%d+.%d+")
+				dps = tonumber(num)
 			end
 			
 			if(tt_damage and tt_damage:find(L"TOOLTIP_PRY_DAMAGE")) then
-				local l, _, _, r = string.split("- ", text)
+				local nums = tt_damage:gsub(L"TOOLTIP_PRY_DAMAGE", "")
+				local l, r = string.split("-", nums)
 				min_dmg = tonumber(l)
 				max_dmg = tonumber(r)
 			end
 			
 			if(tt_durability and tt_durability:find(L"TOOLTIP_PRY_DURABILITY")) then
-				local l, r = string.split("/", dr_digit)
-				durability = (durability + tonumber(r)) or durability
+				local nums = tt_durability:gsub(L"TOOLTIP_PRY_DURABILITY", "")
+				local l, r = string.split("/", nums)
+				durability = tonumber(r)
 			end
 			
-			dodge = tt_dodge and tt_dodge:find(L"TOOLTIP_PRY_DODGE") and (dodge + tonumber(bs_digit)) or dodge
+			dodge = tt_dodge and tt_dodge:find(L"TOOLTIP_PRY_DODGE") and tonumber(bs_digit) or dodge
 			
-			arcane_resist = tt_arcane and tt_arcane:find(L"TOOLTIP_PRY_ARCANE") and (arcane_resist + tonumber(bs_digit)) or arcane_resist
-			fire_resist   = tt_fire and tt_fire:find(L"TOOLTIP_PRY_FIRE") and (fire_resist + tonumber(bs_digit)) or fire_resist
-			frost_resist  = tt_frost and tt_frost:find(L"TOOLTIP_PRY_FROST") and (frost_resist + tonumber(bs_digit)) or frost_resist
-			nature_resist = tt_nature and tt_nature:find(L"TOOLTIP_PRY_NATURE") and (nature_resist + tonumber(bs_digit)) or nature_resist
-			shadow_resist = tt_shadow and tt_shadow:find(L"TOOLTIP_PRY_SHADOW") and (shadow_resist + tonumber(bs_digit)) or shadow_resist
+			arcane_resist = tt_arcane and tt_arcane:find(L"TOOLTIP_PRY_ARCANE") and tonumber(bs_digit) or arcane_resist
+			fire_resist   = tt_fire and tt_fire:find(L"TOOLTIP_PRY_FIRE")       and tonumber(bs_digit) or fire_resist
+			frost_resist  = tt_frost and tt_frost:find(L"TOOLTIP_PRY_FROST")    and tonumber(bs_digit) or frost_resist
+			nature_resist = tt_nature and tt_nature:find(L"TOOLTIP_PRY_NATURE") and tonumber(bs_digit) or nature_resist
+			shadow_resist = tt_shadow and tt_shadow:find(L"TOOLTIP_PRY_SHADOW") and tonumber(bs_digit) or shadow_resist
 			
 			if(text:find(L"TOOLTIP_PRY_EQUIP", 1) == 1) then
 				table.insert(equips, raw_text)
