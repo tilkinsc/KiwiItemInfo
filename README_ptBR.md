@@ -1,11 +1,15 @@
 # KiwiItemInfo
 WoW Classic Addon | Mostra iLvl (with colors) | Diferenças Arma/Armadura (mudanças) | Preços de Fornecedor (unidade/pilha) | Destaca todos itens com nome cinza usando LCTRL(CTRL Esquerdo) | Proporciona um banco de dados de itens para pesquisa dentro do jogo
 
-English: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README.md  
-Español: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_esES.md  
-Deutsch: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_deDE.md  
-Português: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_ptBR.md  
-简体中文 : https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_zhCN.md  
+[English](README.md)  
+[Español](README_esES.md)  
+[Deutsch](README_deDE.md)  
+[Português](README_ptBR.md)  
+[Français](README_frFR.md)  
+[Italiano](README_itIT.md)  
+[한국어](README_koKR.md)  
+[简体中文](README_zhCN.md)  
+[繁體中文](README_zhTW.md)  
 
 Versão: 2.2.5
 

@@ -1,13 +1,17 @@
 # KiwiItemInfo
 WoW Classic Addon | Shows iLvl (with colors) | Weapon/Armor Differences(shift hover) | Vendor Prices (unit/stack) | Highlights All Grey Named Items with LCTRL | Provides an Item Database for Searching in-client
 
-English: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README.md  
-Español: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_esES.md  
-Deutsch: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_deDE.md  
-Português: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_ptBR.md  
-简体中文 : https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_zhCN.md  
+[English](README.md)  
+[Español](README_esES.md)  
+[Deutsch](README_deDE.md)  
+[Português](README_ptBR.md)  
+[Français](README_frFR.md)  
+[Italiano](README_itIT.md)  
+[한국어](README_koKR.md)  
+[简体中文](README_zhCN.md)  
+[繁體中文](README_zhTW.md)  
 
-Version: 2.2.3
+Version: 2.2.5
 
 Provides the command `/kiwiii search` items by name/id and reduce results.
 
