@@ -1,8 +1,0 @@
-Added The Following...
-
-- Updated to version 2.3.0
-- Fixed localization issue in Tooltip
-  - Where ilvl didn't display properly
-    - Now compares with itemClassID
-  - zhCN now is translated fully
-- Added debug function to init for live testing
