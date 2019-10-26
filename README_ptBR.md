@@ -1,5 +1,5 @@
 # KiwiItemInfo
-WoW Classic Addon | Shows iLvl (with colors) | Weapon/Armor Differences(shift hover) | Vendor Prices (unit/stack) | Highlights All Grey Named Items with LCTRL | Provides an Item Database for Searching in-client
+WoW Classic Addon | Mostra iLvl (with colors) | Diferenças Arma/Armadura (mudanças) | Preços de Fornecedor (unidade/pilha) | Destaca todos itens com nome cinza usando LCTRL(CTRL Esquerdo) | Proporciona um banco de dados de itens para pesquisa dentro do jogo
 
 English: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README.md  
 Español: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_esES.md  
@@ -7,48 +7,48 @@ Deutsch: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_deDE.md
 Português: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_ptBR.md  
 简体中文 : https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_zhCN.md  
 
-Version: 2.2.3
+Versão: 2.2.3
 
-Provides the command `/kiwiii search` items by name/id and reduce results.
+Permite uso do comando `/kiwiii search` itens por nome/id e resume resultados
 
-See `/kiwiii help` for a list of full commands.
+Use `/kiwiii help` para uma lista completa de comandos.
 
-This addon fully contains:
+Este addon contém completamente:
 
 * iLvl
-* Vendor Price
-* Differences between equips
-* Command for searching items by name in game (for linking perhaps)
-* Highlight grey items with Left Control Key
-* Contains settings for features
+* Preço do Fornecedor
+* Diferenças entre equipamentos
+* Comando para pesquisar itens por nome no jogo (talvez para vincular)
+* Destaca itens com nome cinza usando a CTRL Esquerdo
+* Contém configurações para recursos
 
-To install:  
+Para instalar:  
 
-Download: https://www.curseforge.com/wow/addons/kiwi-item-info  
-Install: Extract the folder to WoW/_classic_/Interface/AddOns/  
+Baixar: https://www.curseforge.com/wow/addons/kiwi-item-info  
+Instalar: Extraia a pasta para WoW/_classic_/Interface/AddOns/  
 
-All done!
+Tudo pronto!
 
-iLvl coloration works like this:
+A coloração do iLvl funciona assim:
 
-* iLvl is your level or higher? Red
-* iLvl is 1-3 levels under you? Yellow
-* iLvl is 4-6 levels under you? Green
-* iLvl is 7-9+ levels under you? Grey
+* iLvl é o seu nível ou superior? Vermelho
+* iLvl está 1-3 níveis abaixo de você? Amarelo
+* iLvl está em 4-6 níveis abaixo de você? Verde
+* iLvl está em 7-9+ níveis abaixo de você? Cinzento
 
-Don't want the itemdb?
+Não quer o itemdb?
 
-* Delete itemDB.lua
-* Remove itemDB.lua from KiwiItemInfo.toc
+* Exclua itemDB.lua
+* Exclua itemDB.lua do Kiwi ItemInfo.toc
 
-Don't want other translations?
+Não quer outras traduções?
 
-* Delete the translations
-* Remove the translations from KiwiItemInfo.toc
-* Note: There is no benefit to this
+* Exclua as traduções
+* Remova as traduções do KiwiItemInfo.toc
+* Nota: Não há benefício ao fazer isto
 
 ![image](https://user-images.githubusercontent.com/7494772/65168133-e4d56400-da11-11e9-9a56-57daaaf7eb51.png)
-(Kiwi was level 39 for this picture)
+(Kiwi estava no nível 39 para esta foto)
 
 ![image](https://user-images.githubusercontent.com/7494772/65673394-be6a8680-e018-11e9-8852-fd889d9bcf4b.png)
 

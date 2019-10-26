@@ -7,48 +7,48 @@ Deutsch: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_deDE.md
 Português: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_ptBR.md  
 简体中文 : https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_zhCN.md  
 
-Version: 2.2.3
+版: 2.2.1
 
-Provides the command `/kiwiii search` items by name/id and reduce results.
+提供按名称/id的命令`/kiwiii search`项，并减少结果。
 
-See `/kiwiii help` for a list of full commands.
+有关完整命令的列表，请参见`/kiwiii help`。
 
-This addon fully contains:
+该插件完全包含：
 
 * iLvl
-* Vendor Price
-* Differences between equips
-* Command for searching items by name in game (for linking perhaps)
-* Highlight grey items with Left Control Key
-* Contains settings for features
+* 厂商价格
+* 设备之间的差异
+* 在游戏中按名称搜索项目的命令（可能用于链接）
+* 使用左控制键突出显示灰色项目
+* 包含功能设置
 
-To install:  
+安装：  
 
-Download: https://www.curseforge.com/wow/addons/kiwi-item-info  
-Install: Extract the folder to WoW/_classic_/Interface/AddOns/  
+下载： https://www.curseforge.com/wow/addons/kiwi-item-info  
+安装： 将文件夹解压缩到 WoW/_classic_/Interface/AddOns/  
 
-All done!
+全部做完！
 
-iLvl coloration works like this:
+iLvl着色的工作方式如下：
 
-* iLvl is your level or higher? Red
-* iLvl is 1-3 levels under you? Yellow
-* iLvl is 4-6 levels under you? Green
-* iLvl is 7-9+ levels under you? Grey
+* iLvl是您的等级或更高？红色
+* iLvl在您之下是1-3级？黄色
+* iLvl在您之下是4-6级？绿色
+* iLvl在您之下是7-9 +水平？灰色
 
-Don't want the itemdb?
+不需要itemdb？
 
-* Delete itemDB.lua
-* Remove itemDB.lua from KiwiItemInfo.toc
+* 删除 itemDB.lua
+* 去掉 itemDB.lua 从 KiwiItemInfo.toc
 
-Don't want other translations?
+不需要其他翻译？
 
-* Delete the translations
-* Remove the translations from KiwiItemInfo.toc
-* Note: There is no benefit to this
+* 删除翻译
+* 从KiwiItemInfo.toc删除翻译
+* 注意：这没有任何好处
 
 ![image](https://user-images.githubusercontent.com/7494772/65168133-e4d56400-da11-11e9-9a56-57daaaf7eb51.png)
-(Kiwi was level 39 for this picture)
+(这张图片的猕猴桃为39级)
 
 ![image](https://user-images.githubusercontent.com/7494772/65673394-be6a8680-e018-11e9-8852-fd889d9bcf4b.png)
 
