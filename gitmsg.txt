@@ -1,31 +1,8 @@
 Added The Following...
 
-- Updated to version 2.2.4
-- Added variable tooltip_ilvl_nocolors (boolean)
-- Added variable tooltip_ilvl_nocolors_rgb (string)
-- You can now disable my coloration of ilvl
-  - Make them all one single color
-  - Make them all a custom color
-  - Defaults to white
-- Tooltip updated to not crash on GetItemInfo
-  - Variables there are either there or forces to not work
-  - Doesn't error when GetMouseFocus() is somehow nil
-  - Count doesn't error when GetMouseFocus() is somehow nil
-- Tooltip now relies on locale
-  - Match strings come from language file
-    - To adjust for differences
-	- To make more langs available
-  - To keep compat with being able to change tooltip name
-- Added locale znCN.lua supported in-code contributed by hu71e
-  - Unsure if works properly yet
-  - Added README_zhCN.md
-  - Yay chinese
-- Added locale ptBR.lua supported in-code
-  - Unsure if works properly yet
-  - Added README_btBR.md
-  - Yay porchgeese
-- Fixed resistance bugs in esES.lua
-  - Wasn't fully translated
-- Fixed bug in Command where strings where parsed as numbers
-  - When the string value expected a string of numbers
-  - When the string value could be a hex number prefixed with 0x...
+- Updated to version 2.3.0
+- Fixed localization issue in Tooltip
+  - Where ilvl didn't display properly
+    - Now compares with itemClassID
+  - zhCN now is translated fully
+- Added debug function to init for live testing

@@ -7,7 +7,7 @@ Deutsch: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_deDE.md
 Português: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_ptBR.md  
 简体中文 : https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_zhCN.md  
 
-版: 2.2.1
+版: 2.2.3
 
 提供按名称/id的命令`/kiwiii search`项，并减少结果。
 

@@ -7,7 +7,7 @@ Deutsch: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_deDE.md
 Português: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_ptBR.md  
 简体中文 : https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_zhCN.md  
 
-Versión: 2.2.1
+Versión: 2.2.3
 
 Proporciona el comando `/kiwiii search` para buscar los objectos.
 
