@@ -9,7 +9,7 @@ Português: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_ptBR.md
 
 Versión: 2.2.1
 
-Proporciona el comando `/kiwiii search` para buscar los objectos.
+Escribe el comando `/kiwiii search` para buscar los objetos.
 
 Ver `/kiwiii help` para ayuda con los comandos.
 
@@ -17,13 +17,13 @@ Este Addon contiene:
 
 * iLvl (nivel de objecto/NDO)
 * Precio del Vendedor
-* Diferencias entre equipos
-* Comandos para buscar los objectos en el juego (para vínculos)
-* Resalte los objectos con nombres grises con LCTRL
-* Contiene configuraciones para funciones
+* Diferencias entre equipamentos
+* Comandos para buscar los objectos en el juego por nombre (para vínculos)
+* Resalte los objectos con nombres grises con CTRL derecho.
+* Contiene configuraciones para funciones.
 
 Descargar: https://www.curseforge.com/wow/addons/kiwi-item-info
-Instalar: Extraer la carpeta a WoW/_classic_/Interface/AddOns/
+Instalación: Extraer la carpeta a WoW/_classic_/Interface/AddOns/
 
 Todo listo!
 
