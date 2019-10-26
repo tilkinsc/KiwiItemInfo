@@ -7,7 +7,7 @@ Deutsch: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_deDE.md
 Português: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_ptBR.md  
 简体中文 : https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_zhCN.md  
 
-Versão: 2.2.3
+Versão: 2.2.5
 
 Permite uso do comando `/kiwiii search` itens por nome/id e resume resultados
 

@@ -7,35 +7,48 @@ Deutsch: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_deDE.md
 Português: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_ptBR.md  
 简体中文 : https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_zhCN.md  
 
-Versión: 2.2.5
+Version: 2.2.5
 
-Proporciona el comando `/kiwiii search` para buscar los objectos.
+Provides the command `/kiwiii search` items by name/id and reduce results.
 
-Ver `/kiwiii help` para ayuda con los comandos.
+See `/kiwiii help` for a list of full commands.
 
-Este Addon contiene:
+This addon fully contains:
 
-* iLvl (nivel de objecto/NDO)
-* Precio del Vendedor
-* Diferencias entre equipos
-* Comandos para buscar los objectos en el juego (para vínculos)
-* Resalte los objectos con nombres grises con LCTRL
-* Contiene configuraciones para funciones
+* iLvl
+* Vendor Price
+* Differences between equips
+* Command for searching items by name in game (for linking perhaps)
+* Highlight grey items with Left Control Key
+* Contains settings for features
 
-Descargar: https://www.curseforge.com/wow/addons/kiwi-item-info
-Instalar: Extraer la carpeta a WoW/_classic_/Interface/AddOns/
+To install:  
 
-Todo listo!
+Download: https://www.curseforge.com/wow/addons/kiwi-item-info  
+Install: Extract the folder to WoW/_classic_/Interface/AddOns/  
 
-La coloración de NDO funciona así:
+All done!
 
-* NDO = tu nivel o mayor? Rojo
-* NDO = 1-3 niveles debajo de ti? Armarillo
-* NDO = 4-6 niveles debajo de ti? Verde
-* NDO = 7-9+ niveles debajo de ti? Gris
+iLvl coloration works like this:
+
+* iLvl is your level or higher? Red
+* iLvl is 1-3 levels under you? Yellow
+* iLvl is 4-6 levels under you? Green
+* iLvl is 7-9+ levels under you? Grey
+
+Don't want the itemdb?
+
+* Delete itemDB.lua
+* Remove itemDB.lua from KiwiItemInfo.toc
+
+Don't want other translations?
+
+* Delete the translations
+* Remove the translations from KiwiItemInfo.toc
+* Note: There is no benefit to this
 
 ![image](https://user-images.githubusercontent.com/7494772/65168133-e4d56400-da11-11e9-9a56-57daaaf7eb51.png)
-(Kiwi estaba en el nivel 39 para esto imagen)
+(Kiwi was level 39 for this picture)
 
 ![image](https://user-images.githubusercontent.com/7494772/65673394-be6a8680-e018-11e9-8852-fd889d9bcf4b.png)
 

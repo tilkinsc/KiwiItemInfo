@@ -7,7 +7,7 @@ Deutsch: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_deDE.md
 Português: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_ptBR.md  
 简体中文 : https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_zhCN.md  
 
-Version: 2.2.3
+Version: 2.2.5
 
 Bereitstellung des Befehls `/kiwiii search` Sortierung der Items nach Name/ID 
 
