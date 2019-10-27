@@ -30,6 +30,7 @@
 local version = GetAddOnMetadata("KiwiItemInfo", "Version")
 
 KiwiItemInfo = {}
+KiwiItemInfo._DEBUG = false
 KiwiItemInfo._VERSION = version
 KiwiItemInfo._DEFAULT_VARS = {
 	["VERSION"] = version,
@@ -58,6 +59,12 @@ KiwiItemInfo.printi = function(type, ...)
 				table.concat({...}, "  ")
 			)
 		)
+end
+
+KiwiItemInfo.debug = function(...)
+	if(KiwiItemInfo._DEBUG == true) then
+		print("Kiwi Item Info Debug:", ...)
+	end
 end
 
 

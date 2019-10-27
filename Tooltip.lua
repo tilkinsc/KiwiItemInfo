@@ -95,7 +95,11 @@ KiwiItemInfo.ShowItemInfo = function(tooltip)
 	
 	if(KiwiItemInfo_Vars.vars["tooltip_ilvl_on"] == true) then
 		if(itemLevel) then
-			if(itemType == "Weapon" or itemType == "Armor" or KiwiItemInfo_Vars.vars["ilvl_only_equips"] == false) then
+			
+			if(	itemClassID == LE_ITEM_CLASS_WEAPON 
+				or itemClassID == LE_ITEM_CLASS_ARMOR
+				or KiwiItemInfo_Vars.vars["ilvl_only_equips"] == false
+			) then
 				
 				local tooltipiLvl = _G[tooltipName .. "TextRight1"]
 				
@@ -125,7 +129,7 @@ KiwiItemInfo.ShowItemInfo = function(tooltip)
 					tooltipiLvl:SetTextColor(r, g, b)
 				end
 				
-				tooltipiLvl:SetText(L"TOOLTIP_ILVL" .. itemLevel)
+				tooltipiLvl:SetText(L("TOOLTIP_ILVL") .. itemLevel)
 				tooltipiLvl:Show()
 			end
 		end

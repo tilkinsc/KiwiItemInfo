@@ -1,5 +1,5 @@
 
-KiwiItemInfo.Locale["enUS"] = {
+KiwiItemInfo.Locale["ruRU"] = {
 	["TOOLTIP_UNIT"] = "Unit: ",
 	["TOOLTIP_STACK"] = "Stack:",
 	["TOOLTIP_ILVL"] = "iLvl ",

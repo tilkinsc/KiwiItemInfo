@@ -1,25 +1,29 @@
 # KiwiItemInfo
-WoW Classic Addon | Shows iLvl (with colors) | Weapon/Armor Differences(shift hover) | Vendor Prices (unit/stack) | Highlights All Grey Named Items with LCTRL | Provides an Item Database for Searching in-client
+WoW Classic Addon | Mostra iLvl (with colors) | Diferenças Arma/Armadura (mudanças) | Preços de Fornecedor (unidade/pilha) | Destaca todos itens com nome cinza usando LCTRL(CTRL Esquerdo) | Proporciona um banco de dados de itens para pesquisa dentro do jogo
 
-English: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README.md  
-Español: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_esES.md  
-Deutsch: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_deDE.md  
-Português: https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_ptBR.md  
-简体中文 : https://github.com/tilkinsc/KiwiItemInfo/blob/master/README_zhCN.md  
+[English](README.md)  
+[Español](README_esES.md)  
+[Deutsch](README_deDE.md)  
+[Português](README_ptBR.md)  
+[Français](README_frFR.md)  
+[Italiano](README_itIT.md)  
+[한국어](README_koKR.md)  
+[简体中文](README_zhCN.md)  
+[繁體中文](README_zhTW.md)  
 
-Versão: 2.2.1
+Versão: 2.2.5
 
-Provides the command `/kiwiii search` items by name/id and reduce results.
+Permite uso do comando `/kiwiii search` itens por nome/id e resume resultados
 
-Fornece o comando `/kiwiii search` itens por nome/id e reduz os resultados.
+Use `/kiwiii help` para uma lista completa de comandos.
 
-Este complemento contém completamente:
+Este addon contém completamente:
 
 * iLvl
 * Preço do Fornecedor
-* Diferenças entre equips
+* Diferenças entre equipamentos
 * Comando para pesquisar itens por nome no jogo (talvez para vincular)
-* Destaque itens em cinza com a tecla de controle esquerda
+* Destaca itens com nome cinza usando a CTRL Esquerdo
 * Contém configurações para recursos
 
 Para instalar:  
@@ -27,7 +31,7 @@ Para instalar:
 Baixar: https://www.curseforge.com/wow/addons/kiwi-item-info  
 Instalar: Extraia a pasta para WoW/_classic_/Interface/AddOns/  
 
-Tudo feito!
+Tudo pronto!
 
 A coloração do iLvl funciona assim:
 
@@ -38,14 +42,14 @@ A coloração do iLvl funciona assim:
 
 Não quer o itemdb?
 
-* Excluir itemDB.lua
-* Exclua o itemDB.lua do Kiwi ItemInfo.toc
+* Exclua itemDB.lua
+* Exclua itemDB.lua do Kiwi ItemInfo.toc
 
 Não quer outras traduções?
 
-* Excluir as traduções
+* Exclua as traduções
 * Remova as traduções do KiwiItemInfo.toc
-* Nota: Não há benefício para isso
+* Nota: Não há benefício ao fazer isto
 
 ![image](https://user-images.githubusercontent.com/7494772/65168133-e4d56400-da11-11e9-9a56-57daaaf7eb51.png)
 (Kiwi estava no nível 39 para esta foto)
