@@ -1,17 +1,9 @@
 # KiwiItemInfo
 WoW Classic Addon | Mostra iLvl (with colors) | Diferenças Arma/Armadura (mudanças) | Preços de Fornecedor (unidade/pilha) | Destaca todos itens com nome cinza usando LCTRL(CTRL Esquerdo) | Proporciona um banco de dados de itens para pesquisa dentro do jogo
 
-[English](README.md)  
-[Español](README_esES.md)  
-[Deutsch](README_deDE.md)  
-[Português](README_ptBR.md)  
-[Français](README_frFR.md)  
-[Italiano](README_itIT.md)  
-[한국어](README_koKR.md)  
-[简体中文](README_zhCN.md)  
-[繁體中文](README_zhTW.md)  
+[English](README.md) | [Español](README_esES.md) | [Deutsch](README_deDE.md) | [Português](README_ptBR.md) | [Français](README_frFR.md) | [Italiano](README_itIT.md) | [русский](README_ruRU.md) | [한국어](README_koKR.md) | [简体中文](README_zhCN.md) | [繁體中文](README_zhTW.md)
 
-Versão: 2.2.5
+Versão: 2.3.0
 
 Permite uso do comando `/kiwiii search` itens por nome/id e resume resultados
 
