@@ -88,27 +88,27 @@ KiwiItemInfo.Locale["deDE"] = {
 
 local temp = KiwiItemInfo.Locale["deDE"]
 
-temp["COMMAND_SEARCH_ERROR_DB"] = "Kiwi lehnt die Verwendung von `/kiwiii " .. temp["KIWIII_SEARCH"] .. "` ab. (mangels laden der datenbank?)",
-temp["KII_BAD_DB"] = "Kiwi's Item Info Datenbank wurde nicht geladen! Nicht mit Das `/kiwiii " .. temp["KIWIII_SEARCH"] .. "` Befehl.",
-temp["KII_HELP"] = "Bitte benutzen Das `/kiwiii " .. temp["KIWIII_HELP"] .. "` für eine Befehlsliste!",
-temp["KII_THANKS"] = "Kiwi dankt Ihnen für die Installation von KiwiItemInfo " .. KiwiItemInfo._VERSION .. "! <3",
-temp["COMMAND_HELP1"] = "Kiwi Item Info " .. KiwiItemInfo._VERSION .. " -- hilfe",
-temp["COMMAND_HELP2"] = "https://github.com/tilkinsc/KiwiItemInfo - für Problem/Fehlerberichte",
-temp["COMMAND_HELP3"] = "Usage: /kiwiii [" .. temp["KIWIII_RELOAD"] .. "] [" .. temp["KIWIII_RESET"]  .. "] [" .. temp["KIWIII_VARS"] .. "] [" .. temp["KIWIII_ACI"] .. "]",
-temp["COMMAND_HELP4"] = "               [" .. temp["KIWIII_SET"] .. " variable_name Wert]",
-temp["COMMAND_HELP5"] = "               [" .. temp["KIWIII_SEARCH"] .. " ${=,>,<}num, #Typ, @Unteryp, {itemid, itemname}]",
-temp["COMMAND_HELP6"] = "    > |cFF888888" .. temp["KIWIII_HELP"] .. "|r -- für diese Nachricht",
-temp["COMMAND_HELP7"] = "    > |cFF888888" .. temp["KIWIII_RELOAD"] .. "|r -- lädt das Addon neu",
-temp["COMMAND_HELP8"] = "    > |cFF888888" .. temp["KIWIII_RESET"] .. "|r -- setzt alle gespeicherten Variablen zurück und lädt sie neu",
-temp["COMMAND_HELP9"] = "    > |cFF888888" .. temp["KIWIII_VARS"] .. "|r -- zeigt alle Einstellvariablen",
-temp["COMMAND_HELP10"] = "    > |cFF888888" .. temp["KIWIII_SET"] .. "|r -- schaltet eine Einstellung um",
-temp["COMMAND_HELP11"] = "        * |cFFBBBBBBvariable_name|r -- Variable in `/kiwiii " .. temp["KIWIII_VARS"] .. "` gezeigt",
-temp["COMMAND_HELP12"] = "        * |cFFBBBBBBWert|r -- entweder true, false, string, oder number",
-temp["COMMAND_HELP13"] = "    > |cFF888888" .. temp["KIWIII_ACI"] .. "|r -- schaltet alwaysCompareItems CVar um",
-temp["COMMAND_HELP14"] = "    > |cFF888888" .. temp["KIWIII_SEARCH"] .. "|r -- durchsucht die Itematenbank nach Items",
-temp["COMMAND_HELP15"] = "        * |cFFBBBBBB${=,>,<}num|r -- zeige nur ilvls 'num' von Operation",
-temp["COMMAND_HELP16"] = "        * |cFFBBBBBB#Typ|r -- zeigt nach Typ an (Armor, Weapon, etc)",
-temp["COMMAND_HELP17"] = "        * |cFFBBBBBB@Untertyp|r -- zeigt nach Untertyp an (Mail, 1HSwords, 2HSwords, etc)",
-temp["COMMAND_HELP18"] = "        * |cFFBBBBBBitemid|r -- nach Items suchen",
-temp["COMMAND_HELP19"] = "        * |cFFBBBBBBitemname|r -- nach Items suchen",
+temp["COMMAND_SEARCH_ERROR_DB"] = "Kiwi lehnt die Verwendung von `/kiwiii " .. temp["KIWIII_SEARCH"] .. "` ab. (mangels laden der datenbank?)"
+temp["KII_BAD_DB"] = "Kiwi's Item Info Datenbank wurde nicht geladen! Nicht mit Das `/kiwiii " .. temp["KIWIII_SEARCH"] .. "` Befehl."
+temp["KII_HELP"] = "Bitte benutzen Das `/kiwiii " .. temp["KIWIII_HELP"] .. "` für eine Befehlsliste!"
+temp["KII_THANKS"] = "Kiwi dankt Ihnen für die Installation von KiwiItemInfo " .. KiwiItemInfo._VERSION .. "! <3"
+temp["COMMAND_HELP1"] = "Kiwi Item Info " .. KiwiItemInfo._VERSION .. " -- hilfe"
+temp["COMMAND_HELP2"] = "https://github.com/tilkinsc/KiwiItemInfo - für Problem/Fehlerberichte"
+temp["COMMAND_HELP3"] = "Usage: /kiwiii [" .. temp["KIWIII_RELOAD"] .. "] [" .. temp["KIWIII_RESET"]  .. "] [" .. temp["KIWIII_VARS"] .. "] [" .. temp["KIWIII_ACI"] .. "]"
+temp["COMMAND_HELP4"] = "               [" .. temp["KIWIII_SET"] .. " variable_name Wert]"
+temp["COMMAND_HELP5"] = "               [" .. temp["KIWIII_SEARCH"] .. " ${=,>,<}num, #Typ, @Unteryp, {itemid, itemname}]"
+temp["COMMAND_HELP6"] = "    > |cFF888888" .. temp["KIWIII_HELP"] .. "|r -- für diese Nachricht"
+temp["COMMAND_HELP7"] = "    > |cFF888888" .. temp["KIWIII_RELOAD"] .. "|r -- lädt das Addon neu"
+temp["COMMAND_HELP8"] = "    > |cFF888888" .. temp["KIWIII_RESET"] .. "|r -- setzt alle gespeicherten Variablen zurück und lädt sie neu"
+temp["COMMAND_HELP9"] = "    > |cFF888888" .. temp["KIWIII_VARS"] .. "|r -- zeigt alle Einstellvariablen"
+temp["COMMAND_HELP10"] = "    > |cFF888888" .. temp["KIWIII_SET"] .. "|r -- schaltet eine Einstellung um"
+temp["COMMAND_HELP11"] = "        * |cFFBBBBBBvariable_name|r -- Variable in `/kiwiii " .. temp["KIWIII_VARS"] .. "` gezeigt"
+temp["COMMAND_HELP12"] = "        * |cFFBBBBBBWert|r -- entweder true, false, string, oder number"
+temp["COMMAND_HELP13"] = "    > |cFF888888" .. temp["KIWIII_ACI"] .. "|r -- schaltet alwaysCompareItems CVar um"
+temp["COMMAND_HELP14"] = "    > |cFF888888" .. temp["KIWIII_SEARCH"] .. "|r -- durchsucht die Itematenbank nach Items"
+temp["COMMAND_HELP15"] = "        * |cFFBBBBBB${=,>,<}num|r -- zeige nur ilvls 'num' von Operation"
+temp["COMMAND_HELP16"] = "        * |cFFBBBBBB#Typ|r -- zeigt nach Typ an (Armor, Weapon, etc)"
+temp["COMMAND_HELP17"] = "        * |cFFBBBBBB@Untertyp|r -- zeigt nach Untertyp an (Mail, 1HSwords, 2HSwords, etc)"
+temp["COMMAND_HELP18"] = "        * |cFFBBBBBBitemid|r -- nach Items suchen"
+temp["COMMAND_HELP19"] = "        * |cFFBBBBBBitemname|r -- nach Items suchen"
 

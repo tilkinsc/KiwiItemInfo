@@ -88,27 +88,27 @@ KiwiItemInfo.Locale["zhCN"] = {
 
 local temp = KiwiItemInfo.Locale["zhCN"]
 
-temp["COMMAND_SEARCH_ERROR_DB"] = "Kiwi 无法使用 `/kiwiii " .. temp["KIWIII_SEARCH"] .. "` 命令(没有加载itembd数据库?)",
-temp["KII_BAD_DB"] = "Kiwi 无法加载itemdb物品数据库! 不能使用 `/kiwiii " .. temp["KIWIII_SEARCH"] .. "` 命令.",
-temp["KII_HELP"] = "请使用命令 `/kiwiii " .. temp["KIWIII_HELP"] .. "` 查看帮助信息!",
-temp["KII_THANKS"] = "Kiwi 感谢您安装了 KiwiItemInfo " .. KiwiItemInfo._VERSION .. "! <3",
-temp["COMMAND_HELP1"] = "Kiwi Item Info " .. KiwiItemInfo._VERSION .. " -- 帮助",
-temp["COMMAND_HELP2"] = "https://github.com/tilkinsc/KiwiItemInfo - 在此提交问题和错误报告",
-temp["COMMAND_HELP3"] = "命令用法: /kiwiii [" .. temp["KIWIII_RELOAD"] .. "] [" .. temp["KIWIII_RESET"]  .. "] [" .. temp["KIWIII_VARS"] .. "] [" .. temp["KIWIII_ACI"] .. "]",
-temp["COMMAND_HELP4"] = "               [" .. temp["KIWIII_SET"] .. " variable_name value]",
-temp["COMMAND_HELP5"] = "               [" .. temp["KIWIII_SEARCH"] .. " ${=,>,<}num, #Type, @subtype, {itemid, itemname}]",
-temp["COMMAND_HELP6"] = "    > |cFF888888" .. temp["KIWIII_HELP"] .. "|r -- 显示本帮助信息",
-temp["COMMAND_HELP7"] = "    > |cFF888888" .. temp["KIWIII_RELOAD"] .. "|r -- 重载插件",
-temp["COMMAND_HELP8"] = "    > |cFF888888" .. temp["KIWIII_RESET"]  .. "|r -- 重置所有参数并重载插件",
-temp["COMMAND_HELP9"] = "    > |cFF888888" .. temp["KIWIII_VARS"] .. "|r -- 显示所有参数设置",
-temp["COMMAND_HELP10"] = "    > |cFF888888" .. temp["KIWIII_SET"] .. "|r -- 切换设置",
-temp["COMMAND_HELP11"] = "        * |cFFBBBBBBvariable_name|r -- 可用参数信息显示于 /kiwiii " .. temp["KIWIII_VARS"],
-temp["COMMAND_HELP12"] = "        * |cFFBBBBBBvalue|r -- 可以是 true, false, string, 或 number",
-temp["COMMAND_HELP13"] = "    > |cFF888888" .. temp["KIWIII_ACI"] .. "|r -- 切换设置 永久开启物品比较(alwaysCompareItems)",
-temp["COMMAND_HELP14"] = "    > |cFF888888" .. temp["KIWIII_SEARCH"] .. "|r -- 使用itemdb数据库搜索物品信息",
-temp["COMMAND_HELP15"] = "        * |cFFBBBBBB${=,>,<}num|r -- 仅显示装等数字",
-temp["COMMAND_HELP16"] = "        * |cFFBBBBBB#Type|r -- 大类显示 (Armor, Weapon, 等)",
-temp["COMMAND_HELP17"] = "        * |cFFBBBBBB@SubType|r -- 子类显示 (Mail, 1HSwords, 2HSwords, 等)",
-temp["COMMAND_HELP18"] = "        * |cFFBBBBBBitemid|r -- 使用 物品编码(itemid) 搜索物品",
-temp["COMMAND_HELP19"] = "        * |cFFBBBBBBitemname|r -- 使用 物品名称(itemname) 搜索物品",
+temp["COMMAND_SEARCH_ERROR_DB"] = "Kiwi 无法使用 `/kiwiii " .. temp["KIWIII_SEARCH"] .. "` 命令(没有加载itembd数据库?)"
+temp["KII_BAD_DB"] = "Kiwi 无法加载itemdb物品数据库! 不能使用 `/kiwiii " .. temp["KIWIII_SEARCH"] .. "` 命令."
+temp["KII_HELP"] = "请使用命令 `/kiwiii " .. temp["KIWIII_HELP"] .. "` 查看帮助信息!"
+temp["KII_THANKS"] = "Kiwi 感谢您安装了 KiwiItemInfo " .. KiwiItemInfo._VERSION .. "! <3"
+temp["COMMAND_HELP1"] = "Kiwi Item Info " .. KiwiItemInfo._VERSION .. " -- 帮助"
+temp["COMMAND_HELP2"] = "https://github.com/tilkinsc/KiwiItemInfo - 在此提交问题和错误报告"
+temp["COMMAND_HELP3"] = "命令用法: /kiwiii [" .. temp["KIWIII_RELOAD"] .. "] [" .. temp["KIWIII_RESET"]  .. "] [" .. temp["KIWIII_VARS"] .. "] [" .. temp["KIWIII_ACI"] .. "]"
+temp["COMMAND_HELP4"] = "               [" .. temp["KIWIII_SET"] .. " variable_name value]"
+temp["COMMAND_HELP5"] = "               [" .. temp["KIWIII_SEARCH"] .. " ${=,>,<}num, #Type, @subtype, {itemid, itemname}]"
+temp["COMMAND_HELP6"] = "    > |cFF888888" .. temp["KIWIII_HELP"] .. "|r -- 显示本帮助信息"
+temp["COMMAND_HELP7"] = "    > |cFF888888" .. temp["KIWIII_RELOAD"] .. "|r -- 重载插件"
+temp["COMMAND_HELP8"] = "    > |cFF888888" .. temp["KIWIII_RESET"]  .. "|r -- 重置所有参数并重载插件"
+temp["COMMAND_HELP9"] = "    > |cFF888888" .. temp["KIWIII_VARS"] .. "|r -- 显示所有参数设置"
+temp["COMMAND_HELP10"] = "    > |cFF888888" .. temp["KIWIII_SET"] .. "|r -- 切换设置"
+temp["COMMAND_HELP11"] = "        * |cFFBBBBBBvariable_name|r -- 可用参数信息显示于 /kiwiii " .. temp["KIWIII_VARS"]
+temp["COMMAND_HELP12"] = "        * |cFFBBBBBBvalue|r -- 可以是 true, false, string, 或 number"
+temp["COMMAND_HELP13"] = "    > |cFF888888" .. temp["KIWIII_ACI"] .. "|r -- 切换设置 永久开启物品比较(alwaysCompareItems)"
+temp["COMMAND_HELP14"] = "    > |cFF888888" .. temp["KIWIII_SEARCH"] .. "|r -- 使用itemdb数据库搜索物品信息"
+temp["COMMAND_HELP15"] = "        * |cFFBBBBBB${=,>,<}num|r -- 仅显示装等数字"
+temp["COMMAND_HELP16"] = "        * |cFFBBBBBB#Type|r -- 大类显示 (Armor, Weapon, 等)"
+temp["COMMAND_HELP17"] = "        * |cFFBBBBBB@SubType|r -- 子类显示 (Mail, 1HSwords, 2HSwords, 等)"
+temp["COMMAND_HELP18"] = "        * |cFFBBBBBBitemid|r -- 使用 物品编码(itemid) 搜索物品"
+temp["COMMAND_HELP19"] = "        * |cFFBBBBBBitemname|r -- 使用 物品名称(itemname) 搜索物品"
 

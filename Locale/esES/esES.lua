@@ -88,27 +88,27 @@ KiwiItemInfo.Locale["esES"] = {
 
 local temp = KiwiItemInfo.Locale["esES"]
 
-temp["COMMAND_SEARCH_ERROR_DB"] = "Kiwi rechaza el uso de `/kiwiii " .. temp["KIWIII_SEARCH"] .. "` (debido que la base de datos no cargó?)",
-temp["KII_BAD_DB"] = "La base de datos Kiwi Item Info no fue cargada. No se está usando el comando `/kiwiii " .. temp["KIWIII_SEARCH"] .. "`.",
-temp["KII_HELP"] = "Por favor usa `/kiwiii " .. temp["KIWIII_HELP"] .. "` para una lista de comandos!",
-temp["KII_THANKS"] = "Kiwi te agradece por instalar KiwiItemInfo " .. KiwiItemInfo._VERSION .. "! <3",
-temp["COMMAND_HELP1"] = "Kiwi Item Info " .. KiwiItemInfo._VERSION .. " -- ayuda",
-temp["COMMAND_HELP2"] = "https://github.com/tilkinsc/KiwiItemInfo - para problemas/informes de errores",
-temp["COMMAND_HELP3"] = "Uso: /kiwiii [" .. temp["KIWIII_RELOAD"] .. "] [" .. temp["KIWIII_RESET"]  .. "] [" .. temp["KIWIII_VARS"] .. "] [" .. temp["KIWIII_ACI"] .. "]",
-temp["COMMAND_HELP4"] = "               [" .. temp["KIWIII_SET"] .. " nombre_del_variable valor]",
-temp["COMMAND_HELP5"] = "               [" .. temp["KIWIII_SEARCH"] .. " ${=,>,<}numero, #tipo, @subtipo, {id_del_objecto, nombre_del_objecto}]",
-temp["COMMAND_HELP6"] = "    > |cFF888888" .. temp["KIWIII_HELP"] .. "|r -- para este mensaje",
-temp["COMMAND_HELP7"] = "    > |cFF888888" .. temp["KIWIII_RELOAD"] .. "|r -- recarga este addon",
-temp["COMMAND_HELP8"] = "    > |cFF888888" .. temp["KIWIII_RESET"]  .. "|r -- restablece todos las variables guardadas, también recarga",
-temp["COMMAND_HELP9"] = "    > |cFF888888" .. temp["KIWIII_VARS"] .. "|r -- muestra todos las variables de configuración",
-temp["COMMAND_HELP10"] = "    > |cFF888888" .. temp["KIWIII_SET"] .. "|r -- alterna una configuración",
-temp["COMMAND_HELP11"] = "        * |cFFBBBBBBnombre_del_variable|r -- variable mostrada en /kiwiii " .. temp["KIWIII_VARS"],
-temp["COMMAND_HELP12"] = "        * |cFFBBBBBBvalor|r -- ya sea true, false, palabras, o numeros",
-temp["COMMAND_HELP13"] = "    > |cFF888888" .. temp["KIWIII_ACI"] .. "|r -- alterna alwaysCompareItems CVar",
-temp["COMMAND_HELP14"] = "    > |cFF888888" .. temp["KIWIII_SEARCH"] .. "|r -- busca en la base de datos de objectos",
-temp["COMMAND_HELP15"] = "        * |cFFBBBBBB${=,>,<}numero|r -- mostrar solo los niveles de objectos 'num' de operación",
-temp["COMMAND_HELP16"] = "        * |cFFBBBBBB#tipo|r -- muestra por tipo (Armor, Weapon, etc)",
-temp["COMMAND_HELP17"] = "        * |cFFBBBBBB@Subtipo|r -- muestra por subtipo (Mail, 1HSwords, 2HSwords, etc)",
-temp["COMMAND_HELP18"] = "        * |cFFBBBBBBid_del_objecto|r -- numero de objecto",
-temp["COMMAND_HELP19"] = "        * |cFFBBBBBBnombre_del_objecto|r -- nombre de objecto",
+temp["COMMAND_SEARCH_ERROR_DB"] = "Kiwi rechaza el uso de `/kiwiii " .. temp["KIWIII_SEARCH"] .. "` (debido que la base de datos no cargó?)"
+temp["KII_BAD_DB"] = "La base de datos Kiwi Item Info no fue cargada. No se está usando el comando `/kiwiii " .. temp["KIWIII_SEARCH"] .. "`."
+temp["KII_HELP"] = "Por favor usa `/kiwiii " .. temp["KIWIII_HELP"] .. "` para una lista de comandos!"
+temp["KII_THANKS"] = "Kiwi te agradece por instalar KiwiItemInfo " .. KiwiItemInfo._VERSION .. "! <3"
+temp["COMMAND_HELP1"] = "Kiwi Item Info " .. KiwiItemInfo._VERSION .. " -- ayuda"
+temp["COMMAND_HELP2"] = "https://github.com/tilkinsc/KiwiItemInfo - para problemas/informes de errores"
+temp["COMMAND_HELP3"] = "Uso: /kiwiii [" .. temp["KIWIII_RELOAD"] .. "] [" .. temp["KIWIII_RESET"]  .. "] [" .. temp["KIWIII_VARS"] .. "] [" .. temp["KIWIII_ACI"] .. "]"
+temp["COMMAND_HELP4"] = "               [" .. temp["KIWIII_SET"] .. " nombre_del_variable valor]"
+temp["COMMAND_HELP5"] = "               [" .. temp["KIWIII_SEARCH"] .. " ${=,>,<}numero, #tipo, @subtipo, {id_del_objecto, nombre_del_objecto}]"
+temp["COMMAND_HELP6"] = "    > |cFF888888" .. temp["KIWIII_HELP"] .. "|r -- para este mensaje"
+temp["COMMAND_HELP7"] = "    > |cFF888888" .. temp["KIWIII_RELOAD"] .. "|r -- recarga este addon"
+temp["COMMAND_HELP8"] = "    > |cFF888888" .. temp["KIWIII_RESET"]  .. "|r -- restablece todos las variables guardadas, también recarga"
+temp["COMMAND_HELP9"] = "    > |cFF888888" .. temp["KIWIII_VARS"] .. "|r -- muestra todos las variables de configuración"
+temp["COMMAND_HELP10"] = "    > |cFF888888" .. temp["KIWIII_SET"] .. "|r -- alterna una configuración"
+temp["COMMAND_HELP11"] = "        * |cFFBBBBBBnombre_del_variable|r -- variable mostrada en /kiwiii " .. temp["KIWIII_VARS"]
+temp["COMMAND_HELP12"] = "        * |cFFBBBBBBvalor|r -- ya sea true, false, palabras, o numeros"
+temp["COMMAND_HELP13"] = "    > |cFF888888" .. temp["KIWIII_ACI"] .. "|r -- alterna alwaysCompareItems CVar"
+temp["COMMAND_HELP14"] = "    > |cFF888888" .. temp["KIWIII_SEARCH"] .. "|r -- busca en la base de datos de objectos"
+temp["COMMAND_HELP15"] = "        * |cFFBBBBBB${=,>,<}numero|r -- mostrar solo los niveles de objectos 'num' de operación"
+temp["COMMAND_HELP16"] = "        * |cFFBBBBBB#tipo|r -- muestra por tipo (Armor, Weapon, etc)"
+temp["COMMAND_HELP17"] = "        * |cFFBBBBBB@Subtipo|r -- muestra por subtipo (Mail, 1HSwords, 2HSwords, etc)"
+temp["COMMAND_HELP18"] = "        * |cFFBBBBBBid_del_objecto|r -- numero de objecto"
+temp["COMMAND_HELP19"] = "        * |cFFBBBBBBnombre_del_objecto|r -- nombre de objecto"
 
