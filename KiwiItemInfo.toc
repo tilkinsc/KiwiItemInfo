@@ -8,10 +8,16 @@
 Init.lua
 ItemDB.lua
 Locale.lua
+Locale\deDE\deDE.lua
 Locale\enUS\enUS.lua
 Locale\esES\esES.lua
-Locale\deDE\deDE.lua
+Locale\frFR\frFR.lua
+Locale\itIT\itIT.lua
+Locale\koKR\koKR.lua
+Locale\ptBR\ptBR.lua
+Locale\ruRU\ruRU.lua
 Locale\zhCN\zhCN.lua
+Locale\zhTW\zhTW.lua
 Database.lua
 Tooltip.lua
 Bags.lua
