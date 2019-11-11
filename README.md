@@ -3,7 +3,7 @@ WoW Classic Addon | Shows iLvl (with colors) | Weapon/Armor Differences(shift ho
 
 [English](README.md) | [Español](README_esES.md) | [Deutsch](README_deDE.md) | [Português](README_ptBR.md) | [Français](README_frFR.md) | [Italiano](README_itIT.md) | [русский](README_ruRU.md) | [한국어](README_koKR.md) | [简体中文](README_zhCN.md) | [繁體中文](README_zhTW.md)
 
-Version: 2.3.0
+Version: 2.3.1
 
 Provides the command `/kiwiii search` items by name/id and reduce results.
 
