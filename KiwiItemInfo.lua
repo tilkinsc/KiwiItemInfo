@@ -114,21 +114,62 @@ local ADDON_LOADED = function(addon)
 		return
 	end
 	
+	KiwiItemInfo.Enable()
+	
 	-- tooltip events
 	GameTooltip:HookScript("OnTooltipSetItem", KiwiItemInfo.ShowItemInfo)
+	ShoppingTooltip1:HookScript("OnTooltipSetItem", KiwiItemInfo.ShowItemInfo)
+	ShoppingTooltip2:HookScript("OnTooltipSetItem", KiwiItemInfo.ShowItemInfo)
 	ItemRefTooltip:HookScript("OnTooltipSetItem", KiwiItemInfo.ShowItemInfo)
+	ItemRefShoppingTooltip1:HookScript("OnTooltipSetItem", KiwiItemInfo.ShowItemInfo)
+	ItemRefShoppingTooltip2:HookScript("OnTooltipSetItem", KiwiItemInfo.ShowItemInfo)
 	
-	local item_info_compare = function(tooltip)
-		KiwiItemInfo.ShowItemInfo(tooltip)
-		KiwiItemInfo.SetItemCompare(GameTooltip, "GameTooltipText", tooltip, tooltip:GetName() .. "Text")
-	end
+	-- item compare
+	GameTooltip:HookScript("OnTooltipSetItem", function(tooltip)
+		KiwiItemInfo.SetItemCompare(1, tooltip, tooltip:GetName() .. "Text")
+	end)
+	GameTooltip:HookScript("OnTooltipCleared", function(tooltip)
+		KiwiItemInfo.ClearItemCompare(1, tooltip)
+	end)
 	
-	ShoppingTooltip1:HookScript("OnTooltipSetItem", item_info_compare)
-	ShoppingTooltip2:HookScript("OnTooltipSetItem", item_info_compare)
-	ItemRefShoppingTooltip1:HookScript("OnTooltipSetItem", item_info_compare)
-	ItemRefShoppingTooltip2:HookScript("OnTooltipSetItem", item_info_compare)
+	ShoppingTooltip1:HookScript("OnTooltipSetItem", function(tooltip)
+		KiwiItemInfo.SetItemCompare(2, tooltip, tooltip:GetName() .. "Text")
+		KiwiItemInfo.DisplayItemCompare(GameTooltip, ShoppingTooltip1, 1)
+	end)
+	ShoppingTooltip1:HookScript("OnTooltipCleared", function(tooltip)
+		KiwiItemInfo.ClearItemCompare(2, tooltip)
+	end)
 	
-	KiwiItemInfo.Enable()
+	ShoppingTooltip2:HookScript("OnTooltipSetItem", function(tooltip)
+		KiwiItemInfo.SetItemCompare(3, tooltip, tooltip:GetName() .. "Text")
+	end)
+	ShoppingTooltip2:HookScript("OnTooltipCleared", function(tooltip)
+		KiwiItemInfo.ClearItemCompare(3, tooltip)
+	end)
+	
+	ItemRefTooltip:HookScript("OnTooltipSetItem", function(tooltip)
+		KiwiItemInfo.SetItemCompare(4, tooltip, tooltip:GetName() .. "Text")
+	end)
+	ItemRefTooltip:HookScript("OnTooltipCleared", function(tooltip)
+		KiwiItemInfo.ClearItemCompare(4, tooltip)
+	end)
+	
+	ItemRefShoppingTooltip1:HookScript("OnTooltipSetItem", function(tooltip)
+		KiwiItemInfo.SetItemCompare(5, tooltip, tooltip:GetName() .. "Text")
+		KiwiItemInfo.DisplayItemCompare(ItemRefTooltip, ItemRefShoppingTooltip1, 2)
+	end)
+	ItemRefShoppingTooltip1:HookScript("OnTooltipCleared", function(tooltip)
+		KiwiItemInfo.ClearItemCompare(5, tooltip)
+	end)
+	
+	ItemRefShoppingTooltip2:HookScript("OnTooltipSetItem", function(tooltip)
+		KiwiItemInfo.SetItemCompare(6, tooltip, tooltip:GetName() .. "Text")
+		KiwiItemInfo.DisplayItemCompare(ItemRefTooltip, ItemRefShoppingTooltip1, 2)
+	end)
+	ItemRefShoppingTooltip2:HookScript("OnTooltipCleared", function(tooltip)
+		KiwiItemInfo.ClearItemCompare(6, tooltip)
+	end)
+	
 end
 
 -- hooks and events

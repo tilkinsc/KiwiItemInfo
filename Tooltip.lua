@@ -141,6 +141,9 @@ end
 KiwiItemInfo.PryItemStats = function(tooltip, index)
 	
 	local lines = tooltip:NumLines()
+	if(lines == 0) then
+		return
+	end
 	
 	-- basic stats
 	local agility = 0
@@ -280,38 +283,187 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 	
 end
 
+
+
 -- Tacks on to the end of tooltips the differences between two items stats
-KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
+local att1, def1, basic1, special1, resist1, equips1, uses1, chances1
+local att2, def2, basic2, special2, resist2, equips2, uses2, chances2
+local att3, def3, basic3, special3, resist3, equips3, uses3, chances3
+local att4, def4, basic4, special4, resist4, equips4, uses4, chances4
+local att5, def5, basic5, special5, resist5, equips5, uses5, chances5
+local att6, def6, basic6, special6, resist6, equips6, uses6, chances6
+
+KiwiItemInfo.SetItemCompare = function(slot, tooltip, text)
 	
 	if(KiwiItemInfo_Vars.vars["item_compare_on"] == false) then
 		return
 	end
 	
-	local att1, def1, basic1, special1, resist1, equips1, uses1, chances1 = KiwiItemInfo.PryItemStats(base, base_root)
-	local att2, def2, basic2, special2, resist2, equips2, uses2, chances2 = KiwiItemInfo.PryItemStats(test, test_root)
+	local i_name, i_link = tooltip:GetItem()
+	if(i_name == nil or i_name == "" or i_link == nil or i_link == "[]") then
+		return
+	end
 	
-	local min_dmg = att1.min_dmg - att2.min_dmg
-	local max_dmg = att1.max_dmg - att2.max_dmg
-	local dps = att1.dps - att2.dps
+	local itemClassID = select(12, GetItemInfo(i_link))
+	if(itemClassID ~= LE_ITEM_CLASS_ARMOR and itemClassID ~= LE_ITEM_CLASS_WEAPON) then
+		return
+	end
 	
-	local armor = def1.Armor - def2.Armor
-	local block = def1.Block - def2.Block
-	local durability = def1.Durability - def2.Durability
+	if(slot == 1) then
+		att1, def1, basic1, special1, resist1, equips1, uses1, chances1 = KiwiItemInfo.PryItemStats(tooltip, text)
+		return
+	end
+	if(slot == 2) then
+		att2, def2, basic2, special2, resist2, equips2, uses2, chances2 = KiwiItemInfo.PryItemStats(tooltip, text)
+		return
+	end
+	if(slot == 3) then
+		att3, def3, basic3, special3, resist3, equips3, uses3, chances3 = KiwiItemInfo.PryItemStats(tooltip, text)
+		return
+	end
+	if(slot == 4) then
+		att4, def4, basic4, special4, resist4, equips4, uses4, chances4 = KiwiItemInfo.PryItemStats(tooltip, text)
+		return
+	end
+	if(slot == 5) then
+		att5, def5, basic5, special5, resist5, equips5, uses5, chances5 = KiwiItemInfo.PryItemStats(tooltip, text)
+		return
+	end
+	if(slot == 6) then
+		att6, def6, basic6, special6, resist6, equips6, uses6, chances6 = KiwiItemInfo.PryItemStats(tooltip, text)
+		return
+	end
 	
-	local agility = basic1.Agility - basic2.Agility
-	local stamina = basic1.Stamina - basic2.Stamina
-	local strength = basic1.Strength - basic2.Strength
-	local intellect = basic1.Intellect - basic2.Intellect
-	local spirit = basic1.Spirit - basic2.Spirit
+end
+
+KiwiItemInfo.ClearItemCompare = function(slot, tooltip)
+
+	if(KiwiItemInfo_Vars.vars["item_compare_on"] == false) then
+		return
+	end
 	
-	local dodge = special1.Dodge - special2.Dodge
+	if(tooltip:IsShown()) then
+		return
+	end
 	
-	local arcane_resist = resist1.Arcane_Resist - resist2.Arcane_Resist
-	local fire_resist = resist1.Fire_Resist - resist2.Fire_Resist
-	local frost_resist = resist1.Frost_Resist - resist2.Frost_Resist
-	local nature_resist = resist1.Nature_Resist - resist2.Nature_Resist
-	local shadow_resist = resist1.Shadow_Resist - resist2.Shadow_Resist
+	if(slot == 1) then
+		att1, def1, basic1, special1, resist1, equips1, uses1, chances1 = nil
+		return
+	end
+	if(slot == 2) then
+		att2, def2, basic2, special2, resist2, equips2, uses2, chances2 = nil
+		return
+	end
+	if(slot == 3) then
+		att3, def3, basic3, special3, resist3, equips3, uses3, chances3 = nil
+		return
+	end
+	if(slot == 4) then
+		att4, def4, basic4, special4, resist4, equips4, uses4, chances4 = nil
+		return
+	end
+	if(slot == 5) then
+		att5, def5, basic5, special5, resist5, equips5, uses5, chances5 = nil
+		return
+	end
+	if(slot == 6) then
+		att6, def6, basic6, special6, resist6, equips6, uses6, chances6 = nil
+		return
+	end
 	
+end
+
+KiwiItemInfo.DisplayItemCompare = function(base_tooltip, tooltip, sel)
+	
+	if(KiwiItemInfo_Vars.vars["item_compare_on"] == false) then
+		return
+	end
+	
+	local att_a, def_a, basic_a, special_a, resist_a, equips_a, uses_a, chances_a
+	local att_b, def_b, basic_b, special_b, resist_b, equips_b, uses_b, chances_b
+	local att_c, def_c, basic_c, special_c, resist_c, equips_c, uses_c, chances_c
+	if(sel == 1) then
+		att_a, def_a, basic_a, special_a, resist_a, equips_a, uses_a, chances_a = att1, def1, basic1, special1, resist1, equips1, uses1, chances1
+		att_b, def_b, basic_b, special_b, resist_b, equips_b, uses_b, chances_b = att2, def2, basic2, special2, resist2, equips2, uses2, chances2
+		att_c, def_c, basic_c, special_c, resist_c, equips_c, uses_c, chances_c = att3, def3, basic3, special3, resist3, equips3, uses3, chances3
+	elseif(sel == 2) then
+		att_a, def_a, basic_a, special_a, resist_a, equips_a, uses_a, chances_a = att4, def4, basic4, special4, resist4, equips4, uses4, chances4
+		att_b, def_b, basic_b, special_b, resist_b, equips_b, uses_b, chances_b = att5, def5, basic5, special5, resist5, equips5, uses5, chances5
+		att_c, def_c, basic_c, special_c, resist_c, equips_c, uses_c, chances_c = att6, def6, basic6, special6, resist6, equips6, uses6, chances6
+	end
+	
+	if(att_a == nil or att_b == nil) then
+		return
+	end
+	
+	local double_replace = false
+	local _, basei_link = base_tooltip:GetItem()
+		local base_itemSubClassID = select(13, GetItemInfo(basei_link))
+		if(base_itemSubClassID == LE_ITEM_WEAPON_SWORD2H
+				or base_itemSubClassID == LE_ITEM_WEAPON_AXE2H
+				or base_itemSubClassID == LE_ITEM_WEAPON_MACE2H
+				or base_itemSubClassID == LE_ITEM_WEAPON_POLEARM
+				or base_itemSubClassID == LE_ITEM_WEAPON_STAFF
+				or base_itemSubClassID == LE_ITEM_WEAPON_BOWS
+				or base_itemSubClassID == LE_ITEM_WEAPON_GUNS
+				or base_itemSubClassID == LE_ITEM_WEAPON_FISHINGPOLE) then
+		if(GetInventoryItemLink("player", GetInventorySlotInfo("MainHandSlot")) ~= nil
+				and GetInventoryItemLink("player", GetInventorySlotInfo("SecondaryHandSlot")) ~= nil) then
+			double_replace = true
+		end
+	end
+	if(double_replace and att_c == nil) then
+		return
+	end
+	
+	local min_dmg = att_a.min_dmg - att_b.min_dmg
+	local max_dmg = att_a.max_dmg - att_b.max_dmg
+	local dps = att_a.dps - att_b.dps
+	
+	local armor = def_a.Armor - def_b.Armor
+	local block = def_a.Block - def_b.Block
+	local durability = def_a.Durability - def_b.Durability
+	
+	local agility = basic_a.Agility - basic_b.Agility
+	local stamina = basic_a.Stamina - basic_b.Stamina
+	local strength = basic_a.Strength - basic_b.Strength
+	local intellect = basic_a.Intellect - basic_b.Intellect
+	local spirit = basic_a.Spirit - basic_b.Spirit
+	
+	local dodge = special_a.Dodge - special_b.Dodge
+	
+	local arcane_resist = resist_a.Arcane_Resist - resist_b.Arcane_Resist
+	local fire_resist = resist_a.Fire_Resist - resist_b.Fire_Resist
+	local frost_resist = resist_a.Frost_Resist - resist_b.Frost_Resist
+	local nature_resist = resist_a.Nature_Resist - resist_b.Nature_Resist
+	local shadow_resist = resist_a.Shadow_Resist - resist_b.Shadow_Resist
+	
+	if(double_replace and att_c ~= nil) then
+		min_dmg = min_dmg - att_c.min_dmg
+		max_dmg = max_dmg - att_c.max_dmg
+		dps = dps - att_c.dps
+		
+		armor = armor - def_c.Armor
+		block = block - def_c.Block
+		durability = durability - def_c.Durability
+		
+		agility = agility - basic_c.Agility
+		stamina = stamina - basic_c.Stamina
+		strength = strength - basic_c.Strength
+		intellect = intellect - basic_c.Intellect
+		spirit = spirit - basic_c.Spirit
+		
+		dodge = dodge - special_c.Dodge
+		
+		arcane_resist = arcane_resist - resist_c.Arcane_Resist
+		fire_resist = fire_resist - resist_c.Fire_Resist
+		frost_resist = frost_resist - resist_c.Frost_Resist
+		nature_resist = nature_resist - resist_c.Nature_Resist
+		shadow_resist = shadow_resist - resist_c.Shadow_Resist
+	end
+	if(sel == 2) then
+		durability = 0
+	end
 	
 	local queue = {}
 	local dirty = true
@@ -326,8 +478,8 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 		end
 	end
 	
-	test:AddLine(" ")
-	test:AddLine(L"TOOLTIP_ITEM_COMPARE", 0.06666, 0.6, 0.06666, true)
+	tooltip:AddLine(" ")
+	tooltip:AddLine(L"TOOLTIP_ITEM_COMPARE", 0.06666, 0.6, 0.06666, true)
 	
 	-- min/max attack
 	if(min_dmg ~= 0 or max_dmg ~= 0) then
@@ -404,37 +556,65 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 	blank_if_dirty()
 	
 	-- equips
-	for i, v in next, equips1 do
+	for i, v in next, equips_a do
 		local found = false
-		for j, k in next, equips2 do
+		for j, k in next, equips_b do
 			if(v == k) then
 				found = true
+			end
+		end
+		if(double_replace) then
+			for j, k in next, equips_c do
+				if(v == k) then
+					found = true
+				end
 			end
 		end
 		if(not found) then
 			send_line(v, 0, 1, 0, true)
 		end
 	end
-	for i, v in next, equips2 do
+	
+	for i, v in next, equips_b do
 		local found = false
-		for j, k in next, equips1 do
+		for j, k in next, equips_a do
 			if(v == k) then
 				found = true
 			end
 		end
 		if(not found) then
 			send_line(v, 1, 0, 0, true)
+		end
+	end
+	if(double_replace) then
+		for i, v in next, equips_c do
+			local found = false
+			for j, k in next, equips_a do
+				if(v == k) then
+					found = true
+				end
+			end
+			if(not found) then
+				send_line(v, 1, 0, 0, true)
+			end
 		end
 	end
 	
 	blank_if_dirty()
 	
 	-- uses
-	for i, v in next, uses1 do
+	for i, v in next, uses_a do
 		local found = false
-		for j, k in next, uses2 do
+		for j, k in next, uses_b do
 			if(v == k) then
 				found = true
+			end
+		end
+		if(double_replace) then
+			for j, k in next, uses_c do
+				if(v == k) then
+					found = true
+				end
 			end
 		end
 		if(not found) then
@@ -442,26 +622,46 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 		end
 	end
 	
-	for i, v in next, uses2 do
+	for i, v in next, uses_b do
 		local found = false
-		for j, k in next, uses1 do
+		for j, k in next, uses_a do
 			if(v == k) then
 				found = true
 			end
 		end
 		if(not found) then
 			send_line(v, 1, 0, 0, true)
+		end
+	end
+	if(double_replace) then
+		for i, v in next, uses_c do
+			local found = false
+			for j, k in next, uses_a do
+				if(v == k) then
+					found = true
+				end
+			end
+			if(not found) then
+				send_line(v, 1, 0, 0, true)
+			end
 		end
 	end
 	
 	blank_if_dirty()
 	
 	-- chances
-	for i, v in next, chances1 do
+	for i, v in next, chances_a do
 		local found = false
-		for j, k in next, chances2 do
+		for j, k in next, chances_b do
 			if(v == k) then
 				found = true
+			end
+		end
+		if(double_replace) then
+			for j, k in next, chances_c do
+				if(v == k) then
+					found = true
+				end
 			end
 		end
 		if(not found) then
@@ -469,15 +669,28 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 		end
 	end
 	
-	for i, v in next, chances2 do
+	for i, v in next, chances_b do
 		local found = false
-		for j, k in next, chances1 do
+		for j, k in next, chances_a do
 			if(v == k) then
 				found = true
 			end
 		end
 		if(not found) then
 			send_line(v, 1, 0, 0, true)
+		end
+	end
+	if(double_replace) then
+		for i, v in next, chances_c do
+			local found = false
+			for j, k in next, chances_a do
+				if(v == k) then
+					found = true
+				end
+			end
+			if(not found) then
+				send_line(v, 1, 0, 0, true)
+			end
 		end
 	end
 	
@@ -486,7 +699,8 @@ KiwiItemInfo.SetItemCompare = function(base, base_root, test, test_root)
 	end
 	
 	for i, v in pairs(queue) do
-		test:AddLine(unpack(v))
+		tooltip:AddLine(unpack(v))
 	end
 	
 end
+
