@@ -465,6 +465,134 @@ KiwiItemInfo.DisplayItemCompare = function(base_tooltip, tooltip, sel)
 		durability = 0
 	end
 	
+	local _, _, classID = UnitClass("player");
+	
+	local agility_ap_melee = 0
+	local agility_ap_range = 0
+	local agility_crit = 0
+	local agility_dodge = 0
+	local agility_catform_ap_melee = 0
+	
+	local strength_ap_melee = 0
+	local strength_block = 0
+	
+	local intellect_mana = 0 -- 15 * intellect
+	local intellect_crit = 0
+	
+	local spirit_hpt = 0
+	local spirit_mpt = 0
+	
+	local arcane_resist_p = 0.238095238 * arcane_resist
+	local fire_resist_p = 0.238095238 * fire_resist
+	local frost_resist_p = 0.238095238 * frost_resist
+	local nature_resist_p = 0.238095238 * nature_resist
+	local shadow_resist_p = 0.238095238 * shadow_resist
+	
+	local agility_armor = 2 * agility
+	local stamina_health = 10 * stamina
+	
+	if(classID == 1) then -- warrior
+		agility_ap_range = 2 * agility
+		agility_crit = 0.05 * agility
+		agility_dodge = 0.05 * agility
+		
+		strength_ap_melee = 2 * strength
+		strength_block = 0.05 * strength
+		
+		spirit_hpt = 0.80 * spirit
+	elseif(classID == 2) then -- paladin
+		agility_crit = 0.05 * agility
+		agility_dodge = 0.05 * agility
+		
+		strength_ap_melee = 2 * strength
+		strength_block = 0.05 * strength
+		
+		intellect_mana = 15 * intellect
+		intellect_crit = 0.033898305 * intellect
+		
+		spirit_hpt = 0.80 * spirit
+		spirit_mpt = 0.20 * spirit
+	elseif(classID == 3) then -- hunter
+		agility_ap_melee = 1 * agility
+		agility_ap_range = 2 * agility
+		agility_crit = 0.018867924 * agility
+		agility_dodge = 0.037735849 * agility
+		
+		strength_ap_melee = 1 * strength
+		
+		intellect_mana = 15 * intellect
+		
+		spirit_hpt = 1.0 * spirit
+		spirit_mpt = 0.20 * spirit
+	elseif(classID == 4) then -- rogue
+		agility_ap_melee = 1 * agility
+		agility_ap_range = 2 * agility
+		agility_crit = 0.03448275 * agility
+		agility_dodge = 0.06896551 * agility
+		
+		strength_ap_melee = 1 * strength
+		
+		spirit_hpt = 0.60 * spirit
+	elseif(classID == 5) then -- priest
+		agility_crit = 0.05 * agility
+		agility_dodge = 0.05 * agility
+		
+		strength_ap_melee = 2 * strength
+		
+		intellect_mana = 15 * intellect
+		intellect_crit = 0.0168918918 * intellect
+		
+		spirit_hpt = 1.0 * spirit
+		spirit_mpt = 0.25 * spirit
+	elseif(classID == 7) then -- shaman
+		agility_crit = 0.05 * agility
+		agility_dodge = 0.05 * agility
+		
+		strength_ap_melee = 2 * strength
+		strength_block = 0.05 * strength
+		
+		intellect_mana = 15 * intellect
+		intellect_crit = 0.016806722 * intellect
+		
+		spirit_hpt = 1.1 * spirit
+		spirit_mpt = 0.20 * spirit
+	elseif(classID == 8) then -- mage
+		agility_crit = 0.05 * agility
+		agility_dodge = 0.05 * agility
+		
+		strength_ap_melee = 2 * strength
+		
+		intellect_mana = 15 * intellect
+		intellect_crit = 0.016806722 * intellect
+		
+		spirit_hpt = 1.0 * spirit
+		spirit_mpt = 0.25 * spirit
+	elseif(classID == 9) then -- warlock
+		agility_crit = 0.05 * agility
+		agility_dodge = 0.05 * agility
+		
+		strength_ap_melee = 2 * strength
+		
+		intellect_mana = 15 * intellect
+		intellect_crit = 0.016501650 * intellect
+		
+		spirit_hpt = 0.7 * spirit
+		spirit_mpt = 0.25 * spirit
+	elseif(classID == 11) then -- druid
+		agility_crit = 0.05 * agility
+		agility_dodge = 0.05 * agility
+		agility_catform_ap_melee = 1 * agility
+		
+		strength_ap_melee = 2 * strength
+		
+		intellect_mana = 15 * intellect
+		intellect_crit = 0.016666666 * intellect
+		
+		spirit_hpt = 0.9 * spirit
+		spirit_mpt = 0.20 * spirit
+	end
+	
+	
 	local queue = {}
 	local dirty = true
 	local send_line = function(...)
@@ -552,6 +680,64 @@ KiwiItemInfo.DisplayItemCompare = function(base_tooltip, tooltip, sel)
 	if(shadow_resist ~= 0) then
 		send_line((shadow_resist > 0 and "+" or "") .. shadow_resist .. " " .. L("TOOLTIP_IC_SHADOW"), shadow_resist > 0 and 0 or 1, shadow_resist > 0 and 1 or 0, 0, true)
 	end
+	
+	blank_if_dirty()
+	
+	if(agility_ap_melee ~= 0) then
+		send_line("Agility M. AP: " .. tostring(agility_ap_melee) .. " (" .. (agility_ap_melee < 0 and "-" or "+") .. tostring(agility_ap_melee/14):match("%d+.%d") .. " DPS)", 1, 1, 1, true)
+	end
+	if(agility_ap_range ~= 0) then
+		send_line("Agility R. AP: " .. tostring(agility_ap_range) .. " (" .. (agility_ap_range < 0 and "-" or "+") .. tostring(agility_ap_range/14):match("%d+.%d") .. " DPS)", 1, 1, 1, true)
+	end
+	if(agility_crit ~= 0) then
+		send_line("Agility M. Crit: " .. tostring(agility_crit):sub(1, 6) .. "%", 1, 1, 1, true)
+	end
+	if(agility_dodge ~= 0) then
+		send_line("Agility Dodge: " .. tostring(agility_dodge):sub(1, 6) .. "%", 1, 1, 1, true)
+	end
+	if(agility_armor ~= 0) then
+		send_line("Agility Armor: " .. tostring(agility_armor), 1, 1, 1, true)
+	end
+	if(agility_catform_ap_melee ~= 0) then
+		send_line("Agility Catform AP: " .. tostring(agility_catform_ap_melee) .. " (" .. (agility_catform_ap_melee < 0 and "-" or "+") .. tostring(agility_catform_ap_melee/14):match("%d+.%d") .. " DPS)", 1, 1, 1, true)
+	end
+	if(strength_ap_melee ~= 0) then
+		send_line("Strength M. AP: " .. tostring(strength_ap_melee) .. " (" .. (strength_ap_melee < 0 and "-" or "+") .. tostring(strength_ap_melee/14):match("%d+.%d") .. " DPS)", 1, 1, 1, true)
+	end
+	if(strength_block ~= 0) then
+		send_line("Strength Block: " .. tostring(strength_block) .. "%", 1, 1, 1, true)
+	end
+	if(stamina_health ~= 0) then
+		send_line("Stamina Health: " .. tostring(stamina_health), 1, 1, 1, true)
+	end
+	if(intellect_mana ~= 0) then
+		send_line("Intellect Mana: " .. tostring(intellect_mana), 1, 1, 1, true)
+	end
+	if(intellect_crit ~= 0) then
+		send_line("Intellect Crit: " .. tostring(intellect_crit):sub(1, 6) .. "%", 1, 1, 1, true)
+	end
+	if(spirit_hpt ~= 0) then
+		send_line("Spirit H/5: " .. tostring(spirit_hpt), 1, 1, 1, true)
+	end
+	if(spirit_mpt ~= 0) then
+		send_line("Spirit M/5: " .. tostring(spirit_mpt), 1, 1, 1, true)
+	end
+	if(arcane_resist_p ~= 0) then
+		send_line("Arcane Resist: " .. tostring(arcane_resist_p):sub(1, 5) .. "%", 1, 1, 1, true)
+	end
+	if(fire_resist_p ~= 0) then
+		send_line("Fire Resist: " .. tostring(fire_resist_p):sub(1, 5) .. "%", 1, 1, 1, true)
+	end
+	if(frost_resist_p ~= 0) then
+		send_line("Frost Resist: " .. tostring(frost_resist_p):sub(1, 5) .. "%", 1, 1, 1, true)
+	end
+	if(nature_resist_p ~= 0) then
+		send_line("Nature Resist: " .. tostring(nature_resist_p):sub(1, 5) .. "%", 1, 1, 1, true)
+	end
+	if(shadow_resist_p ~= 0) then
+		send_line("Shadow Resist: " .. tostring(shadow_resist_p):sub(1, 5) .. "%", 1, 1, 1, true)
+	end
+	
 	
 	blank_if_dirty()
 	
