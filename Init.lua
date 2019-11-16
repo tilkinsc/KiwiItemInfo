@@ -44,6 +44,7 @@ KiwiItemInfo._DEFAULT_VARS = {
 		["flash_hotkey"] = "LCTRL",
 		["ilvl_only_equips"] = true,
 		["item_compare_on"] = true,
+		["item_compare_extra"] = true,
 		["tooltip_price_on"] = true,
 		["tooltip_ilvl_on"] = true,
 		["tooltip_ilvl_colors"] = true,

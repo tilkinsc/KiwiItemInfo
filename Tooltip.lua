@@ -472,6 +472,9 @@ KiwiItemInfo.DisplayItemCompare = function(base_tooltip, tooltip, sel)
 	local agility_crit = 0
 	local agility_dodge = 0
 	local agility_catform_ap_melee = 0
+	local agility_armor = 2 * agility
+	
+	local stamina_health = 10 * stamina
 	
 	local strength_ap_melee = 0
 	local strength_block = 0
@@ -488,8 +491,6 @@ KiwiItemInfo.DisplayItemCompare = function(base_tooltip, tooltip, sel)
 	local nature_resist_p = 0.238095238 * nature_resist
 	local shadow_resist_p = 0.238095238 * shadow_resist
 	
-	local agility_armor = 2 * agility
-	local stamina_health = 10 * stamina
 	
 	if(classID == 1) then -- warrior
 		agility_ap_range = 2 * agility
@@ -607,7 +608,7 @@ KiwiItemInfo.DisplayItemCompare = function(base_tooltip, tooltip, sel)
 	end
 	
 	tooltip:AddLine(" ")
-	tooltip:AddLine(L"TOOLTIP_ITEM_COMPARE", 0.06666, 0.6, 0.06666, true)
+	tooltip:AddLine(L"TOOLTIP_ITEM_COMPARE", 0.06666, 0.6, 0.06666, false)
 	
 	-- min/max attack
 	if(min_dmg ~= 0 or max_dmg ~= 0) then
@@ -663,7 +664,7 @@ KiwiItemInfo.DisplayItemCompare = function(base_tooltip, tooltip, sel)
 	
 	blank_if_dirty()
 	
-	-- TODO: attack power, enchants, recognize 2h unequipping shield/dual wield, probably not set effects
+	-- TODO: attack power, enchants, probably not set effects
 	-- enchants are going to be difficult
 	if(arcane_resist ~= 0) then
 		send_line((arcane_resist > 0 and "+" or "") .. arcane_resist .. " " .. L("TOOLTIP_IC_ARCANE"), arcane_resist > 0 and 0 or 1, arcane_resist > 0 and 1 or 0, 0, true)
@@ -683,63 +684,65 @@ KiwiItemInfo.DisplayItemCompare = function(base_tooltip, tooltip, sel)
 	
 	blank_if_dirty()
 	
-	if(agility_ap_melee ~= 0) then
-		send_line("Agility M. AP: " .. tostring(agility_ap_melee) .. " (" .. (agility_ap_melee < 0 and "-" or "+") .. tostring(agility_ap_melee/14):match("%d+.%d") .. " DPS)", 1, 1, 1, true)
+	if(KiwiItemInfo_Vars.vars["item_compare_extra"] == true) then
+		
+		if(agility_ap_melee ~= 0) then
+			send_line(L("TOOLTIP_EX_AGI_M_AP") .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_melee) .. " (" .. (agility_ap_melee < 0 and "-" or "+") .. tostring(agility_ap_melee/14):match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
+		end
+		if(agility_ap_range ~= 0) then
+			send_line(L("TOOLTIP_EX_AGI_R_AP") .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_range) .. " (" .. (agility_ap_range < 0 and "-" or "+") .. tostring(agility_ap_range/14):match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
+		end
+		if(agility_crit ~= 0) then
+			send_line(L("TOOLTIP_EX_AGI_CRIT") .. string.format("|cFFEFEF00%s|r", tostring(agility_crit):sub(1, 6) .. "%"), 1, 1, 1, true)
+		end
+		if(agility_dodge ~= 0) then
+			send_line(L("TOOLTIP_EX_AGI_DODGE") .. string.format("|cFFEFEF00%s|r", tostring(agility_dodge):sub(1, 6) .. "%"), 1, 1, 1, true)
+		end
+		if(agility_armor ~= 0) then
+			send_line(L("TOOLTIP_EX_AGI_AR") .. string.format("|cFFEFEF00%s|r", tostring(agility_armor)), 1, 1, 1, true)
+		end
+		if(agility_catform_ap_melee ~= 0) then
+			send_line(L("TOOLTIP_EX_AGI_M_CAT_AP") .. string.format("|cFFEFEF00%s|r", tostring(agility_catform_ap_melee) .. " (" .. (agility_catform_ap_melee < 0 and "-" or "+") .. tostring(agility_catform_ap_melee/14):match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
+		end
+		if(stamina_health ~= 0) then
+			send_line(L("TOOLTIP_EX_STM_HP") .. string.format("|cFFEFEF00%s|r", tostring(stamina_health)), 1, 1, 1, true)
+		end
+		if(strength_ap_melee ~= 0) then
+			send_line(L("TOOLTIP_EX_STR_M_AP") .. string.format("|cFFEFEF00%s|r", tostring(strength_ap_melee) .. " (" .. (strength_ap_melee < 0 and "-" or "+") .. tostring(strength_ap_melee/14):match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
+		end
+		if(strength_block ~= 0) then
+			send_line(L("TOOLTIP_EX_STR_BLOCK") .. string.format("|cFFEFEF00%s|r", tostring(strength_block) .. "%"), 1, 1, 1, true)
+		end
+		if(intellect_mana ~= 0) then
+			send_line(L("TOOLTIP_EX_INT_MANA") .. string.format("|cFFEFEF00%s|r", tostring(intellect_mana)), 1, 1, 1, true)
+		end
+		if(intellect_crit ~= 0) then
+			send_line(L("TOOLTIP_EX_INT_CRIT") .. string.format("|cFFEFEF00%s|r", tostring(intellect_crit):sub(1, 6) .. "%"), 1, 1, 1, true)
+		end
+		if(spirit_hpt ~= 0) then
+			send_line(L("TOOLTIP_EX_SPT_HP5") .. string.format("|cFFEFEF00%s|r", tostring(spirit_hpt)), 1, 1, 1, true)
+		end
+		if(spirit_mpt ~= 0) then
+			send_line(L("TOOLTIP_EX_SPT_MP5") .. string.format("|cFFEFEF00%s|r", tostring(spirit_mpt)), 1, 1, 1, true)
+		end
+		if(arcane_resist_p ~= 0) then
+			send_line(L("TOOLTIP_EX_RES_ARCANE") .. string.format("|cFFEFEF00%s|r", tostring(arcane_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
+		end
+		if(fire_resist_p ~= 0) then
+			send_line(L("TOOLTIP_EX_RES_FIRE") .. string.format("|cFFEFEF00%s|r", tostring(fire_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
+		end
+		if(frost_resist_p ~= 0) then
+			send_line(L("TOOLTIP_EX_RES_FROST") .. string.format("|cFFEFEF00%s|r", tostring(frost_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
+		end
+		if(nature_resist_p ~= 0) then
+			send_line(L("TOOLTIP_EX_RES_NATURE") .. string.format("|cFFEFEF00%s|r", tostring(nature_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
+		end
+		if(shadow_resist_p ~= 0) then
+			send_line(L("TOOLTIP_EX_RES_SHADOW") .. string.format("|cFFEFEF00%s|r", tostring(shadow_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
+		end
+		
+		blank_if_dirty()
 	end
-	if(agility_ap_range ~= 0) then
-		send_line("Agility R. AP: " .. tostring(agility_ap_range) .. " (" .. (agility_ap_range < 0 and "-" or "+") .. tostring(agility_ap_range/14):match("%d+.%d") .. " DPS)", 1, 1, 1, true)
-	end
-	if(agility_crit ~= 0) then
-		send_line("Agility M. Crit: " .. tostring(agility_crit):sub(1, 6) .. "%", 1, 1, 1, true)
-	end
-	if(agility_dodge ~= 0) then
-		send_line("Agility Dodge: " .. tostring(agility_dodge):sub(1, 6) .. "%", 1, 1, 1, true)
-	end
-	if(agility_armor ~= 0) then
-		send_line("Agility Armor: " .. tostring(agility_armor), 1, 1, 1, true)
-	end
-	if(agility_catform_ap_melee ~= 0) then
-		send_line("Agility Catform AP: " .. tostring(agility_catform_ap_melee) .. " (" .. (agility_catform_ap_melee < 0 and "-" or "+") .. tostring(agility_catform_ap_melee/14):match("%d+.%d") .. " DPS)", 1, 1, 1, true)
-	end
-	if(strength_ap_melee ~= 0) then
-		send_line("Strength M. AP: " .. tostring(strength_ap_melee) .. " (" .. (strength_ap_melee < 0 and "-" or "+") .. tostring(strength_ap_melee/14):match("%d+.%d") .. " DPS)", 1, 1, 1, true)
-	end
-	if(strength_block ~= 0) then
-		send_line("Strength Block: " .. tostring(strength_block) .. "%", 1, 1, 1, true)
-	end
-	if(stamina_health ~= 0) then
-		send_line("Stamina Health: " .. tostring(stamina_health), 1, 1, 1, true)
-	end
-	if(intellect_mana ~= 0) then
-		send_line("Intellect Mana: " .. tostring(intellect_mana), 1, 1, 1, true)
-	end
-	if(intellect_crit ~= 0) then
-		send_line("Intellect Crit: " .. tostring(intellect_crit):sub(1, 6) .. "%", 1, 1, 1, true)
-	end
-	if(spirit_hpt ~= 0) then
-		send_line("Spirit H/5: " .. tostring(spirit_hpt), 1, 1, 1, true)
-	end
-	if(spirit_mpt ~= 0) then
-		send_line("Spirit M/5: " .. tostring(spirit_mpt), 1, 1, 1, true)
-	end
-	if(arcane_resist_p ~= 0) then
-		send_line("Arcane Resist: " .. tostring(arcane_resist_p):sub(1, 5) .. "%", 1, 1, 1, true)
-	end
-	if(fire_resist_p ~= 0) then
-		send_line("Fire Resist: " .. tostring(fire_resist_p):sub(1, 5) .. "%", 1, 1, 1, true)
-	end
-	if(frost_resist_p ~= 0) then
-		send_line("Frost Resist: " .. tostring(frost_resist_p):sub(1, 5) .. "%", 1, 1, 1, true)
-	end
-	if(nature_resist_p ~= 0) then
-		send_line("Nature Resist: " .. tostring(nature_resist_p):sub(1, 5) .. "%", 1, 1, 1, true)
-	end
-	if(shadow_resist_p ~= 0) then
-		send_line("Shadow Resist: " .. tostring(shadow_resist_p):sub(1, 5) .. "%", 1, 1, 1, true)
-	end
-	
-	
-	blank_if_dirty()
 	
 	-- equips
 	for i, v in next, equips_a do
