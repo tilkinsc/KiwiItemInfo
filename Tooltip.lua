@@ -687,10 +687,20 @@ KiwiItemInfo.DisplayItemCompare = function(base_tooltip, tooltip, sel)
 	if(KiwiItemInfo_Vars.vars["item_compare_extra"] == true) then
 		
 		if(agility_ap_melee ~= 0) then
-			send_line(L["TOOLTIP_EX_AGI_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_melee) .. " (" .. (agility_ap_melee < 0 and "-" or "+") .. tostring(agility_ap_melee/14):match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
+			local temp = tostring(agility_ap_melee/14)
+			if(temp:match("%d+.%d")) then
+				send_line(L["TOOLTIP_EX_AGI_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_melee) .. " (" .. (agility_ap_melee < 0 and "-" or "+") .. temp:match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
+			else
+				send_line(L["TOOLTIP_EX_AGI_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_melee) .. " (" .. (agility_ap_melee < 0 and "-" or "+") .. temp:match("%d+") .. ".0 DPS)"), 1, 1, 1, true)
+			end
 		end
 		if(agility_ap_range ~= 0) then
-			send_line(L["TOOLTIP_EX_AGI_R_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_range) .. " (" .. (agility_ap_range < 0 and "-" or "+") .. tostring(agility_ap_range/14):match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
+			local temp = tostring(agility_ap_range/14)
+			if(temp:match("%d+.%d")) then
+				send_line(L["TOOLTIP_EX_AGI_R_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_range) .. " (" .. (agility_ap_range < 0 and "-" or "+") .. temp:match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
+			else
+				send_line(L["TOOLTIP_EX_AGI_R_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_range) .. " (" .. (agility_ap_range < 0 and "-" or "+") .. temp:match("%d+") .. ".0 DPS)"), 1, 1, 1, true)
+			end
 		end
 		if(agility_crit ~= 0) then
 			send_line(L["TOOLTIP_EX_AGI_CRIT"] .. string.format("|cFFEFEF00%s|r", tostring(agility_crit):sub(1, 6) .. "%"), 1, 1, 1, true)
@@ -702,13 +712,23 @@ KiwiItemInfo.DisplayItemCompare = function(base_tooltip, tooltip, sel)
 			send_line(L["TOOLTIP_EX_AGI_AR"] .. string.format("|cFFEFEF00%s|r", tostring(agility_armor)), 1, 1, 1, true)
 		end
 		if(agility_catform_ap_melee ~= 0) then
-			send_line(L["TOOLTIP_EX_AGI_M_CAT_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_catform_ap_melee) .. " (" .. (agility_catform_ap_melee < 0 and "-" or "+") .. tostring(agility_catform_ap_melee/14):match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
+			local temp = tostring(agility_catform_ap_melee/14)
+			if(temp:match("%d+.%d")) then
+				send_line(L["TOOLTIP_EX_AGI_M_CAT_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_catform_ap_melee) .. " (" .. (agility_catform_ap_melee < 0 and "-" or "+") .. temp:match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
+			else
+				send_line(L["TOOLTIP_EX_AGI_M_CAT_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_catform_ap_melee) .. " (" .. (agility_catform_ap_melee < 0 and "-" or "+") .. temp:match("%d+") .. ".0 DPS)"), 1, 1, 1, true)
+			end
 		end
 		if(stamina_health ~= 0) then
 			send_line(L["TOOLTIP_EX_STM_HP"] .. string.format("|cFFEFEF00%s|r", tostring(stamina_health)), 1, 1, 1, true)
 		end
 		if(strength_ap_melee ~= 0) then
-			send_line(L["TOOLTIP_EX_STR_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(strength_ap_melee) .. " (" .. (strength_ap_melee < 0 and "-" or "+") .. tostring(strength_ap_melee/14):match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
+			local temp = tostring(strength_ap_melee/14)
+			if(temp:match("%d+.%d")) then
+				send_line(L["TOOLTIP_EX_STR_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(strength_ap_melee) .. " (" .. (strength_ap_melee < 0 and "-" or "+") .. temp:match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
+			else
+				send_line(L["TOOLTIP_EX_STR_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(strength_ap_melee) .. " (" .. (strength_ap_melee < 0 and "-" or "+") .. tostring(strength_ap_melee/14):match("%d+") .. ".0 DPS)"), 1, 1, 1, true)
+			end
 		end
 		if(strength_block ~= 0) then
 			send_line(L["TOOLTIP_EX_STR_BLOCK"] .. string.format("|cFFEFEF00%s|r", tostring(strength_block) .. "%"), 1, 1, 1, true)
