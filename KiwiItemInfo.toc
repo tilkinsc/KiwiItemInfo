@@ -21,5 +21,6 @@ Locale\zhTW\zhTW.lua
 Database.lua
 Tooltip.lua
 Bags.lua
+VarsUI.lua
 Command.lua
 KiwiItemInfo.lua

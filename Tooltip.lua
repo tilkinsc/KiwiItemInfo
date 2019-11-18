@@ -27,7 +27,7 @@
 
 
 
-local L = KiwiItemInfo.L
+local L = KiwiItemInfo.LocaleStrings()
 
 -- Adds item data to tooltips
 KiwiItemInfo.ShowItemInfo = function(tooltip)
@@ -82,8 +82,8 @@ KiwiItemInfo.ShowItemInfo = function(tooltip)
 				end
 				itemStackCount = (type(count) == "number") and count or 1
 				if(itemStackCount > 1) then
-					SetTooltipMoney(tooltip, vendorPrice, nil, L"TOOLTIP_UNIT")
-					SetTooltipMoney(tooltip, vendorPrice * itemStackCount, nil, L"TOOLTIP_STACK")
+					SetTooltipMoney(tooltip, vendorPrice, nil, L["TOOLTIP_UNIT"])
+					SetTooltipMoney(tooltip, vendorPrice * itemStackCount, nil, L["TOOLTIP_STACK"])
 				else
 					SetTooltipMoney(tooltip, vendorPrice, nil, "")
 				end
@@ -129,7 +129,7 @@ KiwiItemInfo.ShowItemInfo = function(tooltip)
 					tooltipiLvl:SetTextColor(r, g, b)
 				end
 				
-				tooltipiLvl:SetText(L("TOOLTIP_ILVL") .. itemLevel)
+				tooltipiLvl:SetText(L["TOOLTIP_ILVL"] .. itemLevel)
 				tooltipiLvl:Show()
 			end
 		end
@@ -196,76 +196,76 @@ KiwiItemInfo.PryItemStats = function(tooltip, index)
 				text = text:sub(1, -3)
 			end
 			
-			local tt_agility   = text:match( L"TOOLTIP_CMP_AGILITY",   1)
-			local tt_stamina   = text:match( L"TOOLTIP_CMP_STAMINA" ,  1)
-			local tt_strength  = text:match( L"TOOLTIP_CMP_STRENGTH",  1)
-			local tt_intellect = text:match( L"TOOLTIP_CMP_INTELLECT", 1)
-			local tt_spirit    = text:match( L"TOOLTIP_CMP_SPIRIT",    1)
+			local tt_agility   = text:match( L["TOOLTIP_CMP_AGILITY"],   1)
+			local tt_stamina   = text:match( L["TOOLTIP_CMP_STAMINA"] ,  1)
+			local tt_strength  = text:match( L["TOOLTIP_CMP_STRENGTH"],  1)
+			local tt_intellect = text:match( L["TOOLTIP_CMP_INTELLECT"], 1)
+			local tt_spirit    = text:match( L["TOOLTIP_CMP_SPIRIT"],    1)
 			
-			local tt_armor  = text:match( L"TOOLTIP_CMP_ARMOR", 1)
-			local tt_block  = text:match( L"TOOLTIP_CMP_BLOCK", 1)
+			local tt_armor  = text:match( L["TOOLTIP_CMP_ARMOR"], 1)
+			local tt_block  = text:match( L["TOOLTIP_CMP_BLOCK"], 1)
 			
-			local tt_durability = text:match( L"TOOLTIP_CMP_DURABILITY", 1)
+			local tt_durability = text:match( L["TOOLTIP_CMP_DURABILITY"], 1)
 			
-			local tt_dps    = text:match( L"TOOLTIP_CMP_DPS",    1)
-			local tt_damage = text:match( L"TOOLTIP_CMP_DAMAGE", 1)
+			local tt_dps    = text:match( L["TOOLTIP_CMP_DPS"],    1)
+			local tt_damage = text:match( L["TOOLTIP_CMP_DAMAGE"], 1)
 			
-			local tt_dodge = text:match( L"TOOLTIP_CMP_DODGE", 1)
+			local tt_dodge = text:match( L["TOOLTIP_CMP_DODGE"], 1)
 			
-			local tt_arcane = text:match( L"TOOLTIP_CMP_ARCANE", 1)
-			local tt_fire   = text:match( L"TOOLTIP_CMP_FIRE",   1)
-			local tt_frost  = text:match( L"TOOLTIP_CMP_FROST",  1)
-			local tt_nature = text:match( L"TOOLTIP_CMP_NATURE", 1)
-			local tt_shadow = text:match( L"TOOLTIP_CMP_SHADOW", 1)
+			local tt_arcane = text:match( L["TOOLTIP_CMP_ARCANE"], 1)
+			local tt_fire   = text:match( L["TOOLTIP_CMP_FIRE"],   1)
+			local tt_frost  = text:match( L["TOOLTIP_CMP_FROST"],  1)
+			local tt_nature = text:match( L["TOOLTIP_CMP_NATURE"], 1)
+			local tt_shadow = text:match( L["TOOLTIP_CMP_SHADOW"], 1)
 			
 			local bs_digit = text:gsub("[^(%+%-)%d+]",   "")
 			local ad_digit = text:gsub("[^%d+]",         "")
 			
-			agility   = tt_agility   and tt_agility:find(   L"TOOLTIP_PRY_AGILITY" )   and tonumber(bs_digit) or agility
-			stamina   = tt_stamina   and tt_stamina:find(   L"TOOLTIP_PRY_STAMINA" )   and tonumber(bs_digit) or stamina
-			strength  = tt_strength  and tt_strength:find(  L"TOOLTIP_PRY_STRENGTH" )  and tonumber(bs_digit) or strength
-			intellect = tt_intellect and tt_intellect:find( L"TOOLTIP_PRY_INTELLECT" ) and tonumber(bs_digit) or intellect
-			spirit    = tt_spirit    and tt_spirit:find(    L"TOOLTIP_PRY_SPIRIT" )    and tonumber(bs_digit) or spirit
+			agility   = tt_agility   and tt_agility:find(   L["TOOLTIP_PRY_AGILITY"] )   and tonumber(bs_digit) or agility
+			stamina   = tt_stamina   and tt_stamina:find(   L["TOOLTIP_PRY_STAMINA"] )   and tonumber(bs_digit) or stamina
+			strength  = tt_strength  and tt_strength:find(  L["TOOLTIP_PRY_STRENGTH"] )  and tonumber(bs_digit) or strength
+			intellect = tt_intellect and tt_intellect:find( L["TOOLTIP_PRY_INTELLECT"] ) and tonumber(bs_digit) or intellect
+			spirit    = tt_spirit    and tt_spirit:find(    L["TOOLTIP_PRY_SPIRIT"] )    and tonumber(bs_digit) or spirit
 			
-			armor = tt_armor and tt_armor:find( L"TOOLTIP_PRY_ARMOR" ) and tonumber(ad_digit) or armor
-			block = tt_block and tt_block:find( L"TOOLTIP_PRY_BLOCK" ) and tonumber(ad_digit) or block
+			armor = tt_armor and tt_armor:find( L["TOOLTIP_PRY_ARMOR"] ) and tonumber(ad_digit) or armor
+			block = tt_block and tt_block:find( L["TOOLTIP_PRY_BLOCK"] ) and tonumber(ad_digit) or block
 			
-			if(tt_dps and tt_dps:find(L"TOOLTIP_PRY_DPS")) then
-				local str = tt_dps:gsub(L"TOOLTIP_PRY_DPS", "")
+			if(tt_dps and tt_dps:find(L["TOOLTIP_PRY_DPS"])) then
+				local str = tt_dps:gsub(L["TOOLTIP_PRY_DPS"], "")
 				local num = str:match("%d+.%d+")
 				dps = tonumber(num)
 			end
 			
-			if(tt_damage and tt_damage:find(L"TOOLTIP_PRY_DAMAGE")) then
-				local nums = tt_damage:gsub(L"TOOLTIP_PRY_DAMAGE", "")
+			if(tt_damage and tt_damage:find(L["TOOLTIP_PRY_DAMAGE"])) then
+				local nums = tt_damage:gsub(L["TOOLTIP_PRY_DAMAGE"], "")
 				local l, r = string.split("-", nums)
 				min_dmg = tonumber(l)
 				max_dmg = tonumber(r)
 			end
 			
-			if(tt_durability and tt_durability:find(L"TOOLTIP_PRY_DURABILITY")) then
-				local nums = tt_durability:gsub(L"TOOLTIP_PRY_DURABILITY", "")
+			if(tt_durability and tt_durability:find(L["TOOLTIP_PRY_DURABILITY"])) then
+				local nums = tt_durability:gsub(L["TOOLTIP_PRY_DURABILITY"], "")
 				local l, r = string.split("/", nums)
 				durability = tonumber(r)
 			end
 			
-			dodge = tt_dodge and tt_dodge:find(L"TOOLTIP_PRY_DODGE") and tonumber(bs_digit) or dodge
+			dodge = tt_dodge and tt_dodge:find(L["TOOLTIP_PRY_DODGE"]) and tonumber(bs_digit) or dodge
 			
-			arcane_resist = tt_arcane and tt_arcane:find(L"TOOLTIP_PRY_ARCANE") and tonumber(bs_digit) or arcane_resist
-			fire_resist   = tt_fire and tt_fire:find(L"TOOLTIP_PRY_FIRE")       and tonumber(bs_digit) or fire_resist
-			frost_resist  = tt_frost and tt_frost:find(L"TOOLTIP_PRY_FROST")    and tonumber(bs_digit) or frost_resist
-			nature_resist = tt_nature and tt_nature:find(L"TOOLTIP_PRY_NATURE") and tonumber(bs_digit) or nature_resist
-			shadow_resist = tt_shadow and tt_shadow:find(L"TOOLTIP_PRY_SHADOW") and tonumber(bs_digit) or shadow_resist
+			arcane_resist = tt_arcane and tt_arcane:find(L["TOOLTIP_PRY_ARCANE"]) and tonumber(bs_digit) or arcane_resist
+			fire_resist   = tt_fire and tt_fire:find(L["TOOLTIP_PRY_FIRE"])       and tonumber(bs_digit) or fire_resist
+			frost_resist  = tt_frost and tt_frost:find(L["TOOLTIP_PRY_FROST"])    and tonumber(bs_digit) or frost_resist
+			nature_resist = tt_nature and tt_nature:find(L["TOOLTIP_PRY_NATURE"]) and tonumber(bs_digit) or nature_resist
+			shadow_resist = tt_shadow and tt_shadow:find(L["TOOLTIP_PRY_SHADOW"]) and tonumber(bs_digit) or shadow_resist
 			
-			if(text:find(L"TOOLTIP_PRY_EQUIP", 1) == 1) then
+			if(text:find(L["TOOLTIP_PRY_EQUIP"], 1) == 1) then
 				table.insert(equips, raw_text)
 			end
 			
-			if(text:find(L"TOOLTIP_PRY_USE", 1) == 1) then
+			if(text:find(L["TOOLTIP_PRY_USE"], 1) == 1) then
 				table.insert(uses, raw_text)
 			end
 			
-			if(text:find(L"TOOLTIP_PRY_CHANCE", 1) == 1) then
+			if(text:find(L["TOOLTIP_PRY_CHANCE"], 1) == 1) then
 				table.insert(chances, raw_text)
 			end
 			
@@ -608,58 +608,58 @@ KiwiItemInfo.DisplayItemCompare = function(base_tooltip, tooltip, sel)
 	end
 	
 	tooltip:AddLine(" ")
-	tooltip:AddLine(L"TOOLTIP_ITEM_COMPARE", 0.06666, 0.6, 0.06666, false)
+	tooltip:AddLine(L["TOOLTIP_ITEM_COMPARE"], 0.06666, 0.6, 0.06666, false)
 	
 	-- min/max attack
 	if(min_dmg ~= 0 or max_dmg ~= 0) then
 		send_line(((min_dmg > 0) and string.format("|cFF00FF00+%s|r", min_dmg) or string.format("|cFFFF0000%s|r", min_dmg))
 					.. " / "
 					.. ((max_dmg > 0) and string.format("|cFF00FF00+%s|r", max_dmg) or string.format("|cFFFF0000%s|r", max_dmg))
-					.. L("TOOLTIP_IC_DAMAGE_DELTA") .. math.abs(max_dmg - min_dmg) .. ")")
+					.. L["TOOLTIP_IC_DAMAGE_DELTA"] .. math.abs(max_dmg - min_dmg) .. ")")
 	end
 	
 	-- dps
 	if(dps ~= 0) then
-		send_line((dps > 0 and "+" or "") .. dps .. " " .. L("TOOLTIP_IC_DPS"), dps > 0 and 0 or 1, dps > 0 and 1 or 0, 0, true)
+		send_line((dps > 0 and "+" or "") .. dps .. " " .. L["TOOLTIP_IC_DPS"], dps > 0 and 0 or 1, dps > 0 and 1 or 0, 0, true)
 	end
 	
 	blank_if_dirty()
 	
 	-- armor/block/durability
 	if(armor ~= 0) then
-		send_line((armor > 0 and "+" or "") .. armor .. " " .. L("TOOLTIP_IC_ARMOR"), armor > 0 and 0 or 1, armor > 0 and 1 or 0, 0, true)
+		send_line((armor > 0 and "+" or "") .. armor .. " " .. L["TOOLTIP_IC_ARMOR"], armor > 0 and 0 or 1, armor > 0 and 1 or 0, 0, true)
 	end
 	if(block ~= 0) then
-		send_line((block > 0 and "+" or "") .. block .. " " .. L("TOOLTIP_IC_BLOCK"), block > 0 and 0 or 1, block > 0 and 1 or 0, 0, true)
+		send_line((block > 0 and "+" or "") .. block .. " " .. L["TOOLTIP_IC_BLOCK"], block > 0 and 0 or 1, block > 0 and 1 or 0, 0, true)
 	end
 	if(durability ~= 0) then
-		send_line((durability > 0 and "+" or "") .. durability .. " " .. L("TOOLTIP_IC_DURABILITY"), durability > 0 and 0 or 1, durability > 0 and 1 or 0, 0, true)
+		send_line((durability > 0 and "+" or "") .. durability .. " " .. L["TOOLTIP_IC_DURABILITY"], durability > 0 and 0 or 1, durability > 0 and 1 or 0, 0, true)
 	end
 	
 	blank_if_dirty()
 	
 	-- basic stats
 	if(agility ~= 0) then
-		send_line((agility > 0 and "+" or "") .. agility .. " " .. L("TOOLTIP_IC_AGILITY"), agility > 0 and 0 or 1, agility > 0 and 1 or 0, 0, true)
+		send_line((agility > 0 and "+" or "") .. agility .. " " .. L["TOOLTIP_IC_AGILITY"], agility > 0 and 0 or 1, agility > 0 and 1 or 0, 0, true)
 	end
 	if(stamina ~= 0) then
-		send_line((stamina > 0 and "+" or "") .. stamina .. " " .. L("TOOLTIP_IC_STAMINA"), stamina > 0 and 0 or 1, stamina > 0 and 1 or 0, 0, true)
+		send_line((stamina > 0 and "+" or "") .. stamina .. " " .. L["TOOLTIP_IC_STAMINA"], stamina > 0 and 0 or 1, stamina > 0 and 1 or 0, 0, true)
 	end
 	if(strength ~= 0) then
-		send_line((strength > 0 and "+" or "") .. strength .. " " .. L("TOOLTIP_IC_STRENGTH"), strength > 0 and 0 or 1, strength > 0 and 1 or 0, 0, true)
+		send_line((strength > 0 and "+" or "") .. strength .. " " .. L["TOOLTIP_IC_STRENGTH"], strength > 0 and 0 or 1, strength > 0 and 1 or 0, 0, true)
 	end
 	if(intellect ~= 0) then
-		send_line((intellect > 0 and "+" or "") .. intellect .. " " .. L("TOOLTIP_IC_INTELLECT"), intellect > 0 and 0 or 1, intellect > 0 and 1 or 0, 0, true)
+		send_line((intellect > 0 and "+" or "") .. intellect .. " " .. L["TOOLTIP_IC_INTELLECT"], intellect > 0 and 0 or 1, intellect > 0 and 1 or 0, 0, true)
 	end
 	if(spirit ~= 0) then
-		send_line((spirit > 0 and "+" or "") .. spirit .. " " .. L("TOOLTIP_IC_SPIRIT"), spirit > 0 and 0 or 1, spirit > 0 and 1 or 0, 0, true)
+		send_line((spirit > 0 and "+" or "") .. spirit .. " " .. L["TOOLTIP_IC_SPIRIT"], spirit > 0 and 0 or 1, spirit > 0 and 1 or 0, 0, true)
 	end
 	
 	blank_if_dirty()
 	
 	-- special
 	if(dodge ~= 0) then
-		send_line((dodge > 0 and "+" or "") .. dodge .. "% " .. L("TOOLTIP_IC_DODGE"), dodge > 0 and 0 or 1, dodge > 0 and 1 or 0, 0, true)
+		send_line((dodge > 0 and "+" or "") .. dodge .. "% " .. L["TOOLTIP_IC_DODGE"], dodge > 0 and 0 or 1, dodge > 0 and 1 or 0, 0, true)
 	end
 	
 	blank_if_dirty()
@@ -667,19 +667,19 @@ KiwiItemInfo.DisplayItemCompare = function(base_tooltip, tooltip, sel)
 	-- TODO: attack power, enchants, probably not set effects
 	-- enchants are going to be difficult
 	if(arcane_resist ~= 0) then
-		send_line((arcane_resist > 0 and "+" or "") .. arcane_resist .. " " .. L("TOOLTIP_IC_ARCANE"), arcane_resist > 0 and 0 or 1, arcane_resist > 0 and 1 or 0, 0, true)
+		send_line((arcane_resist > 0 and "+" or "") .. arcane_resist .. " " .. L["TOOLTIP_IC_ARCANE"], arcane_resist > 0 and 0 or 1, arcane_resist > 0 and 1 or 0, 0, true)
 	end
 	if(fire_resist ~= 0) then
-		send_line((fire_resist > 0 and "+" or "") .. fire_resist .. " " .. L("TOOLTIP_IC_FIRE"), fire_resist > 0 and 0 or 1, fire_resist > 0 and 1 or 0, 0, true)
+		send_line((fire_resist > 0 and "+" or "") .. fire_resist .. " " .. L["TOOLTIP_IC_FIRE"], fire_resist > 0 and 0 or 1, fire_resist > 0 and 1 or 0, 0, true)
 	end
 	if(frost_resist ~= 0) then
-		send_line((frost_resist > 0 and "+" or "") .. frost_resist .. " " .. L("TOOLTIP_IC_FROST"), frost_resist > 0 and 0 or 1, frost_resist > 0 and 1 or 0, 0, true)
+		send_line((frost_resist > 0 and "+" or "") .. frost_resist .. " " .. L["TOOLTIP_IC_FROST"], frost_resist > 0 and 0 or 1, frost_resist > 0 and 1 or 0, 0, true)
 	end
 	if(nature_resist ~= 0) then
-		send_line((nature_resist > 0 and "+" or "") .. nature_resist .. " " .. L("TOOLTIP_IC_NATURE"), nature_resist > 0 and 0 or 1, nature_resist > 0 and 1 or 0, 0, true)
+		send_line((nature_resist > 0 and "+" or "") .. nature_resist .. " " .. L["TOOLTIP_IC_NATURE"], nature_resist > 0 and 0 or 1, nature_resist > 0 and 1 or 0, 0, true)
 	end
 	if(shadow_resist ~= 0) then
-		send_line((shadow_resist > 0 and "+" or "") .. shadow_resist .. " " .. L("TOOLTIP_IC_SHADOW"), shadow_resist > 0 and 0 or 1, shadow_resist > 0 and 1 or 0, 0, true)
+		send_line((shadow_resist > 0 and "+" or "") .. shadow_resist .. " " .. L["TOOLTIP_IC_SHADOW"], shadow_resist > 0 and 0 or 1, shadow_resist > 0 and 1 or 0, 0, true)
 	end
 	
 	blank_if_dirty()
@@ -687,58 +687,58 @@ KiwiItemInfo.DisplayItemCompare = function(base_tooltip, tooltip, sel)
 	if(KiwiItemInfo_Vars.vars["item_compare_extra"] == true) then
 		
 		if(agility_ap_melee ~= 0) then
-			send_line(L("TOOLTIP_EX_AGI_M_AP") .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_melee) .. " (" .. (agility_ap_melee < 0 and "-" or "+") .. tostring(agility_ap_melee/14):match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_AGI_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_melee) .. " (" .. (agility_ap_melee < 0 and "-" or "+") .. tostring(agility_ap_melee/14):match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
 		end
 		if(agility_ap_range ~= 0) then
-			send_line(L("TOOLTIP_EX_AGI_R_AP") .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_range) .. " (" .. (agility_ap_range < 0 and "-" or "+") .. tostring(agility_ap_range/14):match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_AGI_R_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_range) .. " (" .. (agility_ap_range < 0 and "-" or "+") .. tostring(agility_ap_range/14):match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
 		end
 		if(agility_crit ~= 0) then
-			send_line(L("TOOLTIP_EX_AGI_CRIT") .. string.format("|cFFEFEF00%s|r", tostring(agility_crit):sub(1, 6) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_AGI_CRIT"] .. string.format("|cFFEFEF00%s|r", tostring(agility_crit):sub(1, 6) .. "%"), 1, 1, 1, true)
 		end
 		if(agility_dodge ~= 0) then
-			send_line(L("TOOLTIP_EX_AGI_DODGE") .. string.format("|cFFEFEF00%s|r", tostring(agility_dodge):sub(1, 6) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_AGI_DODGE"] .. string.format("|cFFEFEF00%s|r", tostring(agility_dodge):sub(1, 6) .. "%"), 1, 1, 1, true)
 		end
 		if(agility_armor ~= 0) then
-			send_line(L("TOOLTIP_EX_AGI_AR") .. string.format("|cFFEFEF00%s|r", tostring(agility_armor)), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_AGI_AR"] .. string.format("|cFFEFEF00%s|r", tostring(agility_armor)), 1, 1, 1, true)
 		end
 		if(agility_catform_ap_melee ~= 0) then
-			send_line(L("TOOLTIP_EX_AGI_M_CAT_AP") .. string.format("|cFFEFEF00%s|r", tostring(agility_catform_ap_melee) .. " (" .. (agility_catform_ap_melee < 0 and "-" or "+") .. tostring(agility_catform_ap_melee/14):match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_AGI_M_CAT_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_catform_ap_melee) .. " (" .. (agility_catform_ap_melee < 0 and "-" or "+") .. tostring(agility_catform_ap_melee/14):match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
 		end
 		if(stamina_health ~= 0) then
-			send_line(L("TOOLTIP_EX_STM_HP") .. string.format("|cFFEFEF00%s|r", tostring(stamina_health)), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_STM_HP"] .. string.format("|cFFEFEF00%s|r", tostring(stamina_health)), 1, 1, 1, true)
 		end
 		if(strength_ap_melee ~= 0) then
-			send_line(L("TOOLTIP_EX_STR_M_AP") .. string.format("|cFFEFEF00%s|r", tostring(strength_ap_melee) .. " (" .. (strength_ap_melee < 0 and "-" or "+") .. tostring(strength_ap_melee/14):match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_STR_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(strength_ap_melee) .. " (" .. (strength_ap_melee < 0 and "-" or "+") .. tostring(strength_ap_melee/14):match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
 		end
 		if(strength_block ~= 0) then
-			send_line(L("TOOLTIP_EX_STR_BLOCK") .. string.format("|cFFEFEF00%s|r", tostring(strength_block) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_STR_BLOCK"] .. string.format("|cFFEFEF00%s|r", tostring(strength_block) .. "%"), 1, 1, 1, true)
 		end
 		if(intellect_mana ~= 0) then
-			send_line(L("TOOLTIP_EX_INT_MANA") .. string.format("|cFFEFEF00%s|r", tostring(intellect_mana)), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_INT_MANA"] .. string.format("|cFFEFEF00%s|r", tostring(intellect_mana)), 1, 1, 1, true)
 		end
 		if(intellect_crit ~= 0) then
-			send_line(L("TOOLTIP_EX_INT_CRIT") .. string.format("|cFFEFEF00%s|r", tostring(intellect_crit):sub(1, 6) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_INT_CRIT"] .. string.format("|cFFEFEF00%s|r", tostring(intellect_crit):sub(1, 6) .. "%"), 1, 1, 1, true)
 		end
 		if(spirit_hpt ~= 0) then
-			send_line(L("TOOLTIP_EX_SPT_HP5") .. string.format("|cFFEFEF00%s|r", tostring(spirit_hpt)), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_SPT_HP5"] .. string.format("|cFFEFEF00%s|r", tostring(spirit_hpt)), 1, 1, 1, true)
 		end
 		if(spirit_mpt ~= 0) then
-			send_line(L("TOOLTIP_EX_SPT_MP5") .. string.format("|cFFEFEF00%s|r", tostring(spirit_mpt)), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_SPT_MP5"] .. string.format("|cFFEFEF00%s|r", tostring(spirit_mpt)), 1, 1, 1, true)
 		end
 		if(arcane_resist_p ~= 0) then
-			send_line(L("TOOLTIP_EX_RES_ARCANE") .. string.format("|cFFEFEF00%s|r", tostring(arcane_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_RES_ARCANE"] .. string.format("|cFFEFEF00%s|r", tostring(arcane_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
 		end
 		if(fire_resist_p ~= 0) then
-			send_line(L("TOOLTIP_EX_RES_FIRE") .. string.format("|cFFEFEF00%s|r", tostring(fire_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_RES_FIRE"] .. string.format("|cFFEFEF00%s|r", tostring(fire_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
 		end
 		if(frost_resist_p ~= 0) then
-			send_line(L("TOOLTIP_EX_RES_FROST") .. string.format("|cFFEFEF00%s|r", tostring(frost_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_RES_FROST"] .. string.format("|cFFEFEF00%s|r", tostring(frost_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
 		end
 		if(nature_resist_p ~= 0) then
-			send_line(L("TOOLTIP_EX_RES_NATURE") .. string.format("|cFFEFEF00%s|r", tostring(nature_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_RES_NATURE"] .. string.format("|cFFEFEF00%s|r", tostring(nature_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
 		end
 		if(shadow_resist_p ~= 0) then
-			send_line(L("TOOLTIP_EX_RES_SHADOW") .. string.format("|cFFEFEF00%s|r", tostring(shadow_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_RES_SHADOW"] .. string.format("|cFFEFEF00%s|r", tostring(shadow_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
 		end
 		
 		blank_if_dirty()

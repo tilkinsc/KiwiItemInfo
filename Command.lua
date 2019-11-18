@@ -28,59 +28,66 @@
 
 
 local printi = KiwiItemInfo.printi
-local L = KiwiItemInfo.L
+local L = KiwiItemInfo.LocaleStrings()
+local LF = KiwiItemInfo.LF
 
 -- Prints out item info from a specific-formatted string, is a command
 KiwiItemInfo.Command = function(msg)
 	
 	-- split message into arguments
 	local args = {string.split(" ", msg)}
-	if(#args < 1) then
-		printi(2, "Kiwi Item Info: Invalid argument length.")
+	if(#args < 1) then -- TODO:
+		printi(2, L["COMMAND_ERROR_ARG_LEN"])
+		return
+	end
+	
+	-- VarsUI
+	if(args[1] == "") then
+		KiwiItemInfo.VarsUI.Show()
 		return
 	end
 	
 	-- help message
-	if(args[1] == "help" or msg == "") then
-		printi(0, L"COMMAND_HELP1")
-		printi(0, L"COMMAND_HELP2")
+	if(args[1] == L["KIWIII_HELP"] or args[1] == LF("KIWIII_HELP")) then
+		printi(0, L["COMMAND_HELP1"])
+		printi(0, L["COMMAND_HELP2"])
 		for i=3, 19 do
-			print(L("COMMAND_HELP" .. i))
+			print(L["COMMAND_HELP" .. i])
 		end
 		return
 	end
 	
 	-- reload plugin
-	if(args[1] == "reload") then
-		printi(2, L"COMMAND_RELOAD")
+	if(args[1] == L["KIWIII_RELOAD"] or args[1] == LF("KIWIII_RELOAD")) then
+		printi(2, L["COMMAND_RELOAD"])
 		KiwiItemInfo.Disable()
 		KiwiItemInfo.Enable()
-		printi(0, L"COMMAND_RELOAD_DONE")
+		printi(0, L["COMMAND_RELOAD_DONE"])
 		return
 	end
 	
 	-- hard reset of plugin
-	if(args[1] == "reset") then
-		printi(2, L"COMMAND_RESET")
+	if(args[1] == L["KIWIII_RESET"] or args[1] == LF("KIWIII_RESET")) then
+		printi(2, L["COMMAND_RESET"])
 		KiwiItemInfo.Disable()
 		KiwiItemInfo_Vars = nil
 		KiwiItemInfo.Enable()
-		printi(0, L"COMMAND_RELOAD_DONE")
+		printi(0, L["COMMAND_RELOAD_DONE"])
 		return
 	end
 	
 	-- displays variables user can change
-	if(args[1] == "vars") then
-		printi(2, L"COMMAND_VARS_DUMP")
+	if(args[1] == L["KIWIII_VARS"] or args[1] == LF("KIWIII_VARS")) then
+		printi(2, L["COMMAND_VARS_DUMP"])
 		for i, v in next, KiwiItemInfo_Vars.vars do
 			print("   >", "|cFF888888" .. i .. "|r", "=", (v == true) and ("|cFF00FF00" .. tostring(v) .. "|r") or (v == false) and ("|cFFFF0000" .. tostring(v) .. "|r") or v)
 		end
-		printi(0, L"COMMAND_VARS_DONE")
+		printi(0, L["COMMAND_VARS_DONE"])
 		return
 	end
 	
 	-- sets variables the user can change
-	if(args[1] == "set") then
+	if(args[1] == L["KIWIII_SET"] or args[1] == LF("KIWIII_SET")) then
 		if(args[2]) then
 			if(args[3]) then
 				local var = KiwiItemInfo_Vars.vars[args[2]]
@@ -101,50 +108,50 @@ KiwiItemInfo.Command = function(msg)
 						if(type(val) == "boolean") then
 							KiwiItemInfo_Vars.vars[args[2]] = val
 						else
-							printi(2, L"COMMAND_SET_ERROR_BOOLEAN")
+							printi(2, L["COMMAND_SET_ERROR_BOOLEAN"])
 							return
 						end
 					elseif(type(var) == "number") then
 						if(type(val) == "number") then
 							KiwiItemInfo_Vars.vars[args[2]] = val
 						else
-							printi(2, L"COMMAND_SET_ERROR_NUMBER")
+							printi(2, L["COMMAND_SET_ERROR_NUMBER"])
 							return
 						end
 					elseif(type(var) == "string") then
 						if(type(val) == "string") then
 							KiwiItemInfo_Vars.vars[args[2]] = val
 						else
-							printi(2, L"COMMAND_SET_ERROR_STRING")
+							printi(2, L["COMMAND_SET_ERROR_STRING"])
 							return
 						end
 					end
 				else
-					printi(2, L"COMMAND_SET_ERROR_VAR")
+					printi(2, L["COMMAND_SET_ERROR_VAR"])
 					return
 				end
 			else
-				printi(2, L"COMMAND_SET_ERROR_VALUE")
+				printi(2, L["COMMAND_SET_ERROR_VALUE"])
 				return
 			end
 		else
-			printi(2, L"COMMAND_SET_ERROR_INDEX")
+			printi(2, L["COMMAND_SET_ERROR_INDEX"])
 			return
 		end
 		return
 	end
 	
 	-- Toggles CVar alwaysCompareItems
-	if(args[1] == "aci") then
+	if(args[1] == L["KIWIII_ACI"] or args[1] == LF("KIWIII_ACI")) then
 		local cvar = GetCVar("alwaysCompareItems")
 		SetCVar("alwaysCompareItems", cvar == "1" and 0 or 1)
 	end
 	
 	-- Searches for items in db
-	if(args[1] == "search") then
+	if(args[1] == L["KIWIII_SEARCH"] or args[1] == LF("KIWIII_SEARCH")) then
 		
 		if(KiwiItemInfo_Vars["search_cmd_state"] == false) then
-			printi(2, L"COMMAND_SEARCH_ERROR_DB")
+			printi(2, L["COMMAND_SEARCH_ERROR_DB"])
 			return
 		end
 		
@@ -167,7 +174,7 @@ KiwiItemInfo.Command = function(msg)
 			if(arg:find("%$", 1)) then
 				
 				if(#arg < 3) then
-					printi(2, L"COMMAND_SEARCH_ARG_LEN", arg, "!")
+					printi(2, L["COMMAND_SEARCH_ARG_LEN"], arg, "!")
 					return
 				end
 				
@@ -185,9 +192,9 @@ KiwiItemInfo.Command = function(msg)
 				enable_subtype_search = true
 				
 				subtype_search = arg:sub(2)
-				subtype_search = subtype_search:gsub("1H", L"COMMAND_SEARCH_ONE_HANDED")
-				subtype_search = subtype_search:gsub("2H", L"COMMAND_SEARCH_TWO_HANDED")
-				if(not subtype_search:find(L"COMMAND_SEARCH_1H", 1) and not subtype_search:find(L"COMMAND_SEARCH_2H")) then
+				subtype_search = subtype_search:gsub("1H", L["COMMAND_SEARCH_ONE_HANDED"])
+				subtype_search = subtype_search:gsub("2H", L["COMMAND_SEARCH_TWO_HANDED"])
+				if(not subtype_search:find(L["COMMAND_SEARCH_1H"], 1) and not subtype_search:find(L["COMMAND_SEARCH_2H"])) then
 					subtype_search = subtype_search:gsub("%u", " %1"):trim()
 				end
 				
@@ -235,7 +242,7 @@ KiwiItemInfo.Command = function(msg)
 		end)()
 		
 		if(direct_try) then
-			printi(0, L"COMMAND_SEARCH_DONE")
+			printi(0, L["COMMAND_SEARCH_DONE"])
 			print(direct_try.Link)
 			return
 		end
@@ -296,9 +303,9 @@ KiwiItemInfo.Command = function(msg)
 		end
 		
 		if(count > 0) then
-			printi(0, L"COMMAND_SEARCH_DONE1", count)
+			printi(0, L["COMMAND_SEARCH_DONE1"], count)
 		else
-			printi(2, L"COMMAND_SEARCH_FAIL")
+			printi(2, L["COMMAND_SEARCH_FAIL"])
 		end
 		
 		return

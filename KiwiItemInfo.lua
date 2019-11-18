@@ -28,7 +28,7 @@
 
 
 local printi = KiwiItemInfo.printi
-local L = KiwiItemInfo.L
+local L = KiwiItemInfo.LocaleStrings()
 
 KiwiItemInfo.LoadVars = function()
 	if(KiwiItemInfo_Vars == nil) then
@@ -79,14 +79,14 @@ KiwiItemInfo.Enable = function()
 	if(KiwiItemInfo_Vars["first_run"]) then
 		KiwiItemInfo_Vars["first_run"] = false
 		
-		printi(0, L"KII_THANKS")
-		printi(0, L"KII_HELP")
+		printi(0, L["KII_THANKS"])
+		printi(0, L["KII_HELP"])
 	end
 	
 	-- ensure database is present, if user wants it
 	KiwiItemInfo_Vars["search_cmd_state"] = true
 	if(KiwiItemInfo.Database == nil) then
-		printi(1, L"KII_BAD_DB")
+		printi(1, L["KII_BAD_DB"])
 		KiwiItemInfo_Vars["search_cmd_state"] = false
 	end
 	
@@ -115,6 +115,92 @@ local ADDON_LOADED = function(addon)
 	end
 	
 	KiwiItemInfo.Enable()
+	
+	local VarsUI = KiwiItemInfo.VarsUI
+	VarsUI.Init()
+	VarsUI.AddComponent(3, "Flash Grey Items:",
+		function(self)
+			self:SetChecked(KiwiItemInfo_Vars.vars["flash_grey_items"])
+		end,
+		function(self, button, down)
+			KiwiItemInfo_Vars.vars["flash_grey_items"] = self:GetChecked()
+		end
+	)
+	VarsUI.AddComponent(2, "Flash Hotkey:",
+		function(self)
+			self:SetText(KiwiItemInfo_Vars.vars["flash_hotkey"])
+		end, 
+		function(self)
+			self:ClearFocus()
+			KiwiItemInfo_Vars.vars["flash_hotkey"] = self:GetText()
+		end
+	)
+	VarsUI.Blank()
+	VarsUI.AddComponent(3, "Item Compare On:",
+		function(self)
+			self:SetChecked(KiwiItemInfo_Vars.vars["item_compare_on"])
+		end,
+		function(self, button, down)
+			KiwiItemInfo_Vars.vars["item_compare_on"] = self:GetChecked()
+		end
+	)
+	VarsUI.AddComponent(3, "Verbose Item Compare:",
+		function(self)
+			self:SetChecked(KiwiItemInfo_Vars.vars["item_compare_extra"])
+		end,
+		function(self, button, down)
+			KiwiItemInfo_Vars.vars["item_compare_extra"] = self:GetChecked()
+		end
+	)
+	VarsUI.Blank()
+	VarsUI.AddComponent(3, "Item Vendor Price:",
+		function(self)
+			self:SetChecked(KiwiItemInfo_Vars.vars["tooltip_price_on"])
+		end,
+		function(self, button, down)
+			KiwiItemInfo_Vars.vars["tooltip_price_on"] = self:GetChecked()
+		end
+	)
+	VarsUI.Blank()
+	VarsUI.AddComponent(3, "Show iLvl:",
+		function(self)
+			self:SetChecked(KiwiItemInfo_Vars.vars["tooltip_ilvl_on"])
+		end,
+		function(self, button, down)
+			KiwiItemInfo_Vars.vars["tooltip_ilvl_on"] = self:GetChecked()
+		end
+	)
+	VarsUI.AddComponent(3, "Show iLvl On Items:",
+		function(self)
+			self:SetChecked(not KiwiItemInfo_Vars.vars["ilvl_only_equips"])
+		end,
+		function(self, button, down)
+			KiwiItemInfo_Vars.vars["ilvl_only_equips"] = not self:GetChecked()
+		end
+	)
+	VarsUI.AddComponent(3, "Default iLvl Coloration:",
+		function(self)
+			self:SetChecked(KiwiItemInfo_Vars.vars["tooltip_ilvl_colors"])
+		end,
+		function(self, button, down)
+			KiwiItemInfo_Vars.vars["tooltip_ilvl_colors"] = self:GetChecked()
+		end
+	)
+	VarsUI.AddComponent(2, "Custom iLvl Color:",
+		function(self)
+			self:SetText(KiwiItemInfo_Vars.vars["tooltip_ilvl_nocolors_rgb"])
+		end, 
+		function(self)
+			self:ClearFocus()
+			local text = self:GetText()
+			if(text:match("%d+%s%d+%s%d+") or text:match("%d+%.%d+%s%d+%.%d+%s%d+%.%d+")) then
+				KiwiItemInfo_Vars.vars["tooltip_ilvl_nocolors_rgb"] = self:GetText()
+			else
+				-- TODO: error message
+			end
+		end
+	)
+	VarsUI:Hide()
 	
 	-- tooltip events
 	GameTooltip:HookScript("OnTooltipSetItem", KiwiItemInfo.ShowItemInfo)
