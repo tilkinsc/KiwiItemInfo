@@ -56,6 +56,7 @@ KiwiItemInfo.Locale["esES"] = {
 	["TOOLTIP_IC_SHADOW"] = "Resistencia a las Sombras",
 	["TOOLTIP_IC_DAMAGE_DELTA"] = " p. de Daño (delta: ",
 	["TOOLTIP_ITEM_COMPARE"] = "Kiwi dice que equipar esto hará:",
+	["TOOLTIP_ITEM_CONTRIB"] = "Contribución estadística:",
 	["TOOLTIP_EX_AGI_M_AP"] = "Agilidad M. PA: ",
 	["TOOLTIP_EX_AGI_R_AP"] = "Agilidad D. PA: ",
 	["TOOLTIP_EX_AGI_CRIT"] = "Agilidad M. Crít: ",

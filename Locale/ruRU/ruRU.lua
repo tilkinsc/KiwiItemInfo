@@ -56,6 +56,7 @@ KiwiItemInfo.Locale["ruRU"] = {
 	["TOOLTIP_IC_SHADOW"] = "Устойчивость 'Тьма':",
 	["TOOLTIP_IC_DAMAGE_DELTA"] = " Урон (дельта: ",
 	["TOOLTIP_ITEM_COMPARE"] = "Kiwi says equipping will do this:",
+	["TOOLTIP_ITEM_CONTRIB"] = "Вклад Стат:",
 	["TOOLTIP_EX_AGI_M_AP"] = "Ловкости РУ. СА: ",
 	["TOOLTIP_EX_AGI_R_AP"] = "Ловкости СТ. СА: ",
 	["TOOLTIP_EX_AGI_CRIT"] = "Ловкости РУ. Критика: ",

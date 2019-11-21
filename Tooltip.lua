@@ -373,10 +373,500 @@ KiwiItemInfo.ClearItemCompare = function(slot, tooltip)
 	
 end
 
+
+KiwiItemInfo.ShowEffectiveStats = function(tooltip)
+	
+	if(KiwiItemInfo_Vars.vars["item_compare_extra"] == false) then
+		return
+	end
+	
+	local selection = GetMouseFocus()
+	if(selection == nil) then
+		return
+	end
+	
+	local name = selection:GetName()
+	if(name:find("Character") ~= 1 or not name:find("Slot")) then
+		return
+	end
+	
+	if(att1 == nil) then
+		return
+	end
+	
+	local _, _, classID = UnitClass("player");
+	
+	
+	local armor = UnitArmor("player")
+	armor = armor - 2 * basic1.Agility
+	
+	local ch_agi, _, ch_agi_pos, ch_agi_neg = UnitStat("player", 2)
+	local ch_stm, _, ch_stm_pos, ch_stm_neg = UnitStat("player", 3)
+	local ch_str, _, ch_str_pos, ch_str_neg = UnitStat("player", 1)
+	local ch_int, _, ch_int_pos, ch_int_neg = UnitStat("player", 4)
+	local ch_spt, _, ch_spt_pos, ch_spt_neg = UnitStat("player", 5)
+	
+	
+	local agility_ap_melee = 0
+	local agility_ap_range = 0
+	local agility_crit = 0
+	local agility_dodge = 0
+	local agility_catform_ap_melee = 0
+	local agility_armor = 2 * basic1.Agility
+	local eff_agility_armor = (agility_armor / (2 * ch_agi_pos)) * 100
+	
+	local stamina_health = 10 * basic1.Stamina
+	local eff_stamina_health = (stamina_health / (10 * ch_stm_pos)) * 100
+	
+	local strength_ap_melee = 0
+	local strength_block = 0
+	
+	local intellect_mana = 0
+	local intellect_crit = 0
+	
+	local spirit_hpt = 0
+	local spirit_mpt = 0
+	
+	local arcane_resist_p = 0.238095238 * resist1.Arcane_Resist
+	local fire_resist_p = 0.238095238 * resist1.Fire_Resist
+	local frost_resist_p = 0.238095238 * resist1.Frost_Resist
+	local nature_resist_p = 0.238095238 * resist1.Nature_Resist
+	local shadow_resist_p = 0.238095238 * resist1.Shadow_Resist
+	
+	local eff_arcane_resist_p = (resist1.Arcane_Resist / UnitResistance("player", 6)) * 100
+	local eff_fire_resist_p = (resist1.Fire_Resist / UnitResistance("player", 2)) * 100
+	local eff_frost_resist_p = (resist1.Frost_Resist / UnitResistance("player", 4)) * 100
+	local eff_nature_resist_p = (resist1.Nature_Resist / UnitResistance("player", 3)) * 100
+	local eff_shadow_resist_p = (resist1.Shadow_Resist / UnitResistance("player", 5)) * 100
+	
+	local eff_agility_ap_melee = 0
+	local eff_agility_ap_range = 0
+	local eff_agility_crit = 0
+	local eff_agility_dodge = 0
+	local eff_agility_catform_ap_melee = 0
+	
+	local eff_strength_ap_melee = 0
+	local eff_strength_block = 0
+	
+	local eff_intellect_mana = 0
+	local eff_intellect_crit = 0
+	
+	local eff_spirit_hpt = 0
+	local eff_spirit_mpt = 0
+	
+	
+	
+	if(classID == 1) then -- warrior
+		agility_ap_range = 2 * basic1.Agility
+		eff_agility_ap_range = (agility_ap_range / (2 * ch_agi_pos)) * 100
+		
+		agility_crit = 0.05 * basic1.Agility
+		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_pos)) * 100
+		
+		agility_dodge = 0.05 * basic1.Agility
+		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_pos)) * 100
+		
+		
+		strength_ap_melee = 2 * basic1.Strength
+		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_pos)) * 100
+		
+		strength_block = 0.05 * basic1.Strength
+		eff_strength_block = (strength_block / (0.05 * ch_str_pos)) * 100
+		
+		
+		spirit_hpt = 0.80 * basic1.Spirit
+		eff_spirit_hpt = (spirit_hpt / (0.80 * ch_spt_pos)) * 100
+	elseif(classID == 2) then -- paladin
+		agility_crit = 0.05 * basic1.Agility
+		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_pos)) * 100
+		
+		agility_dodge = 0.05 * basic1.Agility
+		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_pos)) * 100
+		
+		
+		strength_ap_melee = 2 * basic1.Strength
+		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_pos)) * 100
+		
+		strength_block = 0.05 * basic1.Strength
+		eff_strength_block = (strength_block / (0.05 * ch_str_pos)) * 100
+		
+		
+		intellect_mana = 15 * basic1.Intellect
+		eff_intellect_mana = (intellect_mana / (15 * ch_int_pos)) * 100
+		
+		intellect_crit = 0.033898305 * basic1.Intellect
+		eff_intellect_crit = (intellect_crit / (0.033898305 * ch_int_pos)) * 100
+		
+		
+		spirit_hpt = 0.80 * basic1.Spirit
+		eff_spirit_hpt = (spirit_hpt / (0.80 * ch_spt_pos)) * 100
+		
+		spirit_mpt = 0.20 * basic1.Spirit
+		eff_spirit_mpt = (spirit_mpt / (0.20 * ch_spt_pos)) * 100
+	elseif(classID == 3) then -- hunter
+		agility_ap_melee = 1 * basic1.Agility
+		eff_agility_ap_melee = (agility_ap_melee / (1 * ch_agi_pos)) * 100
+		
+		agility_ap_range = 2 * basic1.Agility
+		eff_agility_ap_range = (agility_ap_range / (2 * ch_agi_pos)) * 100
+		
+		agility_crit = 0.018867924 * basic1.Agility
+		eff_agility_crit = (agility_crit / (0.018867924 * ch_agi_pos)) * 100
+		
+		agility_dodge = 0.037735849 * basic1.Agility
+		eff_agility_dodge = (agility_dodge / (0.037735849 * ch_agi_pos)) * 100
+		
+		
+		strength_ap_melee = 1 * basic1.Strength
+		eff_strength_ap_melee = (strength_ap_melee / (1 * ch_str_pos)) * 100
+		
+		
+		intellect_mana = 15 * basic1.Intellect
+		eff_intellect_mana = (intellect_mana / (15 * ch_int_pos)) * 100
+		
+		
+		spirit_hpt = 1.0 * basic1.Spirit
+		eff_spirit_hpt = (spirit_hpt / (1.0 * ch_spt_pos)) * 100
+		
+		spirit_mpt = 0.20 * basic1.Spirit
+		eff_spirit_mpt = (spirit_mpt / (0.20 * ch_spt_pos)) * 100
+	elseif(classID == 4) then -- rogue
+		agility_ap_melee = 1 * basic1.Agility
+		eff_agility_ap_melee = (agility_ap_melee / (1 * ch_agi_pos)) * 100
+		
+		agility_ap_range = 2 * basic1.Agility
+		eff_agility_ap_range = (agility_ap_range / (2 * ch_agi_pos)) * 100
+		
+		agility_crit = 0.03448275 * basic1.Agility
+		eff_agility_crit = (agility_crit / (0.03448275 * ch_agi_pos)) * 100
+		
+		agility_dodge = 0.06896551 * basic1.Agility
+		eff_agility_dodge = (agility_dodge / (0.06896551 * ch_agi_pos)) * 100
+		
+		
+		strength_ap_melee = 1 * basic1.Strength
+		eff_strength_ap_melee = (strength_ap_melee / (1 * ch_str_pos)) * 100
+		
+		
+		spirit_hpt = 0.60 * basic1.Spirit
+		eff_spirit_hpt = (spirit_hpt / (0.60 * ch_spt_pos)) * 100
+	elseif(classID == 5) then -- priest
+		agility_crit = 0.05 * basic1.Agility
+		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_pos)) * 100
+		
+		agility_dodge = 0.05 * basic1.Agility
+		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_pos)) * 100
+		
+		
+		strength_ap_melee = 2 * basic1.Strength
+		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_pos)) * 100
+		
+		
+		intellect_mana = 15 * basic1.Intellect
+		eff_intellect_mana = (intellect_mana / (15 * ch_int_pos)) * 100
+		
+		intellect_crit = 0.0168918918 * basic1.Intellect
+		eff_intellect_crit = (intellect_crit / (0.0168918918 * ch_int_pos)) * 100
+		
+		
+		spirit_hpt = 1.0 * basic1.Spirit
+		eff_spirit_hpt = (spirit_hpt / (1.0 * ch_spt_pos)) * 100
+		
+		spirit_mpt = 0.25 * basic1.Spirit
+		eff_spirit_mpt = (spirit_mpt / (0.25 * ch_spt_pos)) * 100
+	elseif(classID == 7) then -- shaman
+		agility_crit = 0.05 * basic1.Agility
+		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_pos)) * 100
+		
+		agility_dodge = 0.05 * basic1.Agility
+		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_pos)) * 100
+		
+		
+		strength_ap_melee = 2 * basic1.Strength
+		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_pos)) * 100
+		
+		strength_block = 0.05 * basic1.Strength
+		eff_strength_block = (strength_block / (0.05 * ch_str_pos)) * 100
+		
+		
+		intellect_mana = 15 * basic1.Intellect
+		eff_intellect_mana = (intellect_mana / (15 * ch_int_pos)) * 100
+		
+		intellect_crit = 0.016806722 * basic1.Intellect
+		eff_intellect_crit = (intellect_crit / (0.016806722 * ch_int_pos)) * 100
+		
+		
+		spirit_hpt = 1.1 * basic1.Spirit
+		eff_spirit_hpt = (spirit_hpt / (1.1 * ch_spt_pos)) * 100
+		
+		spirit_mpt = 0.20 * basic1.Spirit
+		eff_spirit_mpt = (spirit_mpt / (0.20 * ch_spt_pos)) * 100
+	elseif(classID == 8) then -- mage
+		agility_crit = 0.05 * basic1.Agility
+		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_pos)) * 100
+		
+		agility_dodge = 0.05 * basic1.Agility
+		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_pos)) * 100
+		
+		
+		strength_ap_melee = 2 * basic1.Strength
+		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_pos)) * 100
+		
+		
+		intellect_mana = 15 * basic1.Intellect
+		eff_intellect_mana = (intellect_mana / (15 * ch_int_pos)) * 100
+		
+		intellect_crit = 0.016806722 * basic1.Intellect
+		eff_intellect_crit = (intellect_crit / (0.016806722 * ch_int_pos)) * 100
+		
+		
+		spirit_hpt = 1.0 * basic1.Spirit
+		eff_spirit_hpt = (spirit_hpt / (1.0 * ch_spt_pos)) * 100
+		
+		spirit_mpt = 0.25 * basic1.Spirit
+		eff_spirit_mpt = (spirit_mpt / (0.25 * ch_spt_pos)) * 100
+	elseif(classID == 9) then -- warlock
+		agility_crit = 0.05 * basic1.Agility
+		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_pos)) * 100
+		
+		agility_dodge = 0.05 * basic1.Agility
+		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_pos)) * 100
+		
+		
+		strength_ap_melee = 2 * basic1.Strength
+		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_pos)) * 100
+		
+		
+		intellect_mana = 15 * basic1.Intellect
+		eff_intellect_mana = (intellect_mana / (15 * ch_int_pos)) * 100
+		
+		intellect_crit = 0.016501650 * basic1.Intellect
+		eff_intellect_crit = (intellect_crit / (0.016501650 * ch_int_pos)) * 100
+		
+		
+		spirit_hpt = 0.7 * basic1.Spirit
+		eff_spirit_hpt = (spirit_hpt / (0.7 * ch_spt_pos)) * 100
+		
+		spirit_mpt = 0.25 * basic1.Spirit
+		eff_spirit_mpt = (spirit_mpt / (0.25 * ch_spt_pos)) * 100
+	elseif(classID == 11) then -- druid
+		agility_crit = 0.05 * basic1.Agility
+		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_pos)) * 100
+		
+		agility_dodge = 0.05 * basic1.Agility
+		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_pos)) * 100
+		
+		agility_catform_ap_melee = 1 * basic1.Agility
+		eff_agility_catform_ap_melee = (agility_catform_ap_melee / (1 * ch_agi_pos)) * 100
+		
+		
+		strength_ap_melee = 2 * basic1.Strength
+		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_pos)) * 100
+		
+		
+		intellect_mana = 15 * basic1.Intellect
+		eff_intellect_mana = (intellect_mana / (15 * ch_int_pos)) * 100
+		
+		intellect_crit = 0.016666666 * basic1.Intellect
+		eff_intellect_crit = (intellect_crit / (0.016666666 * ch_int_pos)) * 100
+		
+		
+		spirit_hpt = 0.9 * basic1.Spirit
+		eff_spirit_hpt = (spirit_hpt / (0.9 * ch_spt_pos)) * 100
+		
+		spirit_mpt = 0.20 * basic1.Spirit
+		eff_spirit_mpt = (spirit_mpt / (0.20 * ch_spt_pos)) * 100
+	end
+	
+	local eff_armor = (def1.Armor / armor) * 100
+	
+	local eff_agi = (basic1.Agility / ch_agi_pos) * 100
+	local eff_stm = (basic1.Stamina / ch_stm_pos) * 100
+	local eff_str = (basic1.Strength / ch_str_pos) * 100
+	local eff_int = (basic1.Intellect / ch_int_pos) * 100
+	local eff_spt = (basic1.Spirit / ch_spt_pos) * 100
+	
+	
+	local queue = {}
+	local dirty = true
+	local send_line = function(...)
+		table.insert(queue, {...})
+		dirty = true
+	end
+	local blank_if_dirty = function()
+		if(dirty) then
+			table.insert(queue, {" "})
+			dirty = false
+		end
+	end
+	
+	blank_if_dirty()
+	
+	if(agility_ap_melee ~= 0) then
+		send_line(L["TOOLTIP_EX_AGI_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_melee) .. " (" .. (agility_ap_melee < 0 and "-" or "+") .. tostring(agility_ap_melee/14):match("%d+%.?%d?%d?") .. " DPS)"), 1, 1, 1, true)
+	end
+	if(agility_ap_range ~= 0) then
+		send_line(L["TOOLTIP_EX_AGI_R_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_range) .. " (" .. (agility_ap_range < 0 and "-" or "+") .. tostring(agility_ap_range/14):match("%d+%.?%d?%d?") .. " DPS)"), 1, 1, 1, true)
+	end
+	if(agility_crit ~= 0) then
+		send_line(L["TOOLTIP_EX_AGI_CRIT"] .. string.format("|cFFEFEF00%s|r", tostring(agility_crit):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
+	end
+	if(agility_dodge ~= 0) then
+		send_line(L["TOOLTIP_EX_AGI_DODGE"] .. string.format("|cFFEFEF00%s|r", tostring(agility_dodge):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
+	end
+	if(agility_armor ~= 0) then
+		send_line(L["TOOLTIP_EX_AGI_AR"] .. string.format("|cFFEFEF00%s|r", tostring(agility_armor)), 1, 1, 1, true)
+	end
+	if(agility_catform_ap_melee ~= 0) then
+		send_line(L["TOOLTIP_EX_AGI_M_CAT_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_catform_ap_melee) .. " (" .. (agility_catform_ap_melee < 0 and "-" or "+") .. tostring(agility_catform_ap_melee/14):match("%d+%.?%d?%d?") .. " DPS)"), 1, 1, 1, true)
+	end
+	if(stamina_health ~= 0) then
+		send_line(L["TOOLTIP_EX_STM_HP"] .. string.format("|cFFEFEF00%s|r", tostring(stamina_health)), 1, 1, 1, true)
+	end
+	if(strength_ap_melee ~= 0) then
+		send_line(L["TOOLTIP_EX_STR_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(strength_ap_melee) .. " (" .. (strength_ap_melee < 0 and "-" or "+") .. tostring(strength_ap_melee/14):match("%d+%.?%d?%d?") .. " DPS)"), 1, 1, 1, true)
+	end
+	if(strength_block ~= 0) then
+		send_line(L["TOOLTIP_EX_STR_BLOCK"] .. string.format("|cFFEFEF00%s|r", tostring(strength_block):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
+	end
+	if(intellect_mana ~= 0) then
+		send_line(L["TOOLTIP_EX_INT_MANA"] .. string.format("|cFFEFEF00%s|r", tostring(intellect_mana)), 1, 1, 1, true)
+	end
+	if(intellect_crit ~= 0) then
+		send_line(L["TOOLTIP_EX_INT_CRIT"] .. string.format("|cFFEFEF00%s|r", tostring(intellect_crit):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
+	end
+	if(spirit_hpt ~= 0) then
+		send_line(L["TOOLTIP_EX_SPT_HP5"] .. string.format("|cFFEFEF00%s|r", tostring(spirit_hpt):match("%d+%.?%d?%d?")), 1, 1, 1, true)
+	end
+	if(spirit_mpt ~= 0) then
+		send_line(L["TOOLTIP_EX_SPT_MP5"] .. string.format("|cFFEFEF00%s|r", tostring(spirit_mpt):match("%d+%.?%d?%d?")), 1, 1, 1, true)
+	end
+	if(arcane_resist_p ~= 0) then
+		send_line(L["TOOLTIP_EX_RES_ARCANE"] .. string.format("|cFFEFEF00%s|r", tostring(arcane_resist_p):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
+	end
+	if(fire_resist_p ~= 0) then
+		send_line(L["TOOLTIP_EX_RES_FIRE"] .. string.format("|cFFEFEF00%s|r", tostring(fire_resist_p):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
+	end
+	if(frost_resist_p ~= 0) then
+		send_line(L["TOOLTIP_EX_RES_FROST"] .. string.format("|cFFEFEF00%s|r", tostring(frost_resist_p):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
+	end
+	if(nature_resist_p ~= 0) then
+		send_line(L["TOOLTIP_EX_RES_NATURE"] .. string.format("|cFFEFEF00%s|r", tostring(nature_resist_p):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
+	end
+	if(shadow_resist_p ~= 0) then
+		send_line(L["TOOLTIP_EX_RES_SHADOW"] .. string.format("|cFFEFEF00%s|r", tostring(shadow_resist_p):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
+	end
+	
+	blank_if_dirty()
+	
+	send_line(L["TOOLTIP_ITEM_CONTRIB"], 0, 1, 0, false)
+	
+	if(eff_armor ~= 0) then
+		send_line(L["TOOLTIP_IC_ARMOR"] .. ": " .. string.format("|cFFEFEF00%s|r", tostring(eff_armor):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	
+	if(eff_agi ~= 0) then
+		send_line(L["TOOLTIP_IC_AGILITY"] .. ": " .. string.format("|cFFEFEF00%s|r", tostring(eff_agi):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_stm ~= 0) then
+		send_line(L["TOOLTIP_IC_STAMINA"] .. ": " .. string.format("|cFFEFEF00%s|r", tostring(eff_stm):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_str ~= 0) then
+		send_line(L["TOOLTIP_IC_STRENGTH"] .. ": " .. string.format("|cFFEFEF00%s|r", tostring(eff_str):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_int ~= 0) then
+		send_line(L["TOOLTIP_IC_INTELLECT"] .. ": " .. string.format("|cFFEFEF00%s|r", tostring(eff_int):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_spt ~= 0) then
+		send_line(L["TOOLTIP_IC_SPIRIT"] .. ": " .. string.format("|cFFEFEF00%s|r", tostring(eff_spt):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	
+	blank_if_dirty()
+	
+	if(eff_agility_ap_melee ~= 0) then
+		send_line(L["TOOLTIP_EX_AGI_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(eff_agility_ap_melee):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_agility_ap_range ~= 0) then
+		send_line(L["TOOLTIP_EX_AGI_R_AP"] .. string.format("|cFFEFEF00%s|r", tostring(eff_agility_ap_range):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_agility_crit ~= 0) then
+		send_line(L["TOOLTIP_EX_AGI_CRIT"] .. string.format("|cFFEFEF00%s|r", tostring(eff_agility_crit):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_agility_dodge ~= 0) then
+		send_line(L["TOOLTIP_EX_AGI_DODGE"] .. string.format("|cFFEFEF00%s|r", tostring(eff_agility_dodge):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_agility_armor ~= 0) then
+		send_line(L["TOOLTIP_EX_AGI_AR"] .. string.format("|cFFEFEF00%s|r", tostring(eff_agility_armor):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_agility_catform_ap_melee ~= 0) then
+		send_line(L["TOOLTIP_EX_AGI_M_CAT_AP"] .. string.format("|cFFEFEF00%s|r", tostring(eff_agility_catform_ap_melee):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_stamina_health ~= 0) then
+		send_line(L["TOOLTIP_EX_STM_HP"] .. string.format("|cFFEFEF00%s|r", tostring(eff_stamina_health):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_strength_ap_melee ~= 0) then
+		send_line(L["TOOLTIP_EX_STR_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(eff_strength_ap_melee):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_strength_block ~= 0) then
+		send_line(L["TOOLTIP_EX_STR_BLOCK"] .. string.format("|cFFEFEF00%s|r", tostring(eff_strength_block):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_intellect_mana ~= 0) then
+		send_line(L["TOOLTIP_EX_INT_MANA"] .. string.format("|cFFEFEF00%s|r", tostring(eff_intellect_mana):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_intellect_crit ~= 0) then
+		send_line(L["TOOLTIP_EX_INT_CRIT"] .. string.format("|cFFEFEF00%s|r", tostring(eff_intellect_crit):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_spirit_hpt ~= 0) then
+		send_line(L["TOOLTIP_EX_SPT_HP5"] .. string.format("|cFFEFEF00%s|r", tostring(eff_spirit_hpt):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_spirit_mpt ~= 0) then
+		send_line(L["TOOLTIP_EX_SPT_MP5"] .. string.format("|cFFEFEF00%s|r", tostring(eff_spirit_mpt):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	
+	
+	blank_if_dirty()
+	
+	
+	if(eff_arcane_resist_p ~= 0) then
+		send_line(L["TOOLTIP_EX_RES_ARCANE"] .. string.format("|cFFEFEF00%s|r", tostring(eff_arcane_resist_p):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_fire_resist_p ~= 0) then
+		send_line(L["TOOLTIP_EX_RES_FIRE"] .. string.format("|cFFEFEF00%s|r", tostring(eff_fire_resist_p):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_frost_resist_p ~= 0) then
+		send_line(L["TOOLTIP_EX_RES_FROST"] .. string.format("|cFFEFEF00%s|r", tostring(eff_frost_resist_p):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_nature_resist_p ~= 0) then
+		send_line(L["TOOLTIP_EX_RES_NATURE"] .. string.format("|cFFEFEF00%s|r", tostring(eff_nature_resist_p):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	if(eff_shadow_resist_p ~= 0) then
+		send_line(L["TOOLTIP_EX_RES_SHADOW"] .. string.format("|cFFEFEF00%s|r", tostring(eff_shadow_resist_p):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, false)
+	end
+	
+	if(queue[#queue][1] == " ") then
+		table.remove(queue, #queue)
+	end
+	
+	for i, v in pairs(queue) do
+		tooltip:AddLine(unpack(v))
+	end
+	
+end
+
 KiwiItemInfo.DisplayItemCompare = function(base_tooltip, tooltip, sel)
 	
 	if(KiwiItemInfo_Vars.vars["item_compare_on"] == false) then
 		return
+	end
+	
+	do
+		local selection = GetMouseFocus()
+		if(selection ~= nil) then
+			local name = selection:GetName()
+			if(name:find("Character") == 1 and name:find("Slot")) then
+				return
+			end
+		end
 	end
 	
 	local att_a, def_a, basic_a, special_a, resist_a, equips_a, uses_a, chances_a
@@ -687,78 +1177,58 @@ KiwiItemInfo.DisplayItemCompare = function(base_tooltip, tooltip, sel)
 	if(KiwiItemInfo_Vars.vars["item_compare_extra"] == true) then
 		
 		if(agility_ap_melee ~= 0) then
-			local temp = tostring(agility_ap_melee/14)
-			if(temp:match("%d+.%d")) then
-				send_line(L["TOOLTIP_EX_AGI_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_melee) .. " (" .. (agility_ap_melee < 0 and "-" or "+") .. temp:match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
-			else
-				send_line(L["TOOLTIP_EX_AGI_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_melee) .. " (" .. (agility_ap_melee < 0 and "-" or "+") .. temp:match("%d+") .. ".0 DPS)"), 1, 1, 1, true)
-			end
+			send_line(L["TOOLTIP_EX_AGI_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_melee) .. " (" .. (agility_ap_melee < 0 and "-" or "+") .. tostring(agility_ap_melee/14):match("%d+%.?%d?%d?") .. " DPS)"), 1, 1, 1, true)
 		end
 		if(agility_ap_range ~= 0) then
-			local temp = tostring(agility_ap_range/14)
-			if(temp:match("%d+.%d")) then
-				send_line(L["TOOLTIP_EX_AGI_R_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_range) .. " (" .. (agility_ap_range < 0 and "-" or "+") .. temp:match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
-			else
-				send_line(L["TOOLTIP_EX_AGI_R_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_range) .. " (" .. (agility_ap_range < 0 and "-" or "+") .. temp:match("%d+") .. ".0 DPS)"), 1, 1, 1, true)
-			end
+			send_line(L["TOOLTIP_EX_AGI_R_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_ap_range) .. " (" .. (agility_ap_range < 0 and "-" or "+") .. tostring(agility_ap_range/14):match("%d+%.?%d?%d?") .. " DPS)"), 1, 1, 1, true)
 		end
 		if(agility_crit ~= 0) then
-			send_line(L["TOOLTIP_EX_AGI_CRIT"] .. string.format("|cFFEFEF00%s|r", tostring(agility_crit):sub(1, 6) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_AGI_CRIT"] .. string.format("|cFFEFEF00%s|r", tostring(agility_crit):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
 		end
 		if(agility_dodge ~= 0) then
-			send_line(L["TOOLTIP_EX_AGI_DODGE"] .. string.format("|cFFEFEF00%s|r", tostring(agility_dodge):sub(1, 6) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_AGI_DODGE"] .. string.format("|cFFEFEF00%s|r", tostring(agility_dodge):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
 		end
 		if(agility_armor ~= 0) then
 			send_line(L["TOOLTIP_EX_AGI_AR"] .. string.format("|cFFEFEF00%s|r", tostring(agility_armor)), 1, 1, 1, true)
 		end
 		if(agility_catform_ap_melee ~= 0) then
-			local temp = tostring(agility_catform_ap_melee/14)
-			if(temp:match("%d+.%d")) then
-				send_line(L["TOOLTIP_EX_AGI_M_CAT_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_catform_ap_melee) .. " (" .. (agility_catform_ap_melee < 0 and "-" or "+") .. temp:match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
-			else
-				send_line(L["TOOLTIP_EX_AGI_M_CAT_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_catform_ap_melee) .. " (" .. (agility_catform_ap_melee < 0 and "-" or "+") .. temp:match("%d+") .. ".0 DPS)"), 1, 1, 1, true)
-			end
+			send_line(L["TOOLTIP_EX_AGI_M_CAT_AP"] .. string.format("|cFFEFEF00%s|r", tostring(agility_catform_ap_melee) .. " (" .. (agility_catform_ap_melee < 0 and "-" or "+") .. tostring(agility_catform_ap_melee/14):match("%d+%.?%d?%d?") .. " DPS)"), 1, 1, 1, true)
 		end
 		if(stamina_health ~= 0) then
 			send_line(L["TOOLTIP_EX_STM_HP"] .. string.format("|cFFEFEF00%s|r", tostring(stamina_health)), 1, 1, 1, true)
 		end
 		if(strength_ap_melee ~= 0) then
-			local temp = tostring(strength_ap_melee/14)
-			if(temp:match("%d+.%d")) then
-				send_line(L["TOOLTIP_EX_STR_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(strength_ap_melee) .. " (" .. (strength_ap_melee < 0 and "-" or "+") .. temp:match("%d+.%d") .. " DPS)"), 1, 1, 1, true)
-			else
-				send_line(L["TOOLTIP_EX_STR_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(strength_ap_melee) .. " (" .. (strength_ap_melee < 0 and "-" or "+") .. tostring(strength_ap_melee/14):match("%d+") .. ".0 DPS)"), 1, 1, 1, true)
-			end
+			send_line(L["TOOLTIP_EX_STR_M_AP"] .. string.format("|cFFEFEF00%s|r", tostring(strength_ap_melee) .. " (" .. (strength_ap_melee < 0 and "-" or "+") .. tostring(strength_ap_melee/14):match("%d+%.?%d?%d?") .. " DPS)"), 1, 1, 1, true)
 		end
 		if(strength_block ~= 0) then
-			send_line(L["TOOLTIP_EX_STR_BLOCK"] .. string.format("|cFFEFEF00%s|r", tostring(strength_block) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_STR_BLOCK"] .. string.format("|cFFEFEF00%s|r", tostring(strength_block):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
 		end
 		if(intellect_mana ~= 0) then
 			send_line(L["TOOLTIP_EX_INT_MANA"] .. string.format("|cFFEFEF00%s|r", tostring(intellect_mana)), 1, 1, 1, true)
 		end
 		if(intellect_crit ~= 0) then
-			send_line(L["TOOLTIP_EX_INT_CRIT"] .. string.format("|cFFEFEF00%s|r", tostring(intellect_crit):sub(1, 6) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_INT_CRIT"] .. string.format("|cFFEFEF00%s|r", tostring(intellect_crit):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
 		end
 		if(spirit_hpt ~= 0) then
-			send_line(L["TOOLTIP_EX_SPT_HP5"] .. string.format("|cFFEFEF00%s|r", tostring(spirit_hpt)), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_SPT_HP5"] .. string.format("|cFFEFEF00%s|r", tostring(spirit_hpt):match("%d+%.?%d?%d?")), 1, 1, 1, true)
 		end
 		if(spirit_mpt ~= 0) then
-			send_line(L["TOOLTIP_EX_SPT_MP5"] .. string.format("|cFFEFEF00%s|r", tostring(spirit_mpt)), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_SPT_MP5"] .. string.format("|cFFEFEF00%s|r", tostring(spirit_mpt):match("%d+%.?%d?%d?")), 1, 1, 1, true)
 		end
 		if(arcane_resist_p ~= 0) then
-			send_line(L["TOOLTIP_EX_RES_ARCANE"] .. string.format("|cFFEFEF00%s|r", tostring(arcane_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_RES_ARCANE"] .. string.format("|cFFEFEF00%s|r", tostring(arcane_resist_p):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
 		end
 		if(fire_resist_p ~= 0) then
-			send_line(L["TOOLTIP_EX_RES_FIRE"] .. string.format("|cFFEFEF00%s|r", tostring(fire_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_RES_FIRE"] .. string.format("|cFFEFEF00%s|r", tostring(fire_resist_p):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
 		end
 		if(frost_resist_p ~= 0) then
-			send_line(L["TOOLTIP_EX_RES_FROST"] .. string.format("|cFFEFEF00%s|r", tostring(frost_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_RES_FROST"] .. string.format("|cFFEFEF00%s|r", tostring(frost_resist_p):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
 		end
 		if(nature_resist_p ~= 0) then
-			send_line(L["TOOLTIP_EX_RES_NATURE"] .. string.format("|cFFEFEF00%s|r", tostring(nature_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_RES_NATURE"] .. string.format("|cFFEFEF00%s|r", tostring(nature_resist_p):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
 		end
 		if(shadow_resist_p ~= 0) then
-			send_line(L["TOOLTIP_EX_RES_SHADOW"] .. string.format("|cFFEFEF00%s|r", tostring(shadow_resist_p):sub(1, 5) .. "%"), 1, 1, 1, true)
+			send_line(L["TOOLTIP_EX_RES_SHADOW"] .. string.format("|cFFEFEF00%s|r", tostring(shadow_resist_p):match("%d+%.?%d?%d?") .. "%"), 1, 1, 1, true)
 		end
 		
 		blank_if_dirty()

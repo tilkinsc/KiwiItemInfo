@@ -56,6 +56,7 @@ KiwiItemInfo.Locale["zhTW"] = {
 	["TOOLTIP_IC_SHADOW"] = "Shadow Resistance",
 	["TOOLTIP_IC_DAMAGE_DELTA"] = " Damage (delta: ",
 	["TOOLTIP_ITEM_COMPARE"] = "Kiwi says equipping will do this:",
+	["TOOLTIP_ITEM_CONTRIB"] = "Stat Contribution:",
 	["TOOLTIP_EX_AGI_M_AP"] = "Agility M. AP: ",
 	["TOOLTIP_EX_AGI_R_AP"] = "Agility R. AP: ",
 	["TOOLTIP_EX_AGI_CRIT"] = "Agility M. Crit: ",

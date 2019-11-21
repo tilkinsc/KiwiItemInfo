@@ -56,6 +56,7 @@ KiwiItemInfo.Locale["itIT"] = {
 	["TOOLTIP_IC_SHADOW"] = "Resistenza Ombra",
 	["TOOLTIP_IC_DAMAGE_DELTA"] = " Danno (delta: ",
 	["TOOLTIP_ITEM_COMPARE"] = "Kiwi consiglia:",
+	["TOOLTIP_ITEM_CONTRIB"] = "Contributo stat:",
 	["TOOLTIP_EX_AGI_M_AP"] = "Agilità M. AP: ",
 	["TOOLTIP_EX_AGI_R_AP"] = "Agilità S. AP: ",
 	["TOOLTIP_EX_AGI_CRIT"] = "Agilità M. Crit: ",

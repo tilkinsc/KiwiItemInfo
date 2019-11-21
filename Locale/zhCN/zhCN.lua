@@ -56,6 +56,7 @@ KiwiItemInfo.Locale["zhCN"] = {
 	["TOOLTIP_IC_SHADOW"] = "暗影抗性",
 	["TOOLTIP_IC_DAMAGE_DELTA"] = " 伤害 (delta: ",
 	["TOOLTIP_ITEM_COMPARE"] = "Kiwi提示装备后的属性变化:",
+	["TOOLTIP_ITEM_CONTRIB"] = "统计贡献：",
 	["TOOLTIP_EX_AGI_M_AP"] = "敏捷 M. AP: ",
 	["TOOLTIP_EX_AGI_R_AP"] = "敏捷 R. AP: ",
 	["TOOLTIP_EX_AGI_CRIT"] = "敏捷 M. Crit: ",

@@ -56,6 +56,7 @@ KiwiItemInfo.Locale["deDE"] = {
 	["TOOLTIP_IC_SHADOW"] = "Schattenwiderstand",
 	["TOOLTIP_IC_DAMAGE_DELTA"] = " Schaden (delta: ",
 	["TOOLTIP_ITEM_COMPARE"] = "Kiwi sagt, dass dies durch Ausrüstung erreicht wird:",
+	["TOOLTIP_ITEM_CONTRIB"] = "Stat Beitrag:",
 	["TOOLTIP_EX_AGI_M_AP"] = "Beweglichkeit N. AS: ",
 	["TOOLTIP_EX_AGI_R_AP"] = "Beweglichkeit R. AS: ",
 	["TOOLTIP_EX_AGI_CRIT"] = "Beweglichkeit N. Krit: ",
