@@ -863,7 +863,7 @@ KiwiItemInfo.DisplayItemCompare = function(base_tooltip, tooltip, sel)
 		local selection = GetMouseFocus()
 		if(selection ~= nil) then
 			local name = selection:GetName()
-			if(name:find("Character") == 1 and name:find("Slot")) then
+			if(name and name:find("Character") == 1 and name:find("Slot")) then
 				return
 			end
 		end
