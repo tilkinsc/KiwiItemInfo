@@ -1,4 +1,4 @@
-## Interface: 11302
+## Interface: 11303
 ## Title: |cFFFFFFFFKiwi Item Info|r|cFF00FF00 @project-version@|r|cFF000088 Release|r
 ## Version: @project-version@
 ## Author: PoliteKiwi
