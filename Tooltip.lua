@@ -386,7 +386,7 @@ KiwiItemInfo.ShowEffectiveStats = function(tooltip)
 	end
 	
 	local name = selection:GetName()
-	if(name:find("Character") ~= 1 or not name:find("Slot")) then
+	if(name and name:find("Character") ~= 1 or not name:find("Slot")) then
 		return
 	end
 	
