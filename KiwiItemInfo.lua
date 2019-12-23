@@ -118,7 +118,7 @@ local ADDON_LOADED = function(addon)
 	
 	local VarsUI = KiwiItemInfo.VarsUI
 	VarsUI.Init()
-	VarsUI.AddComponent(3, "Flash Grey Items:",
+	VarsUI.AddComponent(3, L["VUI_FLASH_GREY_ITEMS"],
 		function(self)
 			self:SetChecked(KiwiItemInfo_Vars.vars["flash_grey_items"])
 		end,
@@ -126,7 +126,7 @@ local ADDON_LOADED = function(addon)
 			KiwiItemInfo_Vars.vars["flash_grey_items"] = self:GetChecked()
 		end
 	)
-	VarsUI.AddComponent(2, "Flash Hotkey:",
+	VarsUI.AddComponent(2, L["VUI_FLASH_HOTKEY"],
 		function(self)
 			self:SetText(KiwiItemInfo_Vars.vars["flash_hotkey"])
 		end, 
@@ -136,7 +136,7 @@ local ADDON_LOADED = function(addon)
 		end
 	)
 	VarsUI.Blank()
-	VarsUI.AddComponent(3, "Item Compare On:",
+	VarsUI.AddComponent(3, L["VUI_ITEM_COMPARE"],
 		function(self)
 			self:SetChecked(KiwiItemInfo_Vars.vars["item_compare_on"])
 		end,
@@ -144,7 +144,7 @@ local ADDON_LOADED = function(addon)
 			KiwiItemInfo_Vars.vars["item_compare_on"] = self:GetChecked()
 		end
 	)
-	VarsUI.AddComponent(3, "Verbose Item Compare:",
+	VarsUI.AddComponent(3, L["VUI_IC_VERBOSE"],
 		function(self)
 			self:SetChecked(KiwiItemInfo_Vars.vars["item_compare_extra"])
 		end,
@@ -153,7 +153,7 @@ local ADDON_LOADED = function(addon)
 		end
 	)
 	VarsUI.Blank()
-	VarsUI.AddComponent(3, "Item Vendor Price:",
+	VarsUI.AddComponent(3, L["VUI_VENDOR_PRICE"],
 		function(self)
 			self:SetChecked(KiwiItemInfo_Vars.vars["tooltip_price_on"])
 		end,
@@ -162,7 +162,7 @@ local ADDON_LOADED = function(addon)
 		end
 	)
 	VarsUI.Blank()
-	VarsUI.AddComponent(3, "Show iLvl:",
+	VarsUI.AddComponent(3, L["VUI_SHOW_ILVL"],
 		function(self)
 			self:SetChecked(KiwiItemInfo_Vars.vars["tooltip_ilvl_on"])
 		end,
@@ -170,7 +170,7 @@ local ADDON_LOADED = function(addon)
 			KiwiItemInfo_Vars.vars["tooltip_ilvl_on"] = self:GetChecked()
 		end
 	)
-	VarsUI.AddComponent(3, "Show iLvl On Items:",
+	VarsUI.AddComponent(3, L["VUI_ITEM_ILVL"],
 		function(self)
 			self:SetChecked(not KiwiItemInfo_Vars.vars["ilvl_only_equips"])
 		end,
@@ -178,7 +178,7 @@ local ADDON_LOADED = function(addon)
 			KiwiItemInfo_Vars.vars["ilvl_only_equips"] = not self:GetChecked()
 		end
 	)
-	VarsUI.AddComponent(3, "Default iLvl Coloration:",
+	VarsUI.AddComponent(3, L["VUI_DEFAULT_ILVL_COLOR"],
 		function(self)
 			self:SetChecked(KiwiItemInfo_Vars.vars["tooltip_ilvl_colors"])
 		end,
@@ -186,7 +186,7 @@ local ADDON_LOADED = function(addon)
 			KiwiItemInfo_Vars.vars["tooltip_ilvl_colors"] = self:GetChecked()
 		end
 	)
-	VarsUI.AddComponent(2, "Custom iLvl Color:",
+	VarsUI.AddComponent(2, L["VUI_CUSTOM_ILVL_COLOR"],
 		function(self)
 			self:SetText(KiwiItemInfo_Vars.vars["tooltip_ilvl_nocolors_rgb"])
 		end, 
@@ -196,7 +196,7 @@ local ADDON_LOADED = function(addon)
 			if(text:match("%d+%s%d+%s%d+") or text:match("%d+%.%d+%s%d+%.%d+%s%d+%.%d+")) then
 				KiwiItemInfo_Vars.vars["tooltip_ilvl_nocolors_rgb"] = self:GetText()
 			else
-				-- TODO: error message
+				printi(2, L["VUI_FORMAT_ERROR"])
 			end
 		end
 	)

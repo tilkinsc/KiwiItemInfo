@@ -102,6 +102,16 @@ KiwiItemInfo.Locale["deDE"] = {
 	["KIWIII_SET"] = "setzen",
 	["KIWIII_ACI"] = "aci",
 	["KIWIII_SEARCH"] = "suchen",
+	["VUI_FLASH_GREY_ITEMS"] = "Blinken Grau Items:",
+	["VUI_FLASH_HOTKEY"] = "Blinken Hotkey:",
+	["VUI_ITEM_COMPARE"] = "Item Vergleichen Am:",
+	["VUI_IC_VERBOSE"] = "Ausführlicher Itemvergleich:",
+	["VUI_VENDOR_PRICE"] = "Item Händlerpreis:",
+	["VUI_SHOW_ILVL"] = "Zeige iLvl:",
+	["VUI_ITEM_ILVL"] = "Zeige iLvl auf Items:",
+	["VUI_DEFAULT_ILVL_COLOR"] = "Standardmäßige iLvl-Färbung:",
+	["VUI_CUSTOM_ILVL_COLOR"] = "Benutzerdefinierte iLvl-Färbung:",
+	["VUI_FORMAT_ERROR"] = "Ungültiges Farbformat eingegeben.",
 }
 
 

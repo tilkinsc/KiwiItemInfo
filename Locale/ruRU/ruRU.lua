@@ -102,6 +102,16 @@ KiwiItemInfo.Locale["ruRU"] = {
 	["KIWIII_SET"] = "set",
 	["KIWIII_ACI"] = "aci",
 	["KIWIII_SEARCH"] = "поиск",
+	["VUI_FLASH_GREY_ITEMS"] = "Вспышка серого:",
+	["VUI_FLASH_HOTKEY"] = "Кнопка вспышки:",
+	["VUI_ITEM_COMPARE"] = "Пункт сравнения на:",
+	["VUI_IC_VERBOSE"] = "Детальное подробное сравнение:",
+	["VUI_VENDOR_PRICE"] = "Пункт Поставщик Цена:",
+	["VUI_SHOW_ILVL"] = "Показать iLvl:",
+	["VUI_ITEM_ILVL"] = "Показать iLvl на предметах:",
+	["VUI_DEFAULT_ILVL_COLOR"] = "Цвет по умолчанию iLvl:",
+	["VUI_CUSTOM_ILVL_COLOR"] = "Пользовательский цвет iLvl:",
+	["VUI_FORMAT_ERROR"] = "Введен неверный формат цвета.",
 }
 
 

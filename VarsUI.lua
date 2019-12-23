@@ -9,7 +9,7 @@ local elements
 local font
 
 
-local label_width = 140
+local label_width = 190
 local edit_width = 100
 
 local padding_l = 10
@@ -19,7 +19,8 @@ local height = 0
 
 
 VarsUI.Init = function()
-	background = CreateFrame("Frame", nil, UIParent, "BasicFrameTemplate")
+	table.insert(UISpecialFrames, "KiwiItemInfoKIWIIIFrame")
+	background = CreateFrame("Frame", "KiwiItemInfoKIWIIIFrame", UIParent, "BasicFrameTemplate")
 	background.TitleText:SetText("Kiwi Item Info Vars")
 	background:SetSize(300, 300)
 	background:SetPoint("CENTER")
