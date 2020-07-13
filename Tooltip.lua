@@ -400,12 +400,25 @@ KiwiItemInfo.ShowEffectiveStats = function(tooltip)
 	local armor = UnitArmor("player")
 	armor = armor - 2 * basic1.Agility
 	
-	local ch_agi, _, ch_agi_pos, ch_agi_neg = UnitStat("player", 2)
-	local ch_stm, _, ch_stm_pos, ch_stm_neg = UnitStat("player", 3)
-	local ch_str, _, ch_str_pos, ch_str_neg = UnitStat("player", 1)
-	local ch_int, _, ch_int_pos, ch_int_neg = UnitStat("player", 4)
-	local ch_spt, _, ch_spt_pos, ch_spt_neg = UnitStat("player", 5)
+	local ch_agi, ch_agi_eff = UnitStat("player", 2)
+	local ch_stm, ch_stm_eff = UnitStat("player", 3)
+	local ch_str, ch_str_eff = UnitStat("player", 1)
+	local ch_int, ch_int_eff = UnitStat("player", 4)
+	local ch_spt, ch_spt_eff = UnitStat("player", 5)
+	local ch_arcane_res_base, ch_arcane_res_total = UnitResistance("player", 6)
+	local ch_fire_res_base, ch_fire_res_total = UnitResistance("player", 2)
+	local ch_frost_res_base, ch_frost_res_total = UnitResistance("player", 4)
+	local ch_nature_res_base, ch_nature_res_total = UnitResistance("player", 3)
+	local ch_shadow_res_base, ch_shadow_res_total = UnitResistance("player", 5)
+	ch_arcane_res_total = math.max(1, ch_arcane_res_total)
+	ch_fire_res_total = math.max(1, ch_fire_res_total)
+	ch_frost_res_total = math.max(1, ch_frost_res_total)
+	ch_nature_res_total = math.max(1, ch_nature_res_total)
+	ch_shadow_res_total = math.max(1, ch_shadow_res_total)
 	
+	if(ch_agi_eff == 0 or ch_stm_eff == 0 or ch_str_eff == 0 or ch_int_eff == 0 or ch_spt_eff == 0) then
+		print("Please open a bug report to kiwi at curseforge or git, say 'ch_*_eff is still getting divide by zeros'")
+	end
 	
 	local agility_ap_melee = 0
 	local agility_ap_range = 0
@@ -413,10 +426,10 @@ KiwiItemInfo.ShowEffectiveStats = function(tooltip)
 	local agility_dodge = 0
 	local agility_catform_ap_melee = 0
 	local agility_armor = 2 * basic1.Agility
-	local eff_agility_armor = (agility_armor / (2 * ch_agi_pos)) * 100
+	local eff_agility_armor = (agility_armor / (2 * ch_agi_eff)) * 100
 	
 	local stamina_health = 10 * basic1.Stamina
-	local eff_stamina_health = (stamina_health / (10 * ch_stm_pos)) * 100
+	local eff_stamina_health = (stamina_health / (10 * ch_stm_eff)) * 100
 	
 	local strength_ap_melee = 0
 	local strength_block = 0
@@ -433,11 +446,11 @@ KiwiItemInfo.ShowEffectiveStats = function(tooltip)
 	local nature_resist_p = 0.238095238 * resist1.Nature_Resist
 	local shadow_resist_p = 0.238095238 * resist1.Shadow_Resist
 	
-	local eff_arcane_resist_p = (resist1.Arcane_Resist / UnitResistance("player", 6)) * 100
-	local eff_fire_resist_p = (resist1.Fire_Resist / UnitResistance("player", 2)) * 100
-	local eff_frost_resist_p = (resist1.Frost_Resist / UnitResistance("player", 4)) * 100
-	local eff_nature_resist_p = (resist1.Nature_Resist / UnitResistance("player", 3)) * 100
-	local eff_shadow_resist_p = (resist1.Shadow_Resist / UnitResistance("player", 5)) * 100
+	local eff_arcane_resist_p = (resist1.Arcane_Resist / ch_arcane_res_total) * 100
+	local eff_fire_resist_p = (resist1.Fire_Resist / ch_fire_res_total) * 100
+	local eff_frost_resist_p = (resist1.Frost_Resist / ch_frost_res_total) * 100
+	local eff_nature_resist_p = (resist1.Nature_Resist / ch_nature_res_total) * 100
+	local eff_shadow_resist_p = (resist1.Shadow_Resist / ch_shadow_res_total) * 100
 	
 	local eff_agility_ap_melee = 0
 	local eff_agility_ap_range = 0
@@ -458,234 +471,237 @@ KiwiItemInfo.ShowEffectiveStats = function(tooltip)
 	
 	if(classID == 1) then -- warrior
 		agility_ap_range = 2 * basic1.Agility
-		eff_agility_ap_range = (agility_ap_range / (2 * ch_agi_pos)) * 100
+		eff_agility_ap_range = (agility_ap_range / (2 * ch_agi_eff)) * 100
 		
 		agility_crit = 0.05 * basic1.Agility
-		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_pos)) * 100
+		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_eff)) * 100
 		
 		agility_dodge = 0.05 * basic1.Agility
-		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_pos)) * 100
+		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_eff)) * 100
 		
 		
 		strength_ap_melee = 2 * basic1.Strength
-		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_pos)) * 100
+		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_eff)) * 100
 		
 		strength_block = 0.05 * basic1.Strength
-		eff_strength_block = (strength_block / (0.05 * ch_str_pos)) * 100
+		eff_strength_block = (strength_block / (0.05 * ch_str_eff)) * 100
 		
 		
 		spirit_hpt = 0.80 * basic1.Spirit
-		eff_spirit_hpt = (spirit_hpt / (0.80 * ch_spt_pos)) * 100
+		eff_spirit_hpt = (spirit_hpt / (0.80 * ch_spt_eff)) * 100
 	elseif(classID == 2) then -- paladin
 		agility_crit = 0.05 * basic1.Agility
-		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_pos)) * 100
+		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_eff)) * 100
 		
 		agility_dodge = 0.05 * basic1.Agility
-		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_pos)) * 100
+		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_eff)) * 100
 		
 		
 		strength_ap_melee = 2 * basic1.Strength
-		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_pos)) * 100
+		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_eff)) * 100
 		
 		strength_block = 0.05 * basic1.Strength
-		eff_strength_block = (strength_block / (0.05 * ch_str_pos)) * 100
+		eff_strength_block = (strength_block / (0.05 * ch_str_eff)) * 100
 		
 		
 		intellect_mana = 15 * basic1.Intellect
-		eff_intellect_mana = (intellect_mana / (15 * ch_int_pos)) * 100
+		eff_intellect_mana = (intellect_mana / (15 * ch_int_eff)) * 100
 		
 		intellect_crit = 0.033898305 * basic1.Intellect
-		eff_intellect_crit = (intellect_crit / (0.033898305 * ch_int_pos)) * 100
+		eff_intellect_crit = (intellect_crit / (0.033898305 * ch_int_eff)) * 100
 		
 		
 		spirit_hpt = 0.80 * basic1.Spirit
-		eff_spirit_hpt = (spirit_hpt / (0.80 * ch_spt_pos)) * 100
+		eff_spirit_hpt = (spirit_hpt / (0.80 * ch_spt_eff)) * 100
 		
 		spirit_mpt = 0.20 * basic1.Spirit
-		eff_spirit_mpt = (spirit_mpt / (0.20 * ch_spt_pos)) * 100
+		eff_spirit_mpt = (spirit_mpt / (0.20 * ch_spt_eff)) * 100
 	elseif(classID == 3) then -- hunter
 		agility_ap_melee = 1 * basic1.Agility
-		eff_agility_ap_melee = (agility_ap_melee / (1 * ch_agi_pos)) * 100
+		eff_agility_ap_melee = (agility_ap_melee / (1 * ch_agi_eff)) * 100
 		
 		agility_ap_range = 2 * basic1.Agility
-		eff_agility_ap_range = (agility_ap_range / (2 * ch_agi_pos)) * 100
+		eff_agility_ap_range = (agility_ap_range / (2 * ch_agi_eff)) * 100
 		
 		agility_crit = 0.018867924 * basic1.Agility
-		eff_agility_crit = (agility_crit / (0.018867924 * ch_agi_pos)) * 100
+		eff_agility_crit = (agility_crit / (0.018867924 * ch_agi_eff)) * 100
 		
 		agility_dodge = 0.037735849 * basic1.Agility
-		eff_agility_dodge = (agility_dodge / (0.037735849 * ch_agi_pos)) * 100
+		eff_agility_dodge = (agility_dodge / (0.037735849 * ch_agi_eff)) * 100
 		
 		
 		strength_ap_melee = 1 * basic1.Strength
-		eff_strength_ap_melee = (strength_ap_melee / (1 * ch_str_pos)) * 100
+		eff_strength_ap_melee = (strength_ap_melee / (1 * ch_str_eff)) * 100
 		
 		
 		intellect_mana = 15 * basic1.Intellect
-		eff_intellect_mana = (intellect_mana / (15 * ch_int_pos)) * 100
+		eff_intellect_mana = (intellect_mana / (15 * ch_int_eff)) * 100
 		
 		
 		spirit_hpt = 1.0 * basic1.Spirit
-		eff_spirit_hpt = (spirit_hpt / (1.0 * ch_spt_pos)) * 100
+		eff_spirit_hpt = (spirit_hpt / (1.0 * ch_spt_eff)) * 100
 		
 		spirit_mpt = 0.20 * basic1.Spirit
-		eff_spirit_mpt = (spirit_mpt / (0.20 * ch_spt_pos)) * 100
+		eff_spirit_mpt = (spirit_mpt / (0.20 * ch_spt_eff)) * 100
 	elseif(classID == 4) then -- rogue
 		agility_ap_melee = 1 * basic1.Agility
-		eff_agility_ap_melee = (agility_ap_melee / (1 * ch_agi_pos)) * 100
+		eff_agility_ap_melee = (agility_ap_melee / (1 * ch_agi_eff)) * 100
 		
 		agility_ap_range = 2 * basic1.Agility
-		eff_agility_ap_range = (agility_ap_range / (2 * ch_agi_pos)) * 100
+		eff_agility_ap_range = (agility_ap_range / (2 * ch_agi_eff)) * 100
 		
 		agility_crit = 0.03448275 * basic1.Agility
-		eff_agility_crit = (agility_crit / (0.03448275 * ch_agi_pos)) * 100
+		eff_agility_crit = (agility_crit / (0.03448275 * ch_agi_eff)) * 100
 		
 		agility_dodge = 0.06896551 * basic1.Agility
-		eff_agility_dodge = (agility_dodge / (0.06896551 * ch_agi_pos)) * 100
+		eff_agility_dodge = (agility_dodge / (0.06896551 * ch_agi_eff)) * 100
 		
 		
 		strength_ap_melee = 1 * basic1.Strength
-		eff_strength_ap_melee = (strength_ap_melee / (1 * ch_str_pos)) * 100
+		eff_strength_ap_melee = (strength_ap_melee / (1 * ch_str_eff)) * 100
 		
 		
 		spirit_hpt = 0.60 * basic1.Spirit
-		eff_spirit_hpt = (spirit_hpt / (0.60 * ch_spt_pos)) * 100
+		eff_spirit_hpt = (spirit_hpt / (0.60 * ch_spt_eff)) * 100
 	elseif(classID == 5) then -- priest
 		agility_crit = 0.05 * basic1.Agility
-		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_pos)) * 100
+		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_eff)) * 100
 		
 		agility_dodge = 0.05 * basic1.Agility
-		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_pos)) * 100
+		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_eff)) * 100
 		
 		
 		strength_ap_melee = 2 * basic1.Strength
-		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_pos)) * 100
+		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_eff)) * 100
 		
 		
 		intellect_mana = 15 * basic1.Intellect
-		eff_intellect_mana = (intellect_mana / (15 * ch_int_pos)) * 100
+		eff_intellect_mana = (intellect_mana / (15 * ch_int_eff)) * 100
 		
 		intellect_crit = 0.0168918918 * basic1.Intellect
-		eff_intellect_crit = (intellect_crit / (0.0168918918 * ch_int_pos)) * 100
+		eff_intellect_crit = (intellect_crit / (0.0168918918 * ch_int_eff)) * 100
 		
 		
 		spirit_hpt = 1.0 * basic1.Spirit
-		eff_spirit_hpt = (spirit_hpt / (1.0 * ch_spt_pos)) * 100
+		eff_spirit_hpt = (spirit_hpt / (1.0 * ch_spt_eff)) * 100
 		
 		spirit_mpt = 0.25 * basic1.Spirit
-		eff_spirit_mpt = (spirit_mpt / (0.25 * ch_spt_pos)) * 100
+		eff_spirit_mpt = (spirit_mpt / (0.25 * ch_spt_eff)) * 100
 	elseif(classID == 7) then -- shaman
 		agility_crit = 0.05 * basic1.Agility
-		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_pos)) * 100
+		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_eff)) * 100
 		
 		agility_dodge = 0.05 * basic1.Agility
-		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_pos)) * 100
+		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_eff)) * 100
 		
 		
 		strength_ap_melee = 2 * basic1.Strength
-		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_pos)) * 100
+		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_eff)) * 100
 		
 		strength_block = 0.05 * basic1.Strength
-		eff_strength_block = (strength_block / (0.05 * ch_str_pos)) * 100
+		eff_strength_block = (strength_block / (0.05 * ch_str_eff)) * 100
 		
 		
 		intellect_mana = 15 * basic1.Intellect
-		eff_intellect_mana = (intellect_mana / (15 * ch_int_pos)) * 100
+		eff_intellect_mana = (intellect_mana / (15 * ch_int_eff)) * 100
 		
 		intellect_crit = 0.016806722 * basic1.Intellect
-		eff_intellect_crit = (intellect_crit / (0.016806722 * ch_int_pos)) * 100
+		eff_intellect_crit = (intellect_crit / (0.016806722 * ch_int_eff)) * 100
 		
 		
 		spirit_hpt = 1.1 * basic1.Spirit
-		eff_spirit_hpt = (spirit_hpt / (1.1 * ch_spt_pos)) * 100
+		eff_spirit_hpt = (spirit_hpt / (1.1 * ch_spt_eff)) * 100
 		
 		spirit_mpt = 0.20 * basic1.Spirit
-		eff_spirit_mpt = (spirit_mpt / (0.20 * ch_spt_pos)) * 100
+		eff_spirit_mpt = (spirit_mpt / (0.20 * ch_spt_eff)) * 100
 	elseif(classID == 8) then -- mage
 		agility_crit = 0.05 * basic1.Agility
-		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_pos)) * 100
+		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_eff)) * 100
 		
 		agility_dodge = 0.05 * basic1.Agility
-		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_pos)) * 100
+		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_eff)) * 100
 		
 		
 		strength_ap_melee = 2 * basic1.Strength
-		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_pos)) * 100
+		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_eff)) * 100
 		
 		
 		intellect_mana = 15 * basic1.Intellect
-		eff_intellect_mana = (intellect_mana / (15 * ch_int_pos)) * 100
+		eff_intellect_mana = (intellect_mana / (15 * ch_int_eff)) * 100
 		
 		intellect_crit = 0.016806722 * basic1.Intellect
-		eff_intellect_crit = (intellect_crit / (0.016806722 * ch_int_pos)) * 100
+		eff_intellect_crit = (intellect_crit / (0.016806722 * ch_int_eff)) * 100
 		
 		
 		spirit_hpt = 1.0 * basic1.Spirit
-		eff_spirit_hpt = (spirit_hpt / (1.0 * ch_spt_pos)) * 100
+		eff_spirit_hpt = (spirit_hpt / (1.0 * ch_spt_eff)) * 100
 		
 		spirit_mpt = 0.25 * basic1.Spirit
-		eff_spirit_mpt = (spirit_mpt / (0.25 * ch_spt_pos)) * 100
+		eff_spirit_mpt = (spirit_mpt / (0.25 * ch_spt_eff)) * 100
 	elseif(classID == 9) then -- warlock
 		agility_crit = 0.05 * basic1.Agility
-		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_pos)) * 100
+		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_eff)) * 100
 		
 		agility_dodge = 0.05 * basic1.Agility
-		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_pos)) * 100
+		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_eff)) * 100
 		
 		
 		strength_ap_melee = 2 * basic1.Strength
-		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_pos)) * 100
+		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_eff)) * 100
 		
 		
 		intellect_mana = 15 * basic1.Intellect
-		eff_intellect_mana = (intellect_mana / (15 * ch_int_pos)) * 100
+		eff_intellect_mana = (intellect_mana / (15 * ch_int_eff)) * 100
 		
 		intellect_crit = 0.016501650 * basic1.Intellect
-		eff_intellect_crit = (intellect_crit / (0.016501650 * ch_int_pos)) * 100
+		eff_intellect_crit = (intellect_crit / (0.016501650 * ch_int_eff)) * 100
 		
 		
 		spirit_hpt = 0.7 * basic1.Spirit
-		eff_spirit_hpt = (spirit_hpt / (0.7 * ch_spt_pos)) * 100
+		eff_spirit_hpt = (spirit_hpt / (0.7 * ch_spt_eff)) * 100
 		
 		spirit_mpt = 0.25 * basic1.Spirit
-		eff_spirit_mpt = (spirit_mpt / (0.25 * ch_spt_pos)) * 100
+		eff_spirit_mpt = (spirit_mpt / (0.25 * ch_spt_eff)) * 100
 	elseif(classID == 11) then -- druid
 		agility_crit = 0.05 * basic1.Agility
-		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_pos)) * 100
+		eff_agility_crit  = (agility_crit / (0.05 * ch_agi_eff)) * 100
 		
 		agility_dodge = 0.05 * basic1.Agility
-		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_pos)) * 100
+		eff_agility_dodge = (agility_dodge / (0.05 * ch_agi_eff)) * 100
 		
 		agility_catform_ap_melee = 1 * basic1.Agility
-		eff_agility_catform_ap_melee = (agility_catform_ap_melee / (1 * ch_agi_pos)) * 100
+		eff_agility_catform_ap_melee = (agility_catform_ap_melee / (1 * ch_agi_eff)) * 100
 		
 		
 		strength_ap_melee = 2 * basic1.Strength
-		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_pos)) * 100
+		eff_strength_ap_melee = (strength_ap_melee / (2 * ch_str_eff)) * 100
 		
 		
 		intellect_mana = 15 * basic1.Intellect
-		eff_intellect_mana = (intellect_mana / (15 * ch_int_pos)) * 100
+		eff_intellect_mana = (intellect_mana / (15 * ch_int_eff)) * 100
 		
 		intellect_crit = 0.016666666 * basic1.Intellect
-		eff_intellect_crit = (intellect_crit / (0.016666666 * ch_int_pos)) * 100
+		eff_intellect_crit = (intellect_crit / (0.016666666 * ch_int_eff)) * 100
 		
 		
 		spirit_hpt = 0.9 * basic1.Spirit
-		eff_spirit_hpt = (spirit_hpt / (0.9 * ch_spt_pos)) * 100
+		eff_spirit_hpt = (spirit_hpt / (0.9 * ch_spt_eff)) * 100
 		
 		spirit_mpt = 0.20 * basic1.Spirit
-		eff_spirit_mpt = (spirit_mpt / (0.20 * ch_spt_pos)) * 100
+		eff_spirit_mpt = (spirit_mpt / (0.20 * ch_spt_eff)) * 100
 	end
 	
 	local eff_armor = (def1.Armor / armor) * 100
 	
-	local eff_agi = (basic1.Agility / ch_agi_pos) * 100
-	local eff_stm = (basic1.Stamina / ch_stm_pos) * 100
-	local eff_str = (basic1.Strength / ch_str_pos) * 100
-	local eff_int = (basic1.Intellect / ch_int_pos) * 100
-	local eff_spt = (basic1.Spirit / ch_spt_pos) * 100
+	local eff_agi = (basic1.Agility / ch_agi_eff) * 100
+	local eff_stm = (basic1.Stamina / ch_stm_eff) * 100
+	local eff_str = (basic1.Strength / ch_str_eff) * 100
+	local eff_int = (basic1.Intellect / ch_int_eff) * 100
+	local eff_spt = (basic1.Spirit / ch_spt_eff) * 100
 	
+	if(eff_armor == math.huge or eff_agi == math.huge or eff_str == math.huge or eff_int == math.huge or eff_spt == math.huge) then
+		print("Please open a bug report to kiwi on curse or git saying 'still getting inf errors' Thanks")
+	end
 	
 	local queue = {}
 	local dirty = true
